@@ -32,7 +32,7 @@ const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
   await updatePlayerInfoById(userId, { $pushSubmission: { birdId } });
 
   const newBird = { birdId };
-  Object.assign(birdFields, newBird);
+  Object.assign(newBird, birdFields);
 
   return newBird;
 };
@@ -58,7 +58,7 @@ const getLocalBirds = async (countrycode, city) => {
   if (!localBirds) throw `Could not get local birds`;
 
   return objectIde2Str_docs_arr(localBirds);
-}; 
+};
 
 const getAllBirds = async () => {
   const birdsCollection = await birds();
