@@ -1,0 +1,800 @@
+{
+  "Albania": {
+    "latitude": 41.153332,
+    "longitude": 20.168331,
+    "country": "Albania",
+    "countryCode": "AL",
+    "city": "somewhere in Albania"
+  },
+  "Angola": {
+    "latitude": -11.202692,
+    "longitude": 17.873887,
+    "country": "Angola",
+    "countryCode": "AO",
+    "city": "somewhere in Angola"
+  },
+  "Anguilla": {
+    "latitude": 18.220554,
+    "longitude": -63.06861499999999,
+    "country": "Anguilla",
+    "countryCode": "AI",
+    "city": "somewhere in Anguilla"
+  },
+  "Antigua and Barbuda": {
+    "latitude": 17.060816,
+    "longitude": -61.796428,
+    "country": "Antigua and Barbuda",
+    "countryCode": "AG",
+    "city": "somewhere in Antigua and Barbuda"
+  },
+  "Argentina": {
+    "latitude": -38.416097,
+    "longitude": -63.61667199999999,
+    "country": "Argentina",
+    "countryCode": "AR",
+    "city": "somewhere in Argentina"
+  },
+  "Aruba": {
+    "latitude": 12.52111,
+    "longitude": -69.968338,
+    "country": "Aruba",
+    "countryCode": "AW",
+    "city": "somewhere in Aruba"
+  },
+  "Australia": {
+    "latitude": -25.274398,
+    "longitude": 133.775136,
+    "country": "Australia",
+    "countryCode": "AU",
+    "city": "somewhere in Australia"
+  },
+  "Austria": {
+    "latitude": 47.516231,
+    "longitude": 14.550072,
+    "country": "Austria",
+    "countryCode": "AT",
+    "city": "somewhere in Austria"
+  },
+  "Bahamas": {
+    "latitude": 25.03428,
+    "longitude": -77.39627999999999,
+    "country": "The Bahamas",
+    "countryCode": "BS",
+    "city": "somewhere in Bahamas"
+  },
+  "Bahrain": {
+    "latitude": 26.0667,
+    "longitude": 50.5577,
+    "country": "Bahrain",
+    "countryCode": "BH",
+    "city": "somewhere in Bahrain"
+  },
+  "Bangladesh": {
+    "latitude": 23.684994,
+    "longitude": 90.356331,
+    "country": "Bangladesh",
+    "countryCode": "BD",
+    "city": "somewhere in Bangladesh"
+  },
+  "Belarus": {
+    "latitude": 53.709807,
+    "longitude": 27.953389,
+    "country": "Belarus",
+    "countryCode": "BY",
+    "city": "somewhere in Belarus"
+  },
+  "Belgium": {
+    "latitude": 50.503887,
+    "longitude": 4.469936,
+    "country": "Belgium",
+    "countryCode": "BE",
+    "city": "somewhere in Belgium"
+  },
+  "Belize": {
+    "latitude": 17.189877,
+    "longitude": -88.49765,
+    "country": "Belize",
+    "countryCode": "BZ",
+    "city": "somewhere in Belize"
+  },
+  "Bermuda": {
+    "latitude": 32.3078,
+    "longitude": -64.7505,
+    "country": "Bermuda",
+    "countryCode": "BM",
+    "city": "somewhere in Bermuda"
+  },
+  "Bhutan": {
+    "latitude": 27.514162,
+    "longitude": 90.433601,
+    "country": "Bhutan",
+    "countryCode": "BT",
+    "city": "somewhere in Bhutan"
+  },
+  "Bolivia": {
+    "latitude": -16.290154,
+    "longitude": -63.58865299999999,
+    "country": "Bolivia",
+    "countryCode": "BO",
+    "city": "somewhere in Bolivia"
+  },
+  "Botswana": {
+    "latitude": -22.328474,
+    "longitude": 24.684866,
+    "country": "Botswana",
+    "countryCode": "BW",
+    "city": "somewhere in Botswana"
+  },
+  "Brazil": {
+    "latitude": -14.235004,
+    "longitude": -51.92528,
+    "country": "Brazil",
+    "countryCode": "BR",
+    "city": "somewhere in Brazil"
+  },
+  "British Virgin Islands": {
+    "latitude": 18.420695,
+    "longitude": -64.639968,
+    "country": "British Virgin Islands",
+    "countryCode": "VG",
+    "city": "somewhere in British Virgin Islands"
+  },
+  "Cambodia": {
+    "latitude": 12.565679,
+    "longitude": 104.990963,
+    "country": "Cambodia",
+    "countryCode": "KH",
+    "city": "somewhere in Cambodia"
+  },
+  "Canada": {
+    "latitude": 56.130366,
+    "longitude": -106.346771,
+    "country": "Canada",
+    "countryCode": "CA",
+    "city": "somewhere in Canada"
+  },
+  "Cayman Islands": {
+    "latitude": 19.3133,
+    "longitude": -81.2546,
+    "country": "Cayman Islands",
+    "countryCode": "KY",
+    "city": "somewhere in Cayman Islands"
+  },
+  "Chile": {
+    "latitude": -35.675147,
+    "longitude": -71.542969,
+    "country": "Chile",
+    "countryCode": "CL",
+    "city": "somewhere in Chile"
+  },
+  "China": {
+    "latitude": 35.86166,
+    "longitude": 104.195397,
+    "country": "China",
+    "countryCode": "CN",
+    "city": "somewhere in China"
+  },
+  "Colombia": {
+    "latitude": 4.570868,
+    "longitude": -74.297333,
+    "country": "Colombia",
+    "countryCode": "CO",
+    "city": "somewhere in Colombia"
+  },
+  "Costa Rica": {
+    "latitude": 9.748916999999999,
+    "longitude": -83.753428,
+    "country": "Costa Rica",
+    "countryCode": "CR",
+    "city": "somewhere in Costa Rica"
+  },
+  "Croatia": {
+    "latitude": 45.1,
+    "longitude": 15.2,
+    "country": "Croatia",
+    "countryCode": "HR",
+    "city": "somewhere in Croatia"
+  },
+  "Cuba": {
+    "latitude": 21.521757,
+    "longitude": -77.781167,
+    "country": "Cuba",
+    "countryCode": "CU",
+    "city": "somewhere in Cuba"
+  },
+  "Czech Republic": {
+    "latitude": 49.81749199999999,
+    "longitude": 15.472962,
+    "country": "Czechia",
+    "countryCode": "CZ",
+    "city": "somewhere in Czech Republic"
+  },
+  "Denmark": {
+    "latitude": 56.26392,
+    "longitude": 9.501785,
+    "country": "Denmark",
+    "countryCode": "DK",
+    "city": "somewhere in Denmark"
+  },
+  "Dominica": {
+    "latitude": 15.414999,
+    "longitude": -61.37097600000001,
+    "country": "Dominica",
+    "countryCode": "DM",
+    "city": "somewhere in Dominica"
+  },
+  "Dominican Republic": {
+    "latitude": 18.735693,
+    "longitude": -70.162651,
+    "country": "Dominican Republic",
+    "countryCode": "DO",
+    "city": "somewhere in Dominican Republic"
+  },
+  "Ecuador": {
+    "latitude": -1.831239,
+    "longitude": -78.18340599999999,
+    "country": "Ecuador",
+    "countryCode": "EC",
+    "city": "somewhere in Ecuador"
+  },
+  "Egypt": {
+    "latitude": 26.820553,
+    "longitude": 30.802498,
+    "country": "Egypt",
+    "countryCode": "EG",
+    "city": "somewhere in Egypt"
+  },
+  "El Salvador": {
+    "latitude": 13.794185,
+    "longitude": -88.89653,
+    "country": "El Salvador",
+    "countryCode": "SV",
+    "city": "somewhere in El Salvador"
+  },
+  "Estonia": {
+    "latitude": 58.595272,
+    "longitude": 25.013607,
+    "country": "Estonia",
+    "countryCode": "EE",
+    "city": "somewhere in Estonia"
+  },
+  "Eswatini": {
+    "latitude": -26.522503,
+    "longitude": 31.465866,
+    "country": "Eswatini",
+    "countryCode": "SZ",
+    "city": "somewhere in Eswatini"
+  },
+  "Faroe Islands": {
+    "latitude": 61.89263500000001,
+    "longitude": -6.911805999999999,
+    "country": "Faroe Islands",
+    "countryCode": "FO",
+    "city": "somewhere in Faroe Islands"
+  },
+  "Finland": {
+    "latitude": 61.92410999999999,
+    "longitude": 25.748151,
+    "country": "Finland",
+    "countryCode": "FI",
+    "city": "somewhere in Finland"
+  },
+  "France": {
+    "latitude": 46.227638,
+    "longitude": 2.213749,
+    "country": "France",
+    "countryCode": "FR",
+    "city": "somewhere in France"
+  },
+  "Germany": {
+    "latitude": 51.165691,
+    "longitude": 10.451526,
+    "country": "Germany",
+    "countryCode": "DE",
+    "city": "somewhere in Germany"
+  },
+  "Gibraltar": {
+    "latitude": 36.140751,
+    "longitude": -5.353585,
+    "country": "Gibraltar",
+    "countryCode": "GI",
+    "city": "somewhere in Gibraltar"
+  },
+  "Grenada": {
+    "latitude": 12.1165,
+    "longitude": -61.67899999999999,
+    "country": "Grenada",
+    "countryCode": "GD",
+    "city": "somewhere in Grenada"
+  },
+  "Guatemala": {
+    "latitude": 15.783471,
+    "longitude": -90.23075899999999,
+    "country": "Guatemala",
+    "countryCode": "GT",
+    "city": "somewhere in Guatemala"
+  },
+  "Guyana": {
+    "latitude": 4.860416,
+    "longitude": -58.93018,
+    "country": "Guyana",
+    "countryCode": "GY",
+    "city": "somewhere in Guyana"
+  },
+  "Haiti": {
+    "latitude": 18.971187,
+    "longitude": -72.285215,
+    "country": "Haiti",
+    "countryCode": "HT",
+    "city": "somewhere in Haiti"
+  },
+  "Honduras": {
+    "latitude": 15.199999,
+    "longitude": -86.241905,
+    "country": "Honduras",
+    "countryCode": "HN",
+    "city": "somewhere in Honduras"
+  },
+  "Hungary": {
+    "latitude": 47.162494,
+    "longitude": 19.503304,
+    "country": "Hungary",
+    "countryCode": "HU",
+    "city": "somewhere in Hungary"
+  },
+  "Iceland": {
+    "latitude": 64.963051,
+    "longitude": -19.020835,
+    "country": "Iceland",
+    "countryCode": "IS",
+    "city": "somewhere in Iceland"
+  },
+  "India": {
+    "latitude": 20.593684,
+    "longitude": 78.96288,
+    "country": "India",
+    "countryCode": "IN",
+    "city": "somewhere in India"
+  },
+  "Indonesia": {
+    "latitude": -0.789275,
+    "longitude": 113.921327,
+    "country": "Indonesia",
+    "countryCode": "ID",
+    "city": "somewhere in Indonesia"
+  },
+  "Iran": {
+    "latitude": 32.427908,
+    "longitude": 53.688046,
+    "country": "Iran",
+    "countryCode": "IR",
+    "city": "somewhere in Iran"
+  },
+  "Ireland": {
+    "latitude": 53.41291,
+    "longitude": -8.24389,
+    "country": "Ireland",
+    "countryCode": "IE",
+    "city": "somewhere in Ireland"
+  },
+  "Israel": {
+    "latitude": 31.046051,
+    "longitude": 34.851612,
+    "country": "Israel",
+    "countryCode": "IL",
+    "city": "somewhere in Israel"
+  },
+  "Italy": {
+    "latitude": 41.87194,
+    "longitude": 12.56738,
+    "country": "Italy",
+    "countryCode": "IT",
+    "city": "somewhere in Italy"
+  },
+  "Jamaica": {
+    "latitude": 18.109581,
+    "longitude": -77.297508,
+    "country": "Jamaica",
+    "countryCode": "JM",
+    "city": "somewhere in Jamaica"
+  },
+  "Japan": {
+    "latitude": 36.204824,
+    "longitude": 138.252924,
+    "country": "Japan",
+    "countryCode": "JP",
+    "city": "somewhere in Japan"
+  },
+  "Jordan": {
+    "latitude": 30.585164,
+    "longitude": 36.238414,
+    "country": "Jordan",
+    "countryCode": "JO",
+    "city": "somewhere in Jordan"
+  },
+  "Kenya": {
+    "latitude": -0.023559,
+    "longitude": 37.906193,
+    "country": "Kenya",
+    "countryCode": "KE",
+    "city": "somewhere in Kenya"
+  },
+  "Latvia": {
+    "latitude": 56.879635,
+    "longitude": 24.603189,
+    "country": "Latvia",
+    "countryCode": "LV",
+    "city": "somewhere in Latvia"
+  },
+  "Liberia": {
+    "latitude": 6.428055,
+    "longitude": -9.429499000000002,
+    "country": "Liberia",
+    "countryCode": "LR",
+    "city": "somewhere in Liberia"
+  },
+  "Lithuania": {
+    "latitude": 55.169438,
+    "longitude": 23.881275,
+    "country": "Lithuania",
+    "countryCode": "LT",
+    "city": "somewhere in Lithuania"
+  },
+  "Luxembourg": {
+    "latitude": 49.815273,
+    "longitude": 6.129582999999999,
+    "country": "Luxembourg",
+    "countryCode": "LU",
+    "city": "somewhere in Luxembourg"
+  },
+  "Malaysia": {
+    "latitude": 4.210484,
+    "longitude": 101.975766,
+    "country": "Malaysia",
+    "countryCode": "MY",
+    "city": "somewhere in Malaysia"
+  },
+  "Malta": {
+    "latitude": 35.937496,
+    "longitude": 14.375416,
+    "country": "Malta",
+    "countryCode": "MT",
+    "city": "somewhere in Malta"
+  },
+  "Mauritius": {
+    "latitude": -20.348404,
+    "longitude": 57.55215200000001,
+    "country": "Mauritius",
+    "countryCode": "MU",
+    "city": "somewhere in Mauritius"
+  },
+  "Mexico": {
+    "latitude": 23.634501,
+    "longitude": -102.552784,
+    "country": "Mexico",
+    "countryCode": "MX",
+    "city": "somewhere in Mexico"
+  },
+  "Mongolia": {
+    "latitude": 46.862496,
+    "longitude": 103.846656,
+    "country": "Mongolia",
+    "countryCode": "MN",
+    "city": "somewhere in Mongolia"
+  },
+  "Montserrat": {
+    "latitude": 16.742498,
+    "longitude": -62.187366,
+    "country": "Montserrat",
+    "countryCode": "MS",
+    "city": "somewhere in Montserrat"
+  },
+  "Myanmar": {
+    "latitude": 21.916221,
+    "longitude": 95.955974,
+    "country": "Myanmar (Burma)",
+    "countryCode": "MM",
+    "city": "somewhere in Myanmar"
+  },
+  "Namibia": {
+    "latitude": -22.95764,
+    "longitude": 18.49041,
+    "country": "Namibia",
+    "countryCode": "NA",
+    "city": "somewhere in Namibia"
+  },
+  "Nepal": {
+    "latitude": 28.394857,
+    "longitude": 84.12400799999999,
+    "country": "Nepal",
+    "countryCode": "NP",
+    "city": "somewhere in Nepal"
+  },
+  "Netherlands": {
+    "latitude": 52.132633,
+    "longitude": 5.291265999999999,
+    "country": "Netherlands",
+    "countryCode": "NL",
+    "city": "somewhere in Netherlands"
+  },
+  "New Zealand": {
+    "latitude": -40.900557,
+    "longitude": 174.885971,
+    "country": "New Zealand",
+    "countryCode": "NZ",
+    "city": "somewhere in New Zealand"
+  },
+  "Nicaragua": {
+    "latitude": 12.865416,
+    "longitude": -85.207229,
+    "country": "Nicaragua",
+    "countryCode": "NI",
+    "city": "somewhere in Nicaragua"
+  },
+  "Nigeria": {
+    "latitude": 9.081999,
+    "longitude": 8.675277,
+    "country": "Nigeria",
+    "countryCode": "NG",
+    "city": "somewhere in Nigeria"
+  },
+  "Northern Ireland": {
+    "latitude": 54.7877149,
+    "longitude": -6.4923145,
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "city": "somewhere in Northern Ireland"
+  },
+  "North Korea": {
+    "latitude": 40.339852,
+    "longitude": 127.510093,
+    "country": "North Korea",
+    "countryCode": "KP",
+    "city": "somewhere in North Korea"
+  },
+  "Norway": {
+    "latitude": 60.47202399999999,
+    "longitude": 8.468945999999999,
+    "country": "Norway",
+    "countryCode": "NO",
+    "city": "somewhere in Norway"
+  },
+  "Pakistan": {
+    "latitude": 30.375321,
+    "longitude": 69.34511599999999,
+    "country": "Pakistan",
+    "countryCode": "PK",
+    "city": "somewhere in Pakistan"
+  },
+  "Palau": {
+    "latitude": 7.514979999999999,
+    "longitude": 134.58252,
+    "country": "Palau",
+    "countryCode": "PW",
+    "city": "somewhere in Palau"
+  },
+  "Palestine": {
+    "latitude": 31.952162,
+    "longitude": 35.233154,
+    "country": "Palestine",
+    "countryCode": "PS",
+    "city": "somewhere in Palestine"
+  },
+  "Panama": {
+    "latitude": 8.537981,
+    "longitude": -80.782127,
+    "country": "Panama",
+    "countryCode": "PA",
+    "city": "somewhere in Panama"
+  },
+  "Papua New Guinea": {
+    "latitude": -6.314992999999999,
+    "longitude": 143.95555,
+    "country": "Papua New Guinea",
+    "countryCode": "PG",
+    "city": "somewhere in Papua New Guinea"
+  },
+  "Paraguay": {
+    "latitude": -23.442503,
+    "longitude": -58.443832,
+    "country": "Paraguay",
+    "countryCode": "PY",
+    "city": "somewhere in Paraguay"
+  },
+  "Philippines": {
+    "latitude": 12.879721,
+    "longitude": 121.774017,
+    "country": "Philippines",
+    "countryCode": "PH",
+    "city": "somewhere in Philippines"
+  },
+  "Poland": {
+    "latitude": 51.919438,
+    "longitude": 19.145136,
+    "country": "Poland",
+    "countryCode": "PL",
+    "city": "somewhere in Poland"
+  },
+  "Puerto Rico": {
+    "latitude": 18.220833,
+    "longitude": -66.590149,
+    "country": "Puerto Rico",
+    "countryCode": "PR",
+    "city": "somewhere in Puerto Rico"
+  },
+  "Quebec": {
+    "latitude": 46.8130816,
+    "longitude": -71.20745959999999,
+    "country": "Canada",
+    "countryCode": "CA",
+    "city": "somewhere in Quebec"
+  },
+  "Saint Helena": {
+    "latitude": -15.9650104,
+    "longitude": -5.7089241,
+    "country": "Saint Helena, Ascension and Tristan da Cunha",
+    "countryCode": "SH",
+    "city": "somewhere in Saint Helena"
+  },
+  "Saint Kitts and Nevis": {
+    "latitude": 17.357822,
+    "longitude": -62.782998,
+    "country": "Saint Kitts and Nevis",
+    "countryCode": "KN",
+    "city": "somewhere in Saint Kitts and Nevis"
+  },
+  "Saint Lucia": {
+    "latitude": 13.909444,
+    "longitude": -60.978893,
+    "country": "Saint Lucia",
+    "countryCode": "LC",
+    "city": "somewhere in Saint Lucia"
+  },
+  "Saint Vincent and the Grenadines": {
+    "latitude": 12.984305,
+    "longitude": -61.287228,
+    "country": "Saint Vincent and the Grenadines",
+    "countryCode": "VC",
+    "city": "somewhere in Saint Vincent and the Grenadines"
+  },
+  "Scotland": {
+    "latitude": 56.49067119999999,
+    "longitude": -4.2026458,
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "city": "somewhere in Scotland"
+  },
+  "Serbia": {
+    "latitude": 44.016521,
+    "longitude": 21.005859,
+    "country": "Serbia",
+    "countryCode": "RS",
+    "city": "somewhere in Serbia"
+  },
+  "Singapore": {
+    "latitude": 1.352083,
+    "longitude": 103.819836,
+    "country": "Singapore",
+    "countryCode": "SG",
+    "city": "somewhere in Singapore"
+  },
+  "South Africa": {
+    "latitude": -30.559482,
+    "longitude": 22.937506,
+    "country": "South Africa",
+    "countryCode": "ZA",
+    "city": "somewhere in South Africa"
+  },
+  "South Korea": {
+    "latitude": 35.907757,
+    "longitude": 127.766922,
+    "country": "South Korea",
+    "countryCode": "KR",
+    "city": "somewhere in South Korea"
+  },
+  "Sri Lanka": {
+    "latitude": 7.873053999999999,
+    "longitude": 80.77179699999999,
+    "country": "Sri Lanka",
+    "countryCode": "LK",
+    "city": "somewhere in Sri Lanka"
+  },
+  "Sweden": {
+    "latitude": 60.12816100000001,
+    "longitude": 18.643501,
+    "country": "Sweden",
+    "countryCode": "SE",
+    "city": "somewhere in Sweden"
+  },
+  "Thailand": {
+    "latitude": 15.870032,
+    "longitude": 100.992541,
+    "country": "Thailand",
+    "countryCode": "TH",
+    "city": "somewhere in Thailand"
+  },
+  "Taiwan": {
+    "latitude": 23.69781,
+    "longitude": 120.960515,
+    "country": "Taiwan",
+    "countryCode": "TW",
+    "city": "somewhere in Taiwan"
+  },
+  "Trinidad and Tobago": {
+    "latitude": 10.691803,
+    "longitude": -61.222503,
+    "country": "Trinidad and Tobago",
+    "countryCode": "TT",
+    "city": "somewhere in Trinidad and Tobago"
+  },
+  "Uganda": {
+    "latitude": 1.373333,
+    "longitude": 32.290275,
+    "country": "Uganda",
+    "countryCode": "UG",
+    "city": "somewhere in Uganda"
+  },
+  "Ukraine": {
+    "latitude": 48.379433,
+    "longitude": 31.16558,
+    "country": "Ukraine",
+    "countryCode": "UA",
+    "city": "somewhere in Ukraine"
+  },
+  "United Arab Emirates": {
+    "latitude": 23.424076,
+    "longitude": 53.847818,
+    "country": "United Arab Emirates",
+    "countryCode": "AE",
+    "city": "somewhere in United Arab Emirates"
+  },
+  "United Kingdom": {
+    "latitude": 55.378051,
+    "longitude": -3.435973,
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "city": "somewhere in United Kingdom"
+  },
+  "United States": {
+    "latitude": 37.09024,
+    "longitude": -95.712891,
+    "country": "United States",
+    "countryCode": "US",
+    "city": "somewhere in United States"
+  },
+  "Uruguay": {
+    "latitude": -32.522779,
+    "longitude": -55.765835,
+    "country": "Uruguay",
+    "countryCode": "UY",
+    "city": "somewhere in Uruguay"
+  },
+  "Venezuela": {
+    "latitude": 6.42375,
+    "longitude": -66.58973,
+    "country": "Venezuela",
+    "countryCode": "VE",
+    "city": "somewhere in Venezuela"
+  },
+  "Wales": {
+    "latitude": 52.1306607,
+    "longitude": -3.7837117,
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "city": "somewhere in Wales"
+  },
+  "Zambia": {
+    "latitude": -13.133897,
+    "longitude": 27.849332,
+    "country": "Zambia",
+    "countryCode": "ZM",
+    "city": "somewhere in Zambia"
+  },
+  "Zimbabwe": {
+    "latitude": -19.015438,
+    "longitude": 29.154857,
+    "country": "Zimbabwe",
+    "countryCode": "ZW",
+    "city": "somewhere in Zimbabwe"
+  }
+}
