@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "seed": "node seed.js",
-    "dbtest": "node seed.js && node dbtest.js"
+    "seed": "node ./seed/seed.js",
+    "dbtest": "npm run seed && node ./test/dbtest.js"
   },
   "author": "",
   "license": "MIT",
@@ -19,3 +19,4 @@
     "node-geocoder": "4.2.0"
   }
 }
+ 

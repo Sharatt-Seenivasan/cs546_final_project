@@ -1,25 +1,24 @@
 import { ObjectId } from "mongodb";
 
 const checkStr = (str, strName) => {
-  if (!str) throw "No string provided";
+  if (!str) throw `No string provided for ${strName}`;
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
   if (str.length === 0) throw `${strName} is empty`;
-  return str; // trimed
+  return str; // trimmed
 };
 
 const checkId = (id, idName) => {
-  id = checkStr(id, idName); // trimed
+  id = checkStr(id, idName); // trimmed
   if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
-  return id; // trimed
+  return id; // trimmed
 };
 
-const checkUrl = (url, urlName) => {
-  url = checkStr(url, urlName); // trimed
+const checkUrl = (url, urlName, minimumLength = 0) => {
+  url = checkStr(url, urlName); // trimmed
   url = url.replace(/\s/, "%20");
 
   const supportedProtocols = ["http://", "https://"];
-  const minimumLength = 0;
 
   if (!supportedProtocols.some((p) => url.startsWith(p)))
     throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
@@ -28,24 +27,29 @@ const checkUrl = (url, urlName) => {
   if (url.split("//")[1].length < minimumLength)
     throw `${urlName} is too short`;
 
-  return url; // trimed and replaced spaces with %20
+  return url; // trimmed and replaced spaces with %20
 };
 
 const checkImgUrl = (url, imgName) => {
-  url = checkUrl(url, `${imgName} link`); // trimed and replaced spaces with %20
+  url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
-  const supportedExtensions = [".jpg", ".jpeg", ".png", ".gif",".svg"];
-  if (!supportedExtensions.some((e) => url.endsWith(e)))
-    throw `${imgName} must have supported formats: ${supportedExtensions.join(
+  const supportedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".svg"];
+  if (
+    !supportedExtensions.some(
+      (ext) => url.endsWith(ext) || url.endsWith(ext.toUpperCase())
+    )
+  ) {
+    throw `Provided ${url}. ${imgName} must have supported formats: ${supportedExtensions.join(
       ", "
     )}`;
+  }
 
-  return url; // trimed and replaced spaces with %20
+  return url; // trimmed and replaced spaces with %20
 };
 
 const checkCountryCode = (countryCode) => {
   countryCode = checkStr(countryCode, "countryCode");
-  return countryCode; // trimed
+  return countryCode; // trimmed
 };
 
 const checkGeoCode = (geoCode, geoCodeName) => {
@@ -65,11 +69,11 @@ const checkGeoCode = (geoCode, geoCodeName) => {
   geoCode.countryCode = checkCountryCode(geoCode.countryCode, "countryCode");
   geoCode.city = checkStr(geoCode.city, "city");
 
-  return geoCode; // have country, countryCode, city trimed
+  return geoCode; // have country, countryCode, city trimmed
 };
 
 const checkNumber = (num, numName, min, max) => {
-  if (!num) throw `No ${numName} provided`;
+  if (!num && num !== 0) throw `No ${numName} provided`;
   if (typeof num !== "number") throw `${numName} is not a number`;
 
   if (typeof min !== "number" && typeof max !== "number") return num; // nothing changed
@@ -79,11 +83,12 @@ const checkNumber = (num, numName, min, max) => {
   if (typeof max !== "number" && num < min)
     throw `${numName} must be bigger than ${min}`;
 
-  if (min > max) throw "min must be smaller than max";
+  if (typeof min === "number" && typeof max === "number") {
+    if (min > max) throw "min must be smaller than max";
 
-  if (num < min || num > max)
-    throw `${numName} must be between ${min} and ${max}`;
-
+    if (num < min || num > max)
+      throw `${numName} must be between ${min} and ${max}`;
+  }
   return num; // nothing changed
 };
 
@@ -94,7 +99,7 @@ const checkStrArr = (arr, arrName) => {
 
   arr.map((e) => checkStr(e, `${arrName} element`));
 
-  return arr; // trimed
+  return arr; // trimmed
 };
 
 const arrsEqual = (arr1, arr2) => {
@@ -105,8 +110,8 @@ const arrsEqual = (arr1, arr2) => {
   const arr1_sorted = arr1.sort();
   const arr2_sorted = arr2.sort();
 
-  return arr1_sorted.every((e, i) => e === arr2_sorted[i]);
-}
+  return arr1_sorted.every((e, i) => deepEqual(e, arr2_sorted[i]));
+};
 
 const objsEqual = (obj1, obj2) => {
   if (!obj1 || !obj2) return false;
@@ -118,8 +123,16 @@ const objsEqual = (obj1, obj2) => {
 
   if (!arrsEqual(obj1_keys, obj2_keys)) return false;
 
-  return obj1_keys.every((key) => obj1[key] === obj2[key]);
-}
+  return obj1_keys.every((key) => deepEqual(obj1[key], obj2[key]));
+};
+
+const deepEqual = (obj1, obj2) => {
+  if (obj1 === obj2) return true;
+  if (!obj1 || !obj2) return false;
+  if (typeof obj1 !== typeof obj2) return false;
+  if (Array.isArray(obj1)) return arrsEqual(obj1, obj2);
+  if (typeof obj1 === "object") return objsEqual(obj1, obj2);
+};
 
 const objectId2str_doc = (doc) => {
   if (!doc || typeof doc !== "object" || Array.isArray(doc)) return doc;

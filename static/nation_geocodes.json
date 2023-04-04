@@ -371,8 +371,10 @@
     "city": "somewhere in Iran"
   },
   "Ireland": {
-    "latitude": 53.77975540000001,
-    "longitude": -7.3055309,
+    "latitude": 53.41291,
+    "longitude": -8.24389,
+    "country": "Ireland",
+    "countryCode": "IE",
     "city": "somewhere in Ireland"
   },
   "Israel": {

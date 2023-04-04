@@ -1,4 +1,5 @@
 import { usersCollection as users } from "../config/mongoCollections.js";
+import { getBirdById } from "./birds.js";
 import { ObjectId } from "mongodb";
 import {
   checkStr,
@@ -13,12 +14,7 @@ import {
   objsEqual,
 } from "../helpers.js";
 
-const createUser = async ({
-  username,
-  hashed_password,
-  icon,
-  geocode,
-} = {}) => {
+const createUser = async ({ username, hashed_password, icon, geocode, } = {}) => {
   username = checkStr(username, "user name");
   hashed_password = checkStr(hashed_password, "password");
   icon = checkImgUrl(icon, "user icon");
@@ -33,7 +29,7 @@ const createUser = async ({
     lifetime_score: 0,
     high_score: 0,
     submission: [],
-    last_question: [],
+    last_questions: [],
   };
 
   const ifExistedInfo = await userCollection.findOne({ username });
@@ -87,9 +83,7 @@ const removeUserById = async (userId) => {
   return objectId2str_doc(deletionInfo.value);
 };
 
-const updatePersonalInfoById = async (
-  userId,
-  { username, hashed_password, icon, geocode } = {}
+const updatePersonalInfoById = async ( userId, { username, hashed_password, icon, geocode } = {}
 ) => {
   const theUser = await getUserById(userId);
   const fields2Update = {
@@ -101,7 +95,7 @@ const updatePersonalInfoById = async (
 
   for (const [k, v] of Object.entries(fields2Update)) {
     if (v === undefined) {
-      delete fields2Update.k;
+      delete fields2Update[k];
       continue;
     }
 
@@ -153,7 +147,7 @@ const updatePersonalInfoById = async (
 
 const updatePlayerInfoById = async (operation, userId) => {
   if (typeof operation !== "object" || Array.isArray(operation))
-    throw "Operation should be an object";
+    throw `Provided ${operation}. Operation should be an object`;
   if (Object.keys(operation).length !== 1)
     throw "Exactly one operation should be provided to update player info";
 
@@ -161,16 +155,17 @@ const updatePlayerInfoById = async (operation, userId) => {
   const {
     $incScores,
     $pushSubmission,
-    $pushLashQuestions,
+    $pushLastQuestions,
     $pullSubmission,
     $pullLastQuestions,
   } = operation;
   if ($incScores) updateInfo = await incrementScoresById(userId, $incScores);
   if ($pushSubmission)
-    updateInfo = await pushSubmissionById(userId, $pushSubmission);
-  if ($pushLashQuestions)
-    updateInfo = await pushLastQuestionsById(userId, $pushLashQuestions);
-  if ($pullSubmission) updateInfo = await pullSubmissionById($pullSubmission);
+    updateInfo = await pushSubmissionByIds(userId, $pushSubmission);
+  if ($pushLastQuestions)
+    updateInfo = await pushLastQuestionsByIds(userId, $pushLastQuestions);
+  if ($pullSubmission)
+    updateInfo = await pullSubmissionByBirdId($pullSubmission);
   if ($pullLastQuestions)
     updateInfo = await pullLastQuestionsById($pullLastQuestions);
 
@@ -185,8 +180,10 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   if (!ifExists) throw `No such user with id ${id}`;
 
   if (!high_score && !lifetime_score) throw "No score provided to increment";
+  let high_score_inc = 0,
+    lifetime_score_inc = 0;
   if (high_score)
-    high_score_inc = checkNumber($inc.high_score, "high score increment");
+    high_score_inc = checkNumber(high_score, "high score increment");
   if (lifetime_score)
     lifetime_score_inc = checkNumber(
       lifetime_score,
@@ -212,16 +209,20 @@ const pullSubmissionByBirdId = async ({ birdId } = {}) => {
   birdId = checkId(birdId, "bird id");
 
   const userCollection = await users();
+  const ifExists = await userCollection.findOne({
+    submission: { $elemMatch: { $eq: new ObjectId(birdId) } },
+  });
+  if (!ifExists) throw `No such bird with id ${birdId}`;
   const updateInfo = await userCollection.findOneAndUpdate(
     {
-      $elemMatch: { submissions: new ObjectId(birdId) },
+      submission: { $elemMatch: { $eq: new ObjectId(birdId) } },
     },
     { $pull: { submission: new ObjectId(birdId) } },
     { returnDocument: "after" }
   );
 
   if (updateInfo.lastErrorObject.n === 0)
-    throw "Could not pull bird from the user submission";
+    throw `Could not pull bird with bird id ${birdId} from the user submission`;
 
   return objectId2str_doc(updateInfo.value);
 };
@@ -240,7 +241,7 @@ const pushSubmissionByIds = async (userId, { birdId } = {}) => {
 
   const updateInfo = await userCollection.findOneAndUpdate(
     { _id: new ObjectId(userId) },
-    { $push: { submissions: new ObjectId(birdId) } },
+    { $push: { submission: new ObjectId(birdId) } },
     { returnDocument: "after" }
   );
 
@@ -282,17 +283,19 @@ const topNthLocalUsers = async (n, countryCode, city) => {
   const userCollection = await users();
   let topUsers;
   if (city === "all") {
-    topUser = await userCollection
+    topUsers = await userCollection
       .find({ "geocode.countryCode": countryCode })
       .sort({ lifetime_score: -1 })
       .limit(n)
       .toArray();
+    if (topUsers.length === 0) throw `No users in ${countryCode}`;
   } else {
     topUsers = await userCollection
       .find({ "geocode.countryCode": countryCode, "geocode.city": city })
       .sort({ lifetime_score: -1 })
       .limit(n)
       .toArray();
+    if (topUsers.length === 0) throw `No users in ${city}, ${countryCode}`;
   }
   if (!topUsers)
     throw `Could not get top ${n} users in ${city}, ${countryCode}`;
