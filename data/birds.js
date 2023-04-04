@@ -1,4 +1,4 @@
-import { birdsCollection as birds } from "./birdsCollection.js";
+import { birdsCollection as birds } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { updatePlayerInfoById } from "./users.js";
 import {
@@ -9,7 +9,7 @@ import {
   checkNumber,
   checkId,
   objectId2str_doc,
-  objectIde2Str_docs_arr,
+  objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
 } from "../helpers.js";
@@ -57,14 +57,14 @@ const getLocalBirds = async (countrycode, city) => {
     .toArray();
   if (!localBirds) throw `Could not get local birds`;
 
-  return objectIde2Str_docs_arr(localBirds);
+  return objectId2str_docs_arr(localBirds);
 };
 
 const getAllBirds = async () => {
   const birdsCollection = await birds();
   const allBirds = await birdsCollection.find({}).toArray();
   if (!allBirds) throw `Could not get all birds`;
-  return objectIde2Str_docs_arr(allBirds);
+  return objectId2str_docs_arr(allBirds);
 };
 
 const removeBirdById = async (birdId) => {
@@ -134,3 +134,12 @@ const updateBirdById = async (
 
   return objectId2str_doc(updateInfo.value);
 };
+
+export{
+  createBird,
+  getBirdById,
+  getLocalBirds,
+  getAllBirds,
+  removeBirdById,
+  updateBirdById,
+}

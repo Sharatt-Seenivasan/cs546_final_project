@@ -1,10 +1,4 @@
 import { ObjectId } from "mongodb";
-import axios from "axios";
-
-const json_ISO2 = await axios.get("http://country.io/names.json");
-const ISO2_geocode = json_ISO2.data;
-const json_ISO3 = await axios.get("http://country.io/iso3.json");
-const ISO3_geocode = json_ISO3.data;
 
 const checkStr = (str, strName) => {
   if (!str) throw "No string provided";
@@ -40,7 +34,7 @@ const checkUrl = (url, urlName) => {
 const checkImgUrl = (url, imgName) => {
   url = checkUrl(url, `${imgName} link`); // trimed and replaced spaces with %20
 
-  const supportedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+  const supportedExtensions = [".jpg", ".jpeg", ".png", ".gif",".svg"];
   if (!supportedExtensions.some((e) => url.endsWith(e)))
     throw `${imgName} must have supported formats: ${supportedExtensions.join(
       ", "
@@ -51,8 +45,6 @@ const checkImgUrl = (url, imgName) => {
 
 const checkCountryCode = (countryCode) => {
   countryCode = checkStr(countryCode, "countryCode");
-  if (!ISO2_geocode.countryCode)
-    throw `please provide a valid country code as ISO2 code`;
   return countryCode; // trimed
 };
 
