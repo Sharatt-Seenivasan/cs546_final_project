@@ -1,5 +1,4 @@
 import { usersCollection as users } from "../config/mongoCollections.js";
-import { getBirdById } from "./birds.js";
 import { ObjectId } from "mongodb";
 import {
   checkStr,
@@ -8,7 +7,6 @@ import {
   checkGeoCode,
   checkCountryCode,
   checkNumber,
-  checkStrArr,
   objectId2str_doc,
   objectId2str_docs_arr,
   objsEqual,
@@ -32,7 +30,8 @@ const createUser = async ({ username, hashed_password, icon, geocode, } = {}) =>
     last_questions: [],
   };
 
-  const ifExistedInfo = await userCollection.findOne({ username });
+  username = username.toLowerCase();
+  const ifExistedInfo = await userCollection.findOne({ username:username });
   if (ifExistedInfo) throw `User ${username} already existed`;
 
   const insertInfo = await userCollection.insertOne(userFields);
@@ -56,6 +55,7 @@ const getUserById = async (userId) => {
 
 const getUserByUserName = async (username) => {
   username = checkStr(username, "user name");
+  username = username.toLowerCase();
   const userCollection = await users();
   const theUser = await userCollection.findOne({ username });
   if (!theUser) throw `User ${username} not found`;
@@ -130,6 +130,7 @@ const updatePersonalInfoById = async ( userId, { username, hashed_password, icon
   const userCollection = await users();
 
   if (username) {
+    username = username.toLowerCase();
     const ifUserNameExisted = await userCollection.findOne({ username });
     if (ifUserNameExisted) throw `User ${username} already existed`;
   }
