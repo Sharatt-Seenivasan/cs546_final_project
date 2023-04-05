@@ -1,4 +1,4 @@
-import { birdsCollection as birds } from "./birdsCollection.js";
+import { birdsCollection as birds } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { updatePlayerInfoById } from "./users.js";
 import {
@@ -9,7 +9,7 @@ import {
   checkNumber,
   checkId,
   objectId2str_doc,
-  objectIde2Str_docs_arr,
+  objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
 } from "../helpers.js";
@@ -29,12 +29,9 @@ const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
     throw `Bird ${names[0]} was not created`;
 
   const birdId = insertInfo.insertedId.toString();
-  await updatePlayerInfoById(userId, { $pushSubmission: { birdId } });
+  await updatePlayerInfoById({ $pushSubmission: { birdId } }, userId);
 
-  const newBird = { birdId };
-  Object.assign(birdFields, newBird);
-
-  return newBird;
+  return getBirdById(birdId);
 };
 
 const getBirdById = async (birdId) => {
@@ -52,19 +49,27 @@ const getLocalBirds = async (countrycode, city) => {
   city = checkStr(city, "city");
 
   const birdsCollection = await birds();
-  const localBirds = await birdsCollection
-    .find({ "geocode.countrycode": countrycode, "geocode.city": city })
-    .toArray();
-  if (!localBirds) throw `Could not get local birds`;
+  let localBirds;
+  if (city === "all") {
+    localBirds = await birdsCollection
+      .find({ "geocode.countrycode": countrycode })
+      .toArray();
+  } else {
+    localBirds = await birdsCollection
+      .find({ "geocode.countrycode": countrycode, "geocode.city": city })
+      .toArray();
+  }
+  if (localBirds.length === 0)
+    throw `No birds found in ${city}, ${countrycode}`;
 
-  return objectIde2Str_docs_arr(localBirds);
-}; 
+  return objectId2str_docs_arr(localBirds);
+};
 
 const getAllBirds = async () => {
   const birdsCollection = await birds();
   const allBirds = await birdsCollection.find({}).toArray();
   if (!allBirds) throw `Could not get all birds`;
-  return objectIde2Str_docs_arr(allBirds);
+  return objectId2str_docs_arr(allBirds);
 };
 
 const removeBirdById = async (birdId) => {
@@ -77,21 +82,18 @@ const removeBirdById = async (birdId) => {
   if (!deleteInfo.lastErrorObject.n === 0)
     throw `Could not delete bird with id ${birdId}`;
 
-  await updatePlayerInfoById({ $pullSubmission: { birdId: birdId } });
+  await updatePlayerInfoById({ $pullSubmission: { birdId } });
 
   return objectId2str_doc(deleteInfo.value);
 };
 
-const updateBirdById = async (
-  birdId,
-  { url, names, geocode, difficulty } = {}
-) => {
+const updateBirdById = async ( birdId, { url, names, geocode, difficulty } = {} ) => {
   const theBird = await getBirdById(birdId);
   const fields2Update = { url, names, geocode, difficulty };
 
-  for (const [k, v] in Object.entries(fields2Update)) {
+  for (const [k, v] of Object.entries(fields2Update)) {
     if (v === undefined) {
-      delete fields2Update.k;
+      delete fields2Update[k];
       continue;
     }
     switch (k) {
@@ -133,4 +135,13 @@ const updateBirdById = async (
     throw `Could not update bird with id ${birdId}`;
 
   return objectId2str_doc(updateInfo.value);
+};
+
+export {
+  createBird,
+  getBirdById,
+  getLocalBirds,
+  getAllBirds,
+  removeBirdById,
+  updateBirdById,
 };
