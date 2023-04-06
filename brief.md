@@ -60,14 +60,12 @@ JUST `checkStr`
 
 `objectId2str_doc(doc)`
 
-- replace any {\_id: new Object('xxxx')} with  {\_id: 'xxxx'}
+- replace any {\_id: new ObjectId('xxxx')} with  {\_id: 'xxxx'}
 - recursively
 
 `objectId2str_docs_arr(arrOfDocs)`
 
 - apply `objectId2str_doc(doc)` to each document element
-
-
 
 ## ./seed/seed.js
 
@@ -89,15 +87,13 @@ JUST `checkStr`
 
 ## ./data/users.js
 
-exported functions, all `async`:
-
 `createUser({ username, hashed_password, icon, geocode } = {})`
 
 all args required
 
-- username: string
+- username: string. case INsensitive
 - hash_password: string. NO further validation
-- icon: string. 
+- icon: string.
   - validate supported extension, and supported protocols(http:// , https://)
   - NO length validation
 - geocode: object
@@ -120,11 +116,11 @@ throw if no such id
 
 `updatePersonalInfoById( userId, { username, hashed_password, icon, geocode } = {})`
 
-at least one field should be different and provided
+at least one field should be different and provided. username is case INsensitive
 
 `updatePlayerInfoById(operation, userId)`
 
-e.g 
+e.g
 
 ```js
 // only support $inc so far for scores, standing for increment
@@ -157,13 +153,11 @@ NOT exported
 
 `topNthLocalUsers(n, countryCode, city)`
 
-throw if no user found. `city` can be "all", which gets users for some country
+throw if no users found. `city` can be "all", which gets users for some country
 
 `topNthGlobalUsers(n)`
 
-throw if no user found
-
-
+throw if no users found
 
 ## ./data/birds.js
 
@@ -184,11 +178,11 @@ throw if no such id
 
 `getLocalBirds(countrycode, city)`
 
-throw if no user found.`city` can be "all", which gets users for some country
+throw if no user found.` city` can be "all", which gets users for some country
 
 `getAllBirds()`
 
-get all birds. returns [] when no birds.
+get all birds. returns [] when there is no birds.
 
 `removeBirdById(birdId)`
 
