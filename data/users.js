@@ -12,7 +12,12 @@ import {
   objsEqual,
 } from "../helpers.js";
 
-const createUser = async ({ username, hashed_password, icon, geocode, } = {}) => {
+const createUser = async ({
+  username,
+  hashed_password,
+  icon,
+  geocode,
+} = {}) => {
   username = checkStr(username, "user name");
   hashed_password = checkStr(hashed_password, "password");
   icon = checkImgUrl(icon, "user icon");
@@ -31,7 +36,7 @@ const createUser = async ({ username, hashed_password, icon, geocode, } = {}) =>
   };
 
   username = username.toLowerCase();
-  const ifExistedInfo = await userCollection.findOne({ username:username });
+  const ifExistedInfo = await userCollection.findOne({ username: username });
   if (ifExistedInfo) throw `User ${username} already existed`;
 
   const insertInfo = await userCollection.insertOne(userFields);
@@ -83,7 +88,9 @@ const removeUserById = async (userId) => {
   return objectId2str_doc(deletionInfo.value);
 };
 
-const updatePersonalInfoById = async ( userId, { username, hashed_password, icon, geocode } = {}
+const updatePersonalInfoById = async (
+  userId,
+  { username, hashed_password, icon, geocode } = {}
 ) => {
   const theUser = await getUserById(userId);
   const fields2Update = {
@@ -146,7 +153,7 @@ const updatePersonalInfoById = async ( userId, { username, hashed_password, icon
   return objectId2str_doc(updateInfo.value);
 };
 
-const updatePlayerInfoById = async (operation, userId) => {
+const updatePlayerInfoById = async (userId, operation) => {
   if (typeof operation !== "object" || Array.isArray(operation))
     throw `Provided ${operation}. Operation should be an object`;
   if (Object.keys(operation).length !== 1)
