@@ -5,6 +5,7 @@ import {
 } from "../data/index.js";
 import fs from "fs/promises";
 import crypto from "crypto";
+import path from "path";
 import { geocoderConfig } from "../config/settings.js";
 import GeoCoder from "node-geocoder";
 
@@ -21,11 +22,11 @@ await _db.dropDatabase();
 
 // -------- get some birds data & geocode data -------------
 const national2Birds_raw = await fs.readFile(
-  "./static/wiki_national_birds.json",
+  path.resolve("/static/nation_geocodes.json"),
   "utf-8"
 );
 const nation_geocodes_raw = await fs.readFile(
-  "./static/nation_geocodes.json",
+  path.resolve("/static/nation_geocodes.json"),
   "utf-8"
 );
 const national2Birds = JSON.parse(national2Birds_raw);
