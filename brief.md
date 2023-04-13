@@ -1,5 +1,15 @@
 [toc]
 
+[./helper.js](#./helper.js)
+
+[./seed/seed/js](##./seed/seed.js)
+
+[./test/dbtest.js](##./test/dbtest.js)
+
+[./data/users.js](##./data/users.js)
+
+[./data/birds.js](##./data/birds.js)
+
 # ./helper.js
 
 `checkStr(str, strName)`
@@ -116,7 +126,13 @@ throw if no such id
 
 `updatePersonalInfoById( userId, { username, hashed_password, icon, geocode } = {})`
 
-at least one field should be different and provided. username is case INsensitive
+````js
+// at least 1 field should be different and provided. username is case INsensitive
+await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa0",{username:"Bob"});
+await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa1",{username:"Daniel",hashed_password:"e0f4f767ac88a9303e7317843ac20be980665a36f52397e5b26d4cc2bf54011d",icon:"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",geocode:{}})
+````
+
+
 
 `updatePlayerInfoById(operation, userId)`
 
@@ -124,12 +140,14 @@ e.g
 
 ```js
 // only support $inc so far for scores, standing for increment
+// at least 1 score increment should be provided
+// increment of high_score should >= 0, lifetime_score should be non-negative after increment
 await updatePlayerInfoById({$inc:{high_score:10,lifetime_score:-2}},"642bdbf502ce2ade5ce6bfa0");
-await updatePlayerInfoById({$inc:{high_score:0,lifetime_score:8}},"642bdbf502ce2ade5ce6bfa1")
+await updatePlayerInfoById({$inc:{lifetime_score:8}},"642bdbf502ce2ade5ce6bfa1");
 
 // $pushSubmission, $pullSubmission
-await updatePlayerInfoById({$pushSubmission:{birdId:"642bdbf502ce2ade5ce6bfa2"},},"642bdbf502ce2ade5ce6bfa3");
-await updatePlayerInfoById({$pullSubmission:{birdId:"642bdbf502ce2ade5ce6bfa4"},},"642bdbf502ce2ade5ce6bfa5");
+await updatePlayerInfoById("642bdbf502ce2ade5ce6bfa3",{$pushSubmission:{birdId:"642bdbf502ce2ade5ce6bfa2"}});
+await updatePlayerInfoById(,"642bdbf502ce2ade5ce6bfa5",{$pullSubmission:{birdId:"642bdbf502ce2ade5ce6bfa4"}});
 
 // $pushLastQuestions
 await updatePlayerInfo({$pushLastQuestions:{birdId:"642bdbf502ce2ade5ce6bfa6"}},"642bdbf502ce2ade5ce6bfa7");
@@ -191,3 +209,4 @@ throw if no such id
 `updateBirdById( birdId, { url, names, geocode, difficulty } = {} ) `
 
 at least one field should be different and provided
+
