@@ -115,6 +115,7 @@ for (const birdId of birdIds) {
     randomUserId
   );
 }
+console.log();
 console.log("Seed Last Questions Done!");
 
 for (const userId of userIds) {
@@ -130,11 +131,12 @@ for (const userId of userIds) {
     userId
   );
 }
+console.log();
 console.log("Seed Scores Done!");
 
 // ---------------- report --------------------
 const allUsers = await usersData.getAllUsers();
 
 await closeConnection();
-console.log("Seed Done!");
 console.log(VERBOSE || displayAllUsers ? allUsers : "");
+console.log("Seed Done!");
