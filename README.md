@@ -16,10 +16,10 @@ Who's That Bird is a fun and engaging timed quiz game, inspired by the popular "
 - Node.js: A server-side platform used to run the application.
 
 ## Getting Started
-Clone the repository.
-Use `npm install` to install dependencies.
-Start the server using `npm star`.
-Access the application at http://localhost:3000.
+- Clone the repository.
+- Use `npm install` to install dependencies.
+- Start the server using `npm star`.
+- Access the application at http://localhost:3000.
 
 ## License
 This project is licensed under the MIT License.
