@@ -18,7 +18,7 @@ Who's That Bird is a fun and engaging timed quiz game, inspired by the popular "
 ## Getting Started
 - Clone the repository.
 - Use `npm install` to install dependencies.
-- Start the server using `npm star`.
+- Start the server using `npm start`.
 - Access the application at http://localhost:3000.
 
 ## License
