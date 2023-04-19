@@ -29,7 +29,7 @@ const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
     throw `Bird ${names[0]} was not created`;
 
   const birdId = insertInfo.insertedId.toString();
-  await updatePlayerInfoById({ $pushSubmission: { birdId } }, userId);
+  await updatePlayerInfoById(userId,{ $pushSubmission: { birdId } });
 
   return getBirdById(birdId);
 };
