@@ -5,6 +5,7 @@ import {
 } from "../data/index.js";
 import fs from "fs/promises";
 import crypto from "crypto";
+import path from "path";
 import { geocoderConfig } from "../config/settings.js";
 import GeoCoder from "node-geocoder";
 
@@ -21,11 +22,11 @@ await _db.dropDatabase();
 
 // -------- get some birds data & geocode data -------------
 const national2Birds_raw = await fs.readFile(
-  "./static/wiki_national_birds.json",
+  path.resolve("/static/nation_geocodes.json"),
   "utf-8"
 );
 const nation_geocodes_raw = await fs.readFile(
-  "./static/nation_geocodes.json",
+  path.resolve("/static/nation_geocodes.json"),
   "utf-8"
 );
 const national2Birds = JSON.parse(national2Birds_raw);
@@ -110,10 +111,9 @@ console.log("Seed Birds Done!");
 for (const birdId of birdIds) {
   const randomUserId = userIds[Math.floor(Math.random() * userIds.length)];
 
-  await usersData.updatePlayerInfoById(
-    { $pushLastQuestions: { birdId } },
-    randomUserId
-  );
+  await usersData.updatePlayerInfoById(randomUserId, {
+    $pushLastQuestions: { birdId },
+  });
 }
 console.log();
 console.log("Seed Last Questions Done!");
@@ -122,14 +122,12 @@ for (const userId of userIds) {
   const randomHighScore = Math.floor(Math.random() * 100) + 1;
   const randomLifetimeScore = Math.floor(Math.random() * 1000);
 
-  await usersData.updatePlayerInfoById(
-    { $incScores: { high_score: randomHighScore } },
-    userId
-  );
-  await usersData.updatePlayerInfoById(
-    { $incScores: { lifetime_score: randomLifetimeScore } },
-    userId
-  );
+  await usersData.updatePlayerInfoById(userId, {
+    $incScores: { high_score: randomHighScore },
+  });
+  await usersData.updatePlayerInfoById(userId, {
+    $incScores: { lifetime_score: randomLifetimeScore },
+  });
 }
 console.log();
 console.log("Seed Scores Done!");
