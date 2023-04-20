@@ -17,16 +17,20 @@ const hbs = exphbs.create({
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
       return new Handlebars.SafeString(JSON.stringify(obj));
     },
+    inc: (value, options) =>{
+      return parseInt(value) + 1;
+    },
   },
   partialsDir: ["views/partials/"], // by default
 });
 
-app.use("/public", express.static(__dirname + "/public"));
+//app.use("/public", express.static(__dirname + "/public"));
+app.use("/static", express.static(__dirname + "/static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.engine("handlebars", hbs.engine);
-app.set("view", __dirname + "views"); // by default
+app.set("views", __dirname + "/views"); // by default
 app.set("view engine", "handlebars");
 
 configRoutes(app);

@@ -1,0 +1,23 @@
+<div class="container">
+  <h1 class="leaderboard-heading">{{title}}</h1>
+  <table class="table leaderboard-table">
+    <thead>
+      <tr>
+        <th scope="col">Rank</th>
+        <th scope="col">Icon</th>
+        <th scope="col">Username</th>
+        <th scope="col">Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each leaderboard}}
+        <tr>
+          <td>{{inc @index}}</td>
+          <td><img src="{{this.icon}}" alt="Icon of {{this.username}}" class="leaderboard-user-icon"></td>
+          <td>{{this.username}}</td>
+          <td>{{this.high_score}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
