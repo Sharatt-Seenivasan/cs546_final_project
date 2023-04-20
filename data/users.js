@@ -1,6 +1,7 @@
 import { usersCollection as users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import {
+  toTitleCase,
   checkStr,
   checkId,
   checkImgUrl,
@@ -22,6 +23,7 @@ const createUser = async ({
   hashed_password = checkStr(hashed_password, "password");
   icon = checkImgUrl(icon, "user icon");
   geocode = checkGeoCode(geocode, "geocode");
+  username = toTitleCase(username);
 
   const userCollection = await users();
   const userFields = {
@@ -35,7 +37,6 @@ const createUser = async ({
     last_questions: [],
   };
 
-  username = username.toLowerCase();
   const ifExistedInfo = await userCollection.findOne({ username: username });
   if (ifExistedInfo) throw `User ${username} already existed`;
 
@@ -137,7 +138,7 @@ const updatePersonalInfoById = async (
   const userCollection = await users();
 
   if (username) {
-    username = username.toLowerCase();
+    username = toTitleCase(username);
     const ifUserNameExisted = await userCollection.findOne({ username });
     if (ifUserNameExisted) throw `User ${username} already existed`;
   }
