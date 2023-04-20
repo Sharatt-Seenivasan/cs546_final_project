@@ -312,7 +312,7 @@ const topNthLocalUsers = async (n, countryCode, city) => {
 };
 
 const topNthGlobalUsers = async (n) => {
-  topUsers;
+  //topUsers;
   n = checkNumber(n, "topNth", 1, null);
 
   const userCollection = await users();
@@ -326,6 +326,49 @@ const topNthGlobalUsers = async (n) => {
   return objectId2str_docs_arr(topUsers);
 };
 
+const topNthGlobalUsersByHighScore = async(n) => {
+    //topUsers;
+    n = checkNumber(n, "topNth", 1, null);
+
+    const userCollection = await users();
+    const topUsers = await userCollection
+      .find({})
+      .sort({ high_score: -1 })
+      .limit(n)
+      .toArray();
+    if (!topUsers) throw `Could not get top ${n} users`;
+  
+    return objectId2str_docs_arr(topUsers);
+}
+
+const topNthLocalUsersByHighScore = async (n, countryCode, city) => {
+  n = checkNumber(n, "topNth", 1, null);
+  countryCode = checkCountryCode(countryCode, "country code");
+  city = checkStr(city, "city");
+
+  const userCollection = await users();
+  let topUsers;
+  if (city === "all") {
+    topUsers = await userCollection
+      .find({ "geocode.countryCode": countryCode })
+      .sort({ high_score: -1 })
+      .limit(n)
+      .toArray();
+    if (topUsers.length === 0) throw `No users in ${countryCode}`;
+  } else {
+    topUsers = await userCollection
+      .find({ "geocode.countryCode": countryCode, "geocode.city": city })
+      .sort({ high_score: -1 })
+      .limit(n)
+      .toArray();
+    if (topUsers.length === 0) throw `No users in ${city}, ${countryCode}`;
+  }
+  if (!topUsers)
+    throw `Could not get top ${n} users in ${city}, ${countryCode}`;
+
+  return objectId2str_docs_arr(topUsers);
+};
+
 export {
   createUser,
   getUserById,
@@ -335,4 +378,6 @@ export {
   updatePlayerInfoById,
   topNthLocalUsers,
   topNthGlobalUsers,
+  topNthGlobalUsersByHighScore,
+  topNthLocalUsersByHighScore
 };
