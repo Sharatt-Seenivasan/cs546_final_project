@@ -1,4 +1,4 @@
-# cs546_final_project
+# CS 546 Final Project
 ## Who's That Bird
 Who's That Bird is a fun and engaging timed quiz game, inspired by the popular "Who's That Pokemon" format. In this game, players are presented with a picture of a bird, and they must identify the species correctly to earn points. Players lose points for incorrect answers, and the game ends when time runs out.
 
