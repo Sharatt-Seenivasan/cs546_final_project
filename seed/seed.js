@@ -84,7 +84,7 @@ for (let idx = 0; idx < usernames.length; idx++) {
     .update(username)
     .digest("hex");
   user["icon"] = user_icons[idx];
-  user["geocode"] = Object.values(nation_geocodes)[idx];
+  user["geoCode"] = Object.values(nation_geocodes)[idx];
   users.push(user);
 }
 

@@ -44,23 +44,23 @@ const getBirdById = async (birdId) => {
   return objectId2str_doc(theBird);
 };
 
-const getLocalBirds = async (countrycode, city) => {
-  countrycode = checkStr(countrycode, "country code");
+const getLocalBirds = async (countryCode, city) => {
+  countryCode = checkStr(countryCode, "country code");
   city = checkStr(city, "city");
 
   const birdsCollection = await birds();
   let localBirds;
   if (city === "all") {
     localBirds = await birdsCollection
-      .find({ "geocode.countrycode": countrycode })
+      .find({ "geocode.countryCode": countryCode })
       .toArray();
   } else {
     localBirds = await birdsCollection
-      .find({ "geocode.countrycode": countrycode, "geocode.city": city })
+      .find({ "geocode.countryCode": countryCode, "geocode.city": city })
       .toArray();
   }
   if (localBirds.length === 0)
-    throw `No birds found in ${city}, ${countrycode}`;
+    throw `No birds found in ${city}, ${countryCode}`;
 
   return objectId2str_docs_arr(localBirds);
 };

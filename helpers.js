@@ -1,6 +1,14 @@
 import { ObjectId } from "mongodb";
 
-const checkStr = (str, strName) => {
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
+}
+
+function checkStr(str, strName) {
   if (!str) throw `No string provided for ${strName}`;
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
@@ -8,13 +16,13 @@ const checkStr = (str, strName) => {
   return str; // trimmed
 };
 
-const checkId = (id, idName) => {
+function checkId(id, idName) {
   id = checkStr(id, idName); // trimmed
   if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
   return id; // trimmed
 };
 
-const checkUrl = (url, urlName, minimumLength = 0) => {
+function checkUrl(url, urlName, minimumLength = 0) {
   url = checkStr(url, urlName); // trimmed
   url = url.replace(/\s/, "%20");
 
@@ -30,7 +38,7 @@ const checkUrl = (url, urlName, minimumLength = 0) => {
   return url; // trimmed and replaced spaces with %20
 };
 
-const checkImgUrl = (url, imgName) => {
+function checkImgUrl(url, imgName) {
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
   const supportedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".svg"];
@@ -47,12 +55,12 @@ const checkImgUrl = (url, imgName) => {
   return url; // trimmed and replaced spaces with %20
 };
 
-const checkCountryCode = (countryCode) => {
+function checkCountryCode(countryCode) {
   countryCode = checkStr(countryCode, "countryCode");
   return countryCode; // trimmed
 };
 
-const checkGeoCode = (geoCode, geoCodeName) => {
+function checkGeoCode(geoCode, geoCodeName) {
   if (!geoCode) throw "No geoCode provided";
   if (typeof geoCode !== "object") throw `${geoCodeName} is not an object`;
 
@@ -72,7 +80,7 @@ const checkGeoCode = (geoCode, geoCodeName) => {
   return geoCode; // have country, countryCode, city trimmed
 };
 
-const checkNumber = (num, numName, min, max) => {
+function checkNumber(num, numName, min, max) {
   if (!num && num !== 0) throw `No ${numName} provided`;
   if (typeof num !== "number") throw `${numName} is not a number`;
 
@@ -92,7 +100,7 @@ const checkNumber = (num, numName, min, max) => {
   return num; // nothing changed
 };
 
-const checkStrArr = (arr, arrName) => {
+function checkStrArr(arr, arrName) {
   if (!arr) throw `No ${arrName} provided`;
   if (!Array.isArray(arr)) throw `${arrName} is not an array`;
   if (arr.length === 0) throw `${arrName} is empty`;
@@ -102,7 +110,7 @@ const checkStrArr = (arr, arrName) => {
   return arr; // trimmed
 };
 
-const arrsEqual = (arr1, arr2) => {
+function arrsEqual(arr1, arr2) {
   if (!arr1 || !arr2) return false;
   if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false;
   if (arr1.length !== arr2.length) return false;
@@ -113,7 +121,7 @@ const arrsEqual = (arr1, arr2) => {
   return arr1_sorted.every((e, i) => deepEqual(e, arr2_sorted[i]));
 };
 
-const objsEqual = (obj1, obj2) => {
+function objsEqual(obj1, obj2) {
   if (!obj1 || !obj2) return false;
   if (typeof obj1 !== "object" || typeof obj2 !== "object") return false;
   if (Array.isArray(obj1) || Array.isArray(obj2)) return false;
@@ -126,7 +134,7 @@ const objsEqual = (obj1, obj2) => {
   return obj1_keys.every((key) => deepEqual(obj1[key], obj2[key]));
 };
 
-const deepEqual = (obj1, obj2) => {
+function deepEqual(obj1, obj2) {
   if (obj1 === obj2) return true;
   if (!obj1 || !obj2) return false;
   if (typeof obj1 !== typeof obj2) return false;
@@ -134,7 +142,7 @@ const deepEqual = (obj1, obj2) => {
   if (typeof obj1 === "object") return objsEqual(obj1, obj2);
 };
 
-const objectId2str_doc = (doc) => {
+function objectId2str_doc(doc) {
   if (!doc || typeof doc !== "object" || Array.isArray(doc)) return doc;
 
   return JSON.parse(
@@ -145,7 +153,7 @@ const objectId2str_doc = (doc) => {
   );
 };
 
-const objectId2str_docs_arr = (arrOfDocs) => {
+function objectId2str_docs_arr(arrOfDocs) {
   if (
     !arrOfDocs ||
     !Array.isArray(arrOfDocs) ||
@@ -157,6 +165,7 @@ const objectId2str_docs_arr = (arrOfDocs) => {
 };
 
 export {
+  toTitleCase,
   checkStr,
   checkId,
   checkUrl,

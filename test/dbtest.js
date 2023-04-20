@@ -4,13 +4,12 @@ import {
   birdsDataFn as birdsData,
 } from "../data/index.js";
 import { ObjectId } from "mongodb";
-import { createUser } from "../data/users.js";
 
 const generalUser = {
   username: "Zoe",
   hashed_password: "1234",
   icon: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-  geocode: {
+  geoCode: {
     latitude: -19.015438,
     longitude: 29.154857,
     country: "Zimbabwe",
@@ -21,7 +20,7 @@ const generalUser = {
 const generalBird = {
   url: "https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg",
   names: ["twitter", "doge"],
-  geocode: {
+  geoCode: {
     latitude: -13.133897,
     longitude: 27.849332,
     country: "Zambia",
@@ -38,11 +37,11 @@ const allBirdIds = allBirds.map((bird) => bird._id);
 const badUserName = "";
 const badUserPassword = "";
 const badUserIcon = "";
-const badUserGeocode = "";
+const badUserGeoCode = "";
 
 const badBirdUrl = "";
 const badBirdNames = "";
-const badBirdGeocode = "";
+const badBirdGeoCode = "";
 const badBirdDifficulty = "";
 // ------------------ problematic input -------------------------
 // ------------------ users --------------------
@@ -52,6 +51,7 @@ try {
     username: "Alice",
     hashed_password: "1234",
     icon: generalUser.icon,
+    geoCode: generalUser.geoCode,
   });
   console.log("Unexpected", duplicateUserName);
 } catch (error) {
@@ -79,8 +79,8 @@ try {
 console.log("------------------ updatePlayerInfoById ------------------");
 try {
   const negativeHighScoreIncrement = await usersData.updatePlayerInfoById(
-    { $incScores: { high_score: -1 } },
-    allUserIds[0]
+    allUserIds[0],
+    { $incScores: { high_score: -1 } }
   );
   console.log("Unexpected", negativeHighScoreIncrement);
 } catch (error) {
@@ -89,8 +89,8 @@ try {
 
 try {
   const negativeLifetimeScroeResult = await usersData.updatePlayerInfoById(
-    { $incScores: { lifetime_score: -1000 } },
-    allUserIds[0]
+    allUserIds[0],
+    { $incScores: { lifetime_score: -1000 } }
   );
   console.log("Unexpected", negativeLifetimeScroeResult);
 } catch (error) {
@@ -99,8 +99,8 @@ try {
 
 try {
   const pullByNonExistentBirdId = await usersData.updatePlayerInfoById(
-    { $pullSubmission: { birds: new ObjectId().toString() } },
-    allUserIds[0]
+    allUserIds[0],
+    { $pullSubmission: { birds: new ObjectId().toString() } }
   );
   console.log("Unexpected", pullByNonExistentBirdId);
 } catch (error) {
@@ -175,8 +175,11 @@ try {
 console.log("------------------ updateBirdById ------------------");
 try {
   const bird0 = await birdsData.getBirdById(allBirdIds[0]);
-  const { url, names, geocode, difficulty }=bird0;
-  const noChangeBirdUpdate = await birdsData.updateBirdById({url, names, geocode, difficulty}, allBirdIds[0]);
+  const { url, names, geoCode, difficulty } = bird0;
+  const noChangeBirdUpdate = await birdsData.updateBirdById(
+    { url, names, geoCode, difficulty },
+    allBirdIds[0]
+  );
   console.log("Unexpected", noChangeBirdUpdate);
 } catch (error) {
   console.log("Expected", error);

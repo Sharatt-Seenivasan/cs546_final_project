@@ -97,7 +97,7 @@ JUST `checkStr`
 
 ## ./data/users.js
 
-`createUser({ username, hashed_password, icon, geocode } = {})`
+`createUser({ username, hashed_password, icon, geoCode } = {})`
 
 all args required
 
@@ -106,7 +106,7 @@ all args required
 - icon: string.
   - validate supported extension, and supported protocols(http:// , https://)
   - NO length validation
-- geocode: object
+- geoCode: object
 
 `getUserById = async (userId)`
 
@@ -124,12 +124,12 @@ get all users. returns [] when no users.
 
 throw if no such id
 
-`updatePersonalInfoById( userId, { username, hashed_password, icon, geocode } = {})`
+`updatePersonalInfoById( userId, { username, hashed_password, icon, geoCode } = {})`
 
 ````js
 // at least 1 field should be different and provided. username is case INsensitive
 await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa0",{username:"Bob"});
-await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa1",{username:"Daniel",hashed_password:"e0f4f767ac88a9303e7317843ac20be980665a36f52397e5b26d4cc2bf54011d",icon:"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",geocode:{}})
+await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa1",{username:"Daniel",hashed_password:"e0f4f767ac88a9303e7317843ac20be980665a36f52397e5b26d4cc2bf54011d",icon:"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",geoCode:{}})
 ````
 
 
@@ -179,7 +179,7 @@ throw if no users found
 
 ## ./data/birds.js
 
-`createBird({ userId, url, names, geocode, difficulty } = {}) `
+`createBird({ userId, url, names, geoCode, difficulty } = {}) `
 
 all args required
 
@@ -187,14 +187,14 @@ all args required
 - url: string
   - validate supported extension, and supported protocols(http:// , https://)
   - NO length validation
-- geocode: object
+- geoCode: object
 - difficulty: number. ranging from 1 to 5, inclusively
 
 `getBirdById(birdId)`
 
 throw if no such id
 
-`getLocalBirds(countrycode, city)`
+`getLocalBirds(countryCode, city)`
 
 throw if no user found.` city` can be "all", which gets users for some country
 

@@ -1,6 +1,7 @@
 import { usersCollection as users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import {
+  toTitleCase,
   checkStr,
   checkId,
   checkImgUrl,
@@ -16,26 +17,26 @@ const createUser = async ({
   username,
   hashed_password,
   icon,
-  geocode,
+  geoCode,
 } = {}) => {
   username = checkStr(username, "user name");
   hashed_password = checkStr(hashed_password, "password");
   icon = checkImgUrl(icon, "user icon");
-  geocode = checkGeoCode(geocode, "geocode");
+  geoCode = checkGeoCode(geoCode, "geoCode");
+  username = toTitleCase(username);
 
   const userCollection = await users();
   const userFields = {
     username,
     hashed_password,
     icon,
-    geocode,
+    geoCode,
     lifetime_score: 0,
     high_score: 0,
     submission: [],
     last_questions: [],
   };
 
-  username = username.toLowerCase();
   const ifExistedInfo = await userCollection.findOne({ username: username });
   if (ifExistedInfo) throw `User ${username} already existed`;
 
@@ -90,14 +91,14 @@ const removeUserById = async (userId) => {
 
 const updatePersonalInfoById = async (
   userId,
-  { username, hashed_password, icon, geocode } = {}
+  { username, hashed_password, icon, geoCode } = {}
 ) => {
   const theUser = await getUserById(userId);
   const fields2Update = {
     username,
     hashed_password,
     icon,
-    geocode,
+    geoCode,
   };
 
   for (const [k, v] of Object.entries(fields2Update)) {
@@ -122,9 +123,9 @@ const updatePersonalInfoById = async (
         if (fields2Update.k === theUser.icon)
           throw `Icon is already ${v}, please provide a new one to update`;
         break;
-      case "geocode":
-        fields2Update.k = checkGeoCode(v, "geocode");
-        if (objsEqual(fields2Update.k, theUser.geocode))
+      case "geoCode":
+        fields2Update.k = checkGeoCode(v, "geoCode");
+        if (objsEqual(fields2Update.k, theUser.geoCode))
           throw `Geocode is already ${v}, please provide a new one to update`;
         break;
       default:
@@ -137,7 +138,7 @@ const updatePersonalInfoById = async (
   const userCollection = await users();
 
   if (username) {
-    username = username.toLowerCase();
+    username = toTitleCase(username);
     const ifUserNameExisted = await userCollection.findOne({ username });
     if (ifUserNameExisted) throw `User ${username} already existed`;
   }
@@ -292,14 +293,14 @@ const topNthLocalUsers = async (n, countryCode, city) => {
   let topUsers;
   if (city === "all") {
     topUsers = await userCollection
-      .find({ "geocode.countryCode": countryCode })
+      .find({ "geoCode.countryCode": countryCode })
       .sort({ lifetime_score: -1 })
       .limit(n)
       .toArray();
     if (topUsers.length === 0) throw `No users in ${countryCode}`;
   } else {
     topUsers = await userCollection
-      .find({ "geocode.countryCode": countryCode, "geocode.city": city })
+      .find({ "geoCode.countryCode": countryCode, "geoCode.city": city })
       .sort({ lifetime_score: -1 })
       .limit(n)
       .toArray();
