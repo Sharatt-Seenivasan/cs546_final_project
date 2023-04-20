@@ -60,24 +60,24 @@ function checkCountryCode(countryCode) {
   return countryCode; // trimmed
 };
 
-function checkGeoCode(geoCode, geoCodeName) {
-  if (!geoCode) throw "No geoCode provided";
-  if (typeof geoCode !== "object") throw `${geoCodeName} is not an object`;
+function checkGeoCode(geocode, geocodeName) {
+  if (!geocode) throw "No geocode provided";
+  if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
 
-  const { latitude, longitude, country, countryCode, city } = geoCode;
+  const { latitude, longitude, country, countryCode, city } = geocode;
 
-  if (!latitude) throw `${geoCodeName} is missing latitude`;
-  if (!longitude) throw `${geoCodeName} is missing longitude`;
+  if (!latitude) throw `${geocodeName} is missing latitude`;
+  if (!longitude) throw `${geocodeName} is missing longitude`;
   if (typeof latitude !== "number")
-    throw `${geoCodeName} latitude is not a number`;
+    throw `${geocodeName} latitude is not a number`;
   if (typeof longitude !== "number")
-    throw `${geoCodeName} longitude is not a number`;
+    throw `${geocodeName} longitude is not a number`;
 
-  geoCode.country = checkStr(geoCode.country, "country");
-  geoCode.countryCode = checkCountryCode(geoCode.countryCode, "countryCode");
-  geoCode.city = checkStr(geoCode.city, "city");
+  geocode.country = checkStr(geocode.country, "country");
+  geocode.countryCode = checkCountryCode(geocode.countryCode, "countryCode");
+  geocode.city = checkStr(geocode.city, "city");
 
-  return geoCode; // have country, countryCode, city trimmed
+  return geocode; // have country, countryCode, city trimmed
 };
 
 function checkNumber(num, numName, min, max) {

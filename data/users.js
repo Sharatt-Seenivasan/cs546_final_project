@@ -17,12 +17,12 @@ const createUser = async ({
   username,
   hashed_password,
   icon,
-  geoCode,
+  geocode,
 } = {}) => {
   username = checkStr(username, "user name");
   hashed_password = checkStr(hashed_password, "password");
   icon = checkImgUrl(icon, "user icon");
-  geoCode = checkGeoCode(geoCode, "geoCode");
+  geocode = checkGeoCode(geocode, "geocode");
   username = toTitleCase(username);
 
   const userCollection = await users();
@@ -30,7 +30,7 @@ const createUser = async ({
     username,
     hashed_password,
     icon,
-    geoCode,
+    geocode,
     lifetime_score: 0,
     high_score: 0,
     submission: [],
@@ -91,14 +91,14 @@ const removeUserById = async (userId) => {
 
 const updatePersonalInfoById = async (
   userId,
-  { username, hashed_password, icon, geoCode } = {}
+  { username, hashed_password, icon, geocode } = {}
 ) => {
   const theUser = await getUserById(userId);
   const fields2Update = {
     username,
     hashed_password,
     icon,
-    geoCode,
+    geocode,
   };
 
   for (const [k, v] of Object.entries(fields2Update)) {
@@ -123,9 +123,9 @@ const updatePersonalInfoById = async (
         if (fields2Update.k === theUser.icon)
           throw `Icon is already ${v}, please provide a new one to update`;
         break;
-      case "geoCode":
-        fields2Update.k = checkGeoCode(v, "geoCode");
-        if (objsEqual(fields2Update.k, theUser.geoCode))
+      case "geocode":
+        fields2Update.k = checkGeoCode(v, "geocode");
+        if (objsEqual(fields2Update.k, theUser.geocode))
           throw `Geocode is already ${v}, please provide a new one to update`;
         break;
       default:
@@ -293,14 +293,14 @@ const topNthLocalUsers = async (n, countryCode, city) => {
   let topUsers;
   if (city === "all") {
     topUsers = await userCollection
-      .find({ "geoCode.countryCode": countryCode })
+      .find({ "geocode.countryCode": countryCode })
       .sort({ lifetime_score: -1 })
       .limit(n)
       .toArray();
     if (topUsers.length === 0) throw `No users in ${countryCode}`;
   } else {
     topUsers = await userCollection
-      .find({ "geoCode.countryCode": countryCode, "geoCode.city": city })
+      .find({ "geocode.countryCode": countryCode, "geocode.city": city })
       .sort({ lifetime_score: -1 })
       .limit(n)
       .toArray();

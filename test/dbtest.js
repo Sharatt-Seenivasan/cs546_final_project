@@ -9,7 +9,7 @@ const generalUser = {
   username: "Zoe",
   hashed_password: "1234",
   icon: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-  geoCode: {
+  geocode: {
     latitude: -19.015438,
     longitude: 29.154857,
     country: "Zimbabwe",
@@ -20,7 +20,7 @@ const generalUser = {
 const generalBird = {
   url: "https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg",
   names: ["twitter", "doge"],
-  geoCode: {
+  geocode: {
     latitude: -13.133897,
     longitude: 27.849332,
     country: "Zambia",
@@ -51,7 +51,7 @@ try {
     username: "Alice",
     hashed_password: "1234",
     icon: generalUser.icon,
-    geoCode: generalUser.geoCode,
+    geocode: generalUser.geocode,
   });
   console.log("Unexpected", duplicateUserName);
 } catch (error) {
@@ -175,9 +175,9 @@ try {
 console.log("------------------ updateBirdById ------------------");
 try {
   const bird0 = await birdsData.getBirdById(allBirdIds[0]);
-  const { url, names, geoCode, difficulty } = bird0;
+  const { url, names, geocode, difficulty } = bird0;
   const noChangeBirdUpdate = await birdsData.updateBirdById(
-    { url, names, geoCode, difficulty },
+    { url, names, geocode, difficulty },
     allBirdIds[0]
   );
   console.log("Unexpected", noChangeBirdUpdate);

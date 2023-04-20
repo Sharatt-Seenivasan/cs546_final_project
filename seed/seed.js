@@ -20,17 +20,17 @@ const VERBOSE = process.argv.includes("-v");
 const _db = await dbConnection();
 await _db.dropDatabase();
 
-// -------- get some birds data & geoCode data -------------
+// -------- get some birds data & geocode data -------------
 const national2Birds_raw = await fs.readFile(
   path.resolve("static/wiki_national_birds.json"),
   "utf-8"
 );
-const nation_geoCodes_raw = await fs.readFile(
-  path.resolve("static/nation_geoCodes.json"),
+const nation_geocodes_raw = await fs.readFile(
+  path.resolve("static/nation_geocodes.json"),
   "utf-8"
 );
 const national2Birds = JSON.parse(national2Birds_raw);
-const nation_geoCodes = JSON.parse(nation_geoCodes_raw);
+const nation_geocodes = JSON.parse(nation_geocodes_raw);
 
 const birds = [];
 for (const [nation, nation_birds] of Object.entries(national2Birds)) {
@@ -38,7 +38,7 @@ for (const [nation, nation_birds] of Object.entries(national2Birds)) {
     const aBird = {};
     aBird.url = nation_bird.pic;
     aBird.names = [nation_bird.name, nation_bird.name_sci];
-    aBird.geoCode = nation_geoCodes[nation];
+    aBird.geocode = nation_geocodes[nation];
     aBird.difficulty = Math.floor(Math.random() * 5) + 1;
     birds.push(aBird);
   }
@@ -84,7 +84,7 @@ for (let idx = 0; idx < usernames.length; idx++) {
     .update(username)
     .digest("hex");
   user["icon"] = user_icons[idx];
-  user["geoCode"] = Object.values(nation_geoCodes)[idx];
+  user["geocode"] = Object.values(nation_geocodes)[idx];
   users.push(user);
 }
 
