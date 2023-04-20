@@ -132,8 +132,6 @@ await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa0",{username:"Bob"});
 await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa1",{username:"Daniel",hashed_password:"e0f4f767ac88a9303e7317843ac20be980665a36f52397e5b26d4cc2bf54011d",icon:"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",geoCode:{}})
 ````
 
-
-
 `updatePlayerInfoById(operation, userId)`
 
 e.g
@@ -206,7 +204,6 @@ get all birds. returns [] when there is no birds.
 
 throw if no such id
 
-`updateBirdById( birdId, { url, names, geocode, difficulty } = {} ) `
+`updateBirdById( birdId, { url, names, geoCode, difficulty } = {} ) `
 
 at least one field should be different and provided
-

@@ -14,14 +14,14 @@ import {
   objsEqual,
 } from "../helpers.js";
 
-const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
+const createBird = async ({ userId, url, names, geoCode, difficulty } = {}) => {
   userId = checkId(userId, "user id");
   url = checkImgUrl(url, "bird picture");
   names = checkStrArr(names, "bird names");
-  geocode = checkGeoCode(geocode, "bird geocode");
+  geoCode = checkGeoCode(geoCode, "bird geoCode");
   difficulty = checkNumber(difficulty, "bird difficulty", 1, 5);
 
-  const birdFields = { url, names, geocode, difficulty };
+  const birdFields = { url, names, geoCode, difficulty };
 
   const birdsCollection = await birds();
   const insertInfo = await birdsCollection.insertOne(birdFields);
@@ -52,11 +52,11 @@ const getLocalBirds = async (countryCode, city) => {
   let localBirds;
   if (city === "all") {
     localBirds = await birdsCollection
-      .find({ "geocode.countryCode": countryCode })
+      .find({ "geoCode.countryCode": countryCode })
       .toArray();
   } else {
     localBirds = await birdsCollection
-      .find({ "geocode.countryCode": countryCode, "geocode.city": city })
+      .find({ "geoCode.countryCode": countryCode, "geoCode.city": city })
       .toArray();
   }
   if (localBirds.length === 0)
@@ -87,9 +87,9 @@ const removeBirdById = async (birdId) => {
   return objectId2str_doc(deleteInfo.value);
 };
 
-const updateBirdById = async ( birdId, { url, names, geocode, difficulty } = {} ) => {
+const updateBirdById = async ( birdId, { url, names, geoCode, difficulty } = {} ) => {
   const theBird = await getBirdById(birdId);
-  const fields2Update = { url, names, geocode, difficulty };
+  const fields2Update = { url, names, geoCode, difficulty };
 
   for (const [k, v] of Object.entries(fields2Update)) {
     if (v === undefined) {
@@ -107,8 +107,8 @@ const updateBirdById = async ( birdId, { url, names, geocode, difficulty } = {} 
         if (arrsEqual(fields2Update.k, theBird.k))
           throw `${k} is already ${v},please provide a new one to update`;
         break;
-      case "geocode":
-        fields2Update.k = checkGeoCode(v, "bird geocode");
+      case "geoCode":
+        fields2Update.k = checkGeoCode(v, "bird geoCode");
         if (objsEqual(fields2Update.k, theBird.k))
           throw `${k} is already ${v},please provide a new one to update`;
         break;
