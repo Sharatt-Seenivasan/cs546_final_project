@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {topNthGlobalUsersByHighScore} from '../data/users.js';
+import {topNthGlobalUsersByHighScore, topNthLocalUsersByHighScore} from '../data/users.js';
 import {checkUsername, checkPassword, checkImgUrl, checkGeoCode} from '../helpers.js';
 import {getUserByUserName} from "../data/users.js"; 
 import bcrypt from 'bcrypt';
@@ -10,9 +10,13 @@ const router = Router();
 router.route('/leaderboard/local').get(async (req, res) => {
   //code here for GET
   try {
-     
+    const user = req.session.user
+    const leaderboard = await topNthLocalUsersByHighScore(100,user.geocode.countryCode,geocode.city)
+    res.render('leaderboard', {title: 'Global Leaderboard', leaderboard}); 
   } catch (error) {
-    
+    console.log("An error has occured when trying to access the local leaderboard!")
+    console.log(error)
+    return res.status(400).json(error);
   }
 });
 
