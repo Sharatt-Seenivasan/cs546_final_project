@@ -43,7 +43,16 @@ const getBirdById = async (birdId) => {
 
   return objectId2str_doc(theBird);
 };
-
+const getAllBirdsNames =async() => {
+  const birdsCollection = await birds();
+  const allBirds = await birdsCollection.find({}).toArray();
+  if (!allBirds) throw `Could not get all birds`;
+  let arrayNames = [];
+  for(let index=0;index<allBirds.length;index++){
+    arrayNames.push(allBirds[index]['names'][0]);
+  }
+  return arrayNames;
+};
 const getLocalBirds = async (countryCode, city) => {
   countryCode = checkStr(countryCode, "country code");
   city = checkStr(city, "city");
@@ -144,4 +153,5 @@ export {
   getAllBirds,
   removeBirdById,
   updateBirdById,
+  getAllBirdsNames,
 };

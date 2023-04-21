@@ -2,6 +2,7 @@ import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 import {
   usersDataFn as usersData,
   birdsDataFn as birdsData,
+  questionsFn as questionData,
 } from "../data/index.js";
 import { ObjectId } from "mongodb";
 
@@ -183,6 +184,13 @@ try {
   console.log("Unexpected", noChangeBirdUpdate);
 } catch (error) {
   console.log("Expected", error);
+}
+console.log("-------------------questions retrival ---------------");
+try{
+  console.log("expected :") 
+  console.log(await questionData.getQuestions(allUsers[0]['_id']));
+}catch(error){
+  console.log("Unexpected : "+error);
 }
 
 // ------------------ done ---------------------
