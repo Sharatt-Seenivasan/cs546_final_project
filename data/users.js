@@ -380,5 +380,6 @@ export {
   topNthLocalUsers,
   topNthGlobalUsers,
   topNthGlobalUsersByHighScore,
-  topNthLocalUsersByHighScore
+  topNthLocalUsersByHighScore,
+  getUserByUserName
 };

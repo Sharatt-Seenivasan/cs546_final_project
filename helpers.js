@@ -164,6 +164,31 @@ function objectId2str_docs_arr(arrOfDocs) {
   return arrOfDocs.map((doc) => objectId2str_doc(doc));
 };
 
+function checkPassword(password){
+  if(!password) throw "No password provided";
+  if(typeof password !== "string") throw "Password is not a string";
+  if(password.length < 8) throw "Password must be at least 8 characters long";
+  if(password.trim().length===0) throw "Password cannot be empty";
+  if(password.trim().match(/\s/g)) throw "Password cannot contain spaces";
+  if(!password.match(/[a-z]/g)) throw "Password must contain at least one lowercase letter";
+  if(!password.match(/[A-Z]/g)) throw "Password must contain at least one uppercase letter";
+  if(!password.match(/[0-9]/g)) throw "Password must contain at least one number";
+  if(!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)) throw "Password must contain at least one special character";
+
+  return true;
+}
+
+function checkUsername(username){
+  if(!username) throw "No username provided";
+  if(typeof username !== "string") throw "Username is not a string";
+  if(username.length < 4) throw "Username must be at least 4 characters long";
+  if(username.trim().length===0) throw "Username cannot be empty";
+  if(username.trim().match(/\s/g)) throw "Username cannot contain spaces";
+  if(username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g)) throw "Username cannot contain special characters except underscore and dash";
+
+  return true;
+}
+
 export {
   toTitleCase,
   checkStr,
@@ -178,4 +203,6 @@ export {
   objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
+  checkPassword,
+  checkUsername
 };
