@@ -29,7 +29,7 @@ const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
     throw `Bird ${names[0]} was not created`;
 
   const birdId = insertInfo.insertedId.toString();
-  await updatePlayerInfoById(userId,{ $pushSubmission: { birdId } });
+  await updatePlayerInfoById(userId, { $pushSubmission: { birdId } });
 
   return getBirdById(birdId);
 };
@@ -43,16 +43,17 @@ const getBirdById = async (birdId) => {
 
   return objectId2str_doc(theBird);
 };
-const getAllBirdsNames =async() => {
+
+const getAllBirdsNames = async () => {
   const birdsCollection = await birds();
-  const allBirds = await birdsCollection.find({}).toArray();
-  if (!allBirds) throw `Could not get all birds`;
-  let arrayNames = [];
-  for(let index=0;index<allBirds.length;index++){
-    arrayNames.push(allBirds[index]['names'][0]);
-  }
+  const allBirdsAsName = await birdsCollection
+    .find({})
+    .project({ name: 1 })
+    .toArray();
+  if (!allBirdsAsName) throw `Could not get all birds`;
   return arrayNames;
 };
+
 const getLocalBirds = async (countryCode, city) => {
   countryCode = checkStr(countryCode, "country code");
   city = checkStr(city, "city");
@@ -96,7 +97,10 @@ const removeBirdById = async (birdId) => {
   return objectId2str_doc(deleteInfo.value);
 };
 
-const updateBirdById = async ( birdId, { url, names, geocode, difficulty } = {} ) => {
+const updateBirdById = async (
+  birdId,
+  { url, names, geocode, difficulty } = {}
+) => {
   const theBird = await getBirdById(birdId);
   const fields2Update = { url, names, geocode, difficulty };
 

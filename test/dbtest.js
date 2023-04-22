@@ -184,7 +184,8 @@ try {
 } catch (error) {
   console.log("Expected", error);
 }
-console.log("-------------------questions retrival ---------------");
+
+console.log("-------------------questions retrieval ---------------");
 try{
   console.log("expected :") 
   console.log(await questionData.getQuestionsUser(allUsers[0]['_id']));
