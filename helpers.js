@@ -163,7 +163,15 @@ function objectId2str_docs_arr(arrOfDocs) {
 
   return arrOfDocs.map((doc) => objectId2str_doc(doc));
 };
-
+function randomizeArray(array) {
+  for (let index = array.length - 1; index > 0; index--) {
+    let key = Math.floor(Math.random() * (index + 1));
+    let temp = array[index];
+    array[index]=array[key];
+    array[key]=temp;
+  }
+  return array;
+}
 export {
   toTitleCase,
   checkStr,
@@ -178,4 +186,5 @@ export {
   objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
+  randomizeArray,
 };

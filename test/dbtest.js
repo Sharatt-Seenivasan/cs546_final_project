@@ -5,7 +5,6 @@ import {
   questionsFn as questionData,
 } from "../data/index.js";
 import { ObjectId } from "mongodb";
-
 const generalUser = {
   username: "Zoe",
   hashed_password: "1234",
@@ -188,7 +187,13 @@ try {
 console.log("-------------------questions retrival ---------------");
 try{
   console.log("expected :") 
-  console.log(await questionData.getQuestions(allUsers[0]['_id']));
+  console.log(await questionData.getQuestionsUser(allUsers[0]['_id']));
+}catch(error){
+  console.log("Unexpected : "+error);
+}
+try{
+  console.log("expected :") 
+  console.log(await questionData.getQuestionsGuest());
 }catch(error){
   console.log("Unexpected : "+error);
 }
