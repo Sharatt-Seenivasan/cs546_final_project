@@ -1,10 +1,13 @@
 import {Router} from 'express';
 import {topNthGlobalUsersByHighScore} from '../data/users.js';
 import {checkUsername, checkPassword, checkImgUrl, checkGeoCode} from '../helpers.js';
-import {getUserByUserName} from "../data/users.js"; 
+import {getUserByUserName,updatePersonalInfoById} from "../data/users.js"; 
 import bcrypt from 'bcrypt';
+import { geocoderConfig } from '../config/settings.js';
 const saltRounds = 16;
 const router = Router();
+const nodeGeocode=require('node-geocoder');
+const geocoder=nodeGeocode(geocoderConfig);
 
 
 router.route('/leaderboard/local').get(async (req, res) => {
@@ -31,13 +34,13 @@ router.route('/leaderboard/global').get(async (req, res) => {
 router.
     route('/register')
     .get(async (req, res) => {
-        res.render('register', {title: 'Register'});
+        return res.render('register', {title: 'Register'});
         })
 
     .post(async(req,res)=>{
         try{
-            const {username, password,icon,geocode} = req.body;
-            if(!username||!password||!icon||!geocode){
+            const {username, password,icon,geocodeName} = req.body;
+            if(!username||!password||!icon||!geocodeName){
                 return res.status(400).json({error: "All fields are required!"});
             }
             if(!checkUsername(username)){
@@ -49,11 +52,16 @@ router.
             if(!checkImgUrl(icon,"Icon")){
                 return res.status(400).json({error: 'Icon is not valid!'});
             }
-            if(!checkGeoCode(geocode, "GeoCode")){
-                return res.status(400).json({error: 'Geocode is not valid!'});
+            if(typeof(geocodeName)!=='string'||geocodeName.length===0||geocodeName.trim().length===0||geocodeName.trim().match(/\s/g)||geocodeName.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g)){
+                return res.status(400).json({error: 'GeocodeName is not valid!'});
             }
             if(!await getUserByUserName(username)){
                 return res.status(400).json({error: 'Username already exists!'});
+            }
+
+            const geocode = await geocoder.geocode(geocodeName);
+            if(!checkGeoCode(geocode, geocodeName)){
+                return res.status(400).json({error: 'Geocode is not valid!'});
             }
 
             const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -69,7 +77,7 @@ router.
 router.
     route('/login')
     .get(async (req, res) => {
-        res.render('login', {title: 'Login'});
+        return res.render('login', {title: 'Login'});
         })
 
     .post(async(req,res)=>{
@@ -95,5 +103,102 @@ router.
             return res.status(400).json(e);
         }
     });
+
+router.
+    route('/user_profile')
+    .get(async (req, res) => {
+        if(!req.sesstion.user){
+            return res.redirect('/login');
+        }else{
+            return res.render('user_profile', {title: 'User Profile', user: req.session.user});
+        }
+    })
+
+    .put(async (req,res)=>{
+        try{
+            const {username, password,icon,geocodeName} = req.body; 
+            if(!username||!password||!icon||!geocodeName){
+                return res.status(400).json({error: "All fields are required!"});
+            }
+            if(!checkUsername(info.username)||info.username===user.username){
+                return res.status(400).json({error: 'Username is not valid!'});
+            }
+            if(!checkPassword(info.password)||info.password===user.password){
+                return res.status(400).json({error: 'Password is not valid!'});
+            }
+            if(!checkImgUrl(info.icon,"Icon")||info.icon===user.icon){
+                return res.status(400).json({error: 'Icon is not valid!'});
+            }
+            if(typeof(info.geocodeName)!=='string'||info.geocodeName.length===0||info.geocodeName.trim().length===0||info.geocodeName.trim().match(/\s/g)||info.geocodeName.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g)||info.geocodeName===user.geocodeName){
+                return res.status(400).json({error: 'GeocodeName is not valid!'});
+            }
+            const geocode = await geocoder.geocode(geocodeName);
+            if(!checkGeoCode(geocode, geocodeName)){
+                return res.status(400).json({error: 'Geocode is not valid!'});
+            }
+            
+            const user = await getUserByUserName(username);
+            if(!user){
+                return res.status(400).json({error: 'Username does not exist!'});
+            }
+
+            const updateUser= await updatePersonalInfoById(user._id,username,password,icon,geocode);
+            if(!updateUser){
+                return res.status(400).json({error: 'Update failed!'});
+            }
+            req.session.user = updateUser;
+            return res.render('user_profile', {title: 'User Profile', user: req.session.user});
+        }catch(e){
+            return res.status(400).json(e);
+        }
+    })
+    
+    .patch(async (req,res)=>{
+        try{
+            const info = req.body; 
+            if(!info||Object.keys(info).length===0){
+                return res.status(400).json({error: "At least one field is required!"});
+            }
+
+            if(req.session.user){
+                const user = req.session.user;
+            }else{
+                return res.redirect('/login');
+            }
+            
+            if(info.username&&(!checkUsername(info.username))){
+                return res.status(400).json({error: 'Username is not valid!'});
+            }
+
+            if(info.password&&(!checkPassword(info.password))){
+                return res.status(400).json({error: 'Password is not valid!'});
+            }
+
+            if(info.icon&&(!checkImgUrl(info.icon,"Icon"))){
+                return res.status(400).json({error: 'Icon is not valid!'});
+            }
+
+            if(info.geocodeName&&(typeof(info.geocodeName)!=='string'||info.geocodeName.length===0||info.geocodeName.trim().length===0||info.geocodeName.trim().match(/\s/g)||info.geocodeName.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))){
+                return res.status(400).json({error: 'GeocodeName is not valid!'});
+            }
+
+            const geocode = await geocoder.geocode(info.geocodeName);
+            if(info.geocodeName&&!checkGeoCode(geocode, info.geocodeName)){
+                return res.status(400).json({error: 'Geocode is not valid!'});
+            }
+
+            Object.assign(user, info);
+            const updateUser = await updatePersonalInfoById(user._id,user.username,user.password,user.icon,user.geocode);
+            if(!updateUser){
+                return res.status(400).json({error: 'Update failed!'});
+            }
+            req.session.user = updateUser;
+            return res.render('user_profile', {title: 'User Profile', user: req.session.user});
+
+        }catch(e){
+            return res.status(400).json(e);
+        }
+    })
+
 
 export default router;
