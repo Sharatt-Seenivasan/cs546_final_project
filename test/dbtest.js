@@ -2,9 +2,9 @@ import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 import {
   usersDataFn as usersData,
   birdsDataFn as birdsData,
+  questionsFn as questionData,
 } from "../data/index.js";
 import { ObjectId } from "mongodb";
-
 const generalUser = {
   username: "Zoe",
   hashed_password: "1234",
@@ -183,6 +183,20 @@ try {
   console.log("Unexpected", noChangeBirdUpdate);
 } catch (error) {
   console.log("Expected", error);
+}
+
+console.log("-------------------questions retrieval ---------------");
+try{
+  console.log("expected :") 
+  console.log(await questionData.getQuestionsUser(allUsers[0]['_id']));
+}catch(error){
+  console.log("Unexpected : "+error);
+}
+try{
+  console.log("expected :") 
+  console.log(await questionData.getQuestionsGuest());
+}catch(error){
+  console.log("Unexpected : "+error);
 }
 
 // ------------------ done ---------------------

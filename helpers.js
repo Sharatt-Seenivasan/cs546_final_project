@@ -37,7 +37,6 @@ function checkUrl(url, urlName, minimumLength = 0) {
 
   return url; // trimmed and replaced spaces with %20
 };
-
 function checkImgUrl(url, imgName) {
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
@@ -164,11 +163,19 @@ function objectId2str_docs_arr(arrOfDocs) {
   return arrOfDocs.map((doc) => objectId2str_doc(doc));
 };
 
+function randomizeArray(array) {
+  for (let index = array.length - 1; index > 0; index--) {
+    let rdmIdx= Math.floor(Math.random() * (index + 1));
+    [array[index], array[rdmIdx]] = [array[rdmIdx], array[index]];
+  }
+  return array;
+}
+
 function checkPassword(password){
   if(!password) throw "No password provided";
   if(typeof password !== "string") throw "Password is not a string";
   if(password.length < 8) throw "Password must be at least 8 characters long";
-  if(password.trim().length===0) throw "Password cannot be empty";
+  if(password.length===0) throw "Password cannot be empty";
   if(password.trim().match(/\s/g)) throw "Password cannot contain spaces";
   if(!password.match(/[a-z]/g)) throw "Password must contain at least one lowercase letter";
   if(!password.match(/[A-Z]/g)) throw "Password must contain at least one uppercase letter";
@@ -203,6 +210,7 @@ export {
   objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
+  randomizeArray,
   checkPassword,
   checkUsername
 };
