@@ -31,10 +31,32 @@ router.route('/leaderboard/global').get(async (req, res) => {
   }
 });
 
+
 router.
-    route('/register')
+    route('/user')
     .get(async (req, res) => {
-        return res.render('register', {title: 'Register'});
+        try {
+            if(!req.session.user){
+                return res.redirect('/login');
+            }
+            user = await getUserByUserName(req.session.user.username);
+            if(!user){
+                return res.redirect('/login');
+            }
+            const userInfo = {current_score:user.lifetime_score, highestest_score:user.high_score,answered_quizzes:user.submission}
+            return res.render('user', {title: 'User', user: userInfo});
+        }catch(e){
+            return res.status(400).json(e);
+            }
+        });
+
+router.
+    route('/signup')
+    .get(async (req, res) => {
+        if(req.session.user){
+            return res.redirect('/user/user_profile');
+        }
+        return res.render('signup', {title: 'Sign Up'});
         })
 
     .post(async(req,res)=>{
@@ -77,6 +99,9 @@ router.
 router.
     route('/login')
     .get(async (req, res) => {
+        if(req.session.user){
+            return res.redirect('/user/user_profile');
+        }
         return res.render('login', {title: 'Login'});
         })
 
@@ -105,13 +130,21 @@ router.
     });
 
 router.
-    route('/user_profile')
+    route('/user/user_profile')
     .get(async (req, res) => {
         if(!req.sesstion.user){
             return res.redirect('/login');
-        }else{
-            return res.render('user_profile', {title: 'User Profile', user: req.session.user});
         }
+        user = await getUserByUserName(req.session.user.username);
+        if(!user){
+            return res.redirect('/login');
+        }
+
+        const geocode=await geocoder.geocode('user.geo')
+        const info={username:user.username, usericon:user.icon, usercountry:geocode[0].country,usercity:geocode[0].city}
+
+        return res.render('user_profile', {title: 'User Profile', user: info});
+        
     })
 
     .put(async (req,res)=>{
