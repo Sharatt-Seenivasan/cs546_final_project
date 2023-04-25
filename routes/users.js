@@ -235,7 +235,23 @@ router.
         }catch(e){
             return res.status(400).json(e);
         }
-    })
+    });
+
+    router.
+        route('/user/submit')
+        .get((async (req, res) => {
+            if(!req.sesstion.user){
+                return res.redirect('/login');
+            }
+            user = await getUserByUserName(req.session.user.username);
+            if(!user){
+                return res.redirect('/login');
+            }
+            
+            return res.render('image_submission_form',{title: 'Bird Image Submission Form', user: req.session.user})
+        
+        
+    }))
 
 
 export default router;
