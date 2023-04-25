@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import { geocoderConfig } from '../config/settings.js';
 const saltRounds = 16;
 const router = Router();
-const nodeGeocode=require('node-geocoder');
+import nodeGeocode from 'node-geocoder';
 const geocoder=nodeGeocode(geocoderConfig);
 
 
@@ -14,8 +14,8 @@ router.route('/leaderboard/local').get(async (req, res) => {
   //code here for GET
   try {
     const user = req.session.user
-    const leaderboard = await topNthLocalUsersByHighScore(100,user.geocode.countryCode,geocode.city)
-    res.render('leaderboard', {title: 'Global Leaderboard', leaderboard}); 
+    const leaderboard = await topNthLocalUsersByHighScore(100,user.geocode.countryCode,user.geocode.geocode.city)
+    res.render('leaderboard', {title: 'Local Leaderboard', leaderboard}); 
   } catch (error) {
     console.log("An error has occured when trying to access the local leaderboard!")
     console.log(error)
@@ -235,7 +235,23 @@ router.
         }catch(e){
             return res.status(400).json(e);
         }
-    })
+    });
+
+    router.
+        route('/user/submit')
+        .get((async (req, res) => {
+            if(!req.sesstion.user){
+                return res.redirect('/login');
+            }
+            user = await getUserByUserName(req.session.user.username);
+            if(!user){
+                return res.redirect('/login');
+            }
+            
+            return res.render('image_submission_form',{title: 'Bird Image Submission Form', user: req.session.user})
+        
+        
+    }))
 
 
 export default router;
