@@ -15,7 +15,7 @@ router.route('/leaderboard/local').get(async (req, res) => {
   try {
     const user = req.session.user
     const leaderboard = await topNthLocalUsersByHighScore(100,user.geocode.countryCode,user.geocode.geocode.city)
-    res.render('leaderboard', {title: 'Local Leaderboard', leaderboard}); 
+    return res.render('leaderboard', {title: 'Local Leaderboard', leaderboard}); 
   } catch (error) {
     console.log("An error has occured when trying to access the local leaderboard!")
     console.log(error)
@@ -27,7 +27,7 @@ router.route('/leaderboard/global').get(async (req, res) => {
   //code here for GET
   try {
     const leaderboard = await topNthGlobalUsersByHighScore(100)
-    res.render('leaderboard', {title: 'Global Leaderboard', leaderboard});
+    return res.render('leaderboard', {title: 'Global Leaderboard', leaderboard});
   } catch (error) {
     console.log("An error has occured when trying to access the global leaderboard!")
     console.log(error)
