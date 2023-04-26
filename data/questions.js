@@ -1,123 +1,138 @@
-import {getUserById} from "./users.js";
-import {getLocalBirds, getAllBirdsNames, getAllBirds} from "./birds.js";
-import { randomizeArray } from "../helpers.js";
-const getQuestionsUser = async (userId)=>{
-    let userGiven =  await getUserById(userId);
-    let city = userGiven["geocode"]["city"];
-    let country = userGiven["geocode"]["countryCode"];
-    let birdsCity,birdsCountry;
-    try{
-        birdsCity =await getLocalBirds(country,city);
-    }catch(error){
-        console.log(error);
+import { getUserById } from "./users.js";
+import { getLocalBirds, getAllBirdsNames, getAllBirds } from "./birds.js";
+import { checkId, checkNumber, checkCountryCode } from "../helpers.js";
+
+const getQuestion4User = async (
+  userId,
+  {
+    numberOfOptions = 4,
+    numberOfQuestions = 5,
+    local_or_global = "global",
+  } = {}
+) => {
+  userId = checkId(userId, "user id");
+  if (numberOfQuestions || numberOfQuestions === 0) {
+    numberOfQuestions = checkNumber(numberOfQuestions, "number of question at getQuestions4User", {
+      inclusiveMin: 1,
+    });
+  }
+  if (numberOfOptions || numberOfOptions === 0) {
+    numberOfOptions = checkNumber(numberOfOptions, "number of options at getQuestions4User", {
+      inclusiveMin: 2,
+    });
+  }
+  if (local_or_global) {
+    local_or_global = checkStr(local_or_global, "local or global option at getQuestions4User ");
+    local_or_global = local_or_global.trim().toLowerCase();
+    if (["local", "global"].includes(local_or_global)) {
+      throw `local_or_global option must be either "local" or "global"`;
     }
-    try{
-        birdsCountry =await getLocalBirds(country,"all");
-    }catch(error){
-        console.log(error);
+  }
+
+  const theUser = await getUserById(userId);
+  const qAnswered = theUser.last_questions;
+
+  let allBirds, unseenBirds;
+  if (local_or_global === "global") {
+    allBirds = await getAllBirds();
+  }
+  if (local_or_global === "local") {
+    const userCountry = theUser.geocode && theUser.geocode.countryCode;
+    const userCity = theUser.geocode && theUser.geocode.city;
+    allBirds = await getLocalBirds(userCountry, userCity);
+  }
+  unseenBirds = allBirds.filter((bird) => !qAnswered.includes(bird._id));
+
+  let questions = [];
+  let rdmUnseenBirdIdx, rdmAnswerIdx;
+  while (questions.length < numberOfQuestions && unseenBirds.length > 0) {
+    let q = {},
+      options = [];
+    rdmAnswerIdx = Math.floor(Math.random() * numberOfOptions);
+    while (options.length < numberOfOptions && unseenBirds.length > 0) {
+      rdmUnseenBirdIdx = Math.floor(Math.random() * unseenBirds.length);
+      const theBird = unseenBirds[rdmUnseenBirdIdx];
+      const birdName = theBird.names[0]; // take 1st name by default
+      options.push(birdName);
+      if (options.length === rdmAnswerIdx + 1) {
+        q["answer"] = birdName;
+        q["image"] = theBird.url;
+        unseenBirds.splice(rdmUnseenBirdIdx, 1);
+      }
     }
-    
-    let questionsSeen = userGiven["last_questions"];
-    let names = await getAllBirdsNames();
-    let questions = [];
-    for( let index=0;index<birdsCity.length;index++){
-        const birdid = birdsCity[index]['_id'];
-        if(!questionsSeen.includes(birdid)){
-            const url=birdsCity[index]['url'];
-            const correct = birdsCity[index]['names'][Math.floor(Math.random()*birdsCity[index]['names'].length)];
-            let options = [];
-            options.push(correct);
-            const difficulty = birdsCity[index]['difficulty'];
-            while(true){
-                const option = names[Math.floor(Math.random()*names.length)];
-                if(!options.includes(option) && !birdsCity[index]['names'].includes(option)){
-                    options.push(option);
-                }
-                if(options.length==4){
-                    break;
-                }
-            }
-            randomizeArray(options);
-            let question = {
-                url,correct,options,difficulty
-            };
-            questions.push(question);
-        }
-    }
-    let birdsCityIds=birdsCity.map(a => a._id);
-    for( let index=0;index<birdsCountry.length;index++){
-        const birdid = birdsCountry[index]['_id'];
-        if(!questionsSeen.includes(birdid) && !birdsCityIds.includes(birdid)){
-            const url=birdsCountry[index]['url'];
-            const correct = birdsCountry[index]['names'][Math.floor(Math.random()*birdsCountry[index]['names'].length)];
-            let options = [];
-            options.push(correct);
-            const difficulty = birdsCountry[index]['difficulty'];
-            while(true){
-                const option = names[Math.floor(Math.random()*names.length)];
-                if(!options.includes(option) && !birdsCountry[index]['names'].includes(option)){
-                    options.push(option);
-                }
-                if(options.length==4){
-                    break;
-                }
-            }
-            randomizeArray(options);
-            let question = {
-                url,correct,options,difficulty
-            };
-            questions.push(question);
-        }
-    }
-    if(questions.length==0){
-        throw 'There are no unseen questions for the user';
-    }
-    randomizeArray(questions);
-    return questions;
+    q["options"] = options;
+  }
+
+  if (
+    q.length < numberOfQuestions ||
+    q.some((question) => question.options.length < numberOfOptions)
+  ) {
+    throw `Not enough birds in database to create a quiz with ${numberOfOptions} options`;
+  }
+
+  return questions;
 };
-const getQuestionsGuest=async()=>{
-    let birds,names;
-    try{
-        birds =await getAllBirds(country,city);
-    }catch(error){
-        console.log(error);
+
+const getQuestion4Guest = async ({
+  numberOfOptions = 4,
+  numberOfQuestions = 5,
+  countryCode,
+  city,
+} = {}) => {
+  if (numberOfQuestions || numberOfQuestions === 0) {
+    numberOfQuestions = checkNumber(numberOfQuestions, "number of question at getQuestions4Guest", {
+      inclusiveMin: 1,
+    });
+  }
+  if (numberOfOptions || numberOfOptions === 0) {
+    numberOfOptions = checkNumber(numberOfOptions, "number of options at getQuestions4Guest", {
+      inclusiveMin: 2,
+    });
+  }
+  if((countryCode && !city) || (!countryCode && city)){
+    throw `countryCode and city must be both defined or both undefined at getQuestions4Guest`;
+  }
+  if (countryCode) {
+    countryCode = checkCountryCode(countryCode, "country code at getQuestions4Guest");
+  }
+  if (city) {
+    city = checkStr(city, "city at getQuestions4Guest").toLowerCase();
+  }
+
+  if (!countryCode && !city) {
+    const allBirds = await getAllBirds();
+  } else {
+    const allBirds = await getLocalBirds(countryCode,city);
+  }
+
+  let questions = [];
+  let rdmBirdIdx, rdmAnswerIdx;
+  while (questions.length < numberOfQuestions && allBirds.length > 0) {
+    let q = {},
+      options = [];
+    rdmAnswerIdx = Math.floor(Math.random() * numberOfOptions);
+    while (options.length < numberOfOptions && allBirds.length > 0) {
+      rdmBirdIdx = Math.floor(Math.random() * allBirds.length);
+      const theBird = allBirds[rdmBirdIdx];
+      const birdName = theBird.names[0]; // take 1st name by default
+      options.push(birdName);
+      if (options.length === rdmAnswerIdx + 1) {
+        q["answer"] = birdName;
+        q["image"] = theBird.url;
+        allBirds.splice(rdmBirdIdx, 1);
+      }
     }
-    try{
-    let names = await getAllBirdsNames();
-    }
-    catch(error){
-        console.log(error);
-    }
-    let questions = [];
-    for( let index=0;index<birds.length;index++){
-        const url=birds[index]['url'];
-        const correct = birds[index]['names'][Math.floor(Math.random()*birds[index]['names'].length)];
-        let options = [];
-        options.push(correct);
-        const difficulty = birds[index]['difficulty'];
-        while(true){
-            const option = names[Math.floor(Math.random()*names.length)];
-            if(!options.includes(option) && !birds[index]['names'].includes(option)){
-                options.push(option);
-            }
-            if(options.length==4){
-                break;
-            }
-        }
-        randomizeArray(options);
-        let question = {
-            url,correct,options,difficulty
-        };
-        questions.push(question);
-    }
-    if(questions.length==0){
-        throw 'There are no unseen questions for the user';
-    }
-    randomizeArray(questions);
-    return questions;
-    
+    q["options"] = options;
+  }
+
+  if (
+    q.length < numberOfQuestions ||
+    q.every((question) => question.options.length < numberOfOptions)
+  ) {
+    throw `Not enough birds in database to create a quiz with ${numberOfOptions} options`;
+  }
+
+  return questions;
 };
-export{
-    getQuestionsUser,
-    getQuestionsGuest,
-};
+
+export { getQuestion4User, getQuestion4Guest };

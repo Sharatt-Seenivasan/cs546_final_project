@@ -1,5 +1,21 @@
 import { ObjectId } from "mongodb";
 
+function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
+  if (!num) throw `No ${numFor} provided`;
+  if (typeof num !== "number") throw `${numFor} is not a number`;
+  if (!inclusiveMin && !inclusiveMax) return num;
+  if (inclusiveMin || inclusiveMin === 0) {
+    inclusiveMin = checkNumber(num, `${numFor} min`);
+    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}`;
+  }
+  if (inclusiveMax || inclusiveMax === 0) {
+    inclusiveMax = checkNumber(num, `${numFor} max`);
+    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}`;
+  }
+
+  return num; // nothing changed
+}
+
 function toTitleCase(str) {
   return str
     .toLowerCase()
@@ -14,13 +30,13 @@ function checkStr(str, strName) {
   str = str.trim();
   if (str.length === 0) throw `${strName} is empty`;
   return str; // trimmed
-};
+}
 
 function checkId(id, idName) {
   id = checkStr(id, idName); // trimmed
   if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
   return id; // trimmed
-};
+}
 
 function checkUrl(url, urlName, minimumLength = 0) {
   url = checkStr(url, urlName); // trimmed
@@ -36,7 +52,8 @@ function checkUrl(url, urlName, minimumLength = 0) {
     throw `${urlName} is too short`;
 
   return url; // trimmed and replaced spaces with %20
-};
+}
+
 function checkImgUrl(url, imgName) {
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
@@ -52,12 +69,12 @@ function checkImgUrl(url, imgName) {
   }
 
   return url; // trimmed and replaced spaces with %20
-};
+}
 
 function checkCountryCode(countryCode) {
   countryCode = checkStr(countryCode, "countryCode");
   return countryCode; // trimmed
-};
+}
 
 function checkGeoCode(geocode, geocodeName) {
   if (!geocode) throw "No geocode provided";
@@ -74,10 +91,10 @@ function checkGeoCode(geocode, geocodeName) {
 
   geocode.country = checkStr(geocode.country, "country");
   geocode.countryCode = checkCountryCode(geocode.countryCode, "countryCode");
-  geocode.city = checkStr(geocode.city, "city");
+  geocode.city = checkStr(geocode.city, "city").toLowerCase();
 
   return geocode; // have country, countryCode, city trimmed
-};
+}
 
 function checkNumber(num, numName, min, max) {
   if (!num && num !== 0) throw `No ${numName} provided`;
@@ -97,7 +114,7 @@ function checkNumber(num, numName, min, max) {
       throw `${numName} must be between ${min} and ${max}`;
   }
   return num; // nothing changed
-};
+}
 
 function checkStrArr(arr, arrName) {
   if (!arr) throw `No ${arrName} provided`;
@@ -107,7 +124,7 @@ function checkStrArr(arr, arrName) {
   arr.map((e) => checkStr(e, `${arrName} element`));
 
   return arr; // trimmed
-};
+}
 
 function arrsEqual(arr1, arr2) {
   if (!arr1 || !arr2) return false;
@@ -118,7 +135,7 @@ function arrsEqual(arr1, arr2) {
   const arr2_sorted = arr2.sort();
 
   return arr1_sorted.every((e, i) => deepEqual(e, arr2_sorted[i]));
-};
+}
 
 function objsEqual(obj1, obj2) {
   if (!obj1 || !obj2) return false;
@@ -131,7 +148,7 @@ function objsEqual(obj1, obj2) {
   if (!arrsEqual(obj1_keys, obj2_keys)) return false;
 
   return obj1_keys.every((key) => deepEqual(obj1[key], obj2[key]));
-};
+}
 
 function deepEqual(obj1, obj2) {
   if (obj1 === obj2) return true;
@@ -139,7 +156,7 @@ function deepEqual(obj1, obj2) {
   if (typeof obj1 !== typeof obj2) return false;
   if (Array.isArray(obj1)) return arrsEqual(obj1, obj2);
   if (typeof obj1 === "object") return objsEqual(obj1, obj2);
-};
+}
 
 function objectId2str_doc(doc) {
   if (!doc || typeof doc !== "object" || Array.isArray(doc)) return doc;
@@ -150,7 +167,7 @@ function objectId2str_doc(doc) {
       return value;
     })
   );
-};
+}
 
 function objectId2str_docs_arr(arrOfDocs) {
   if (
@@ -161,37 +178,42 @@ function objectId2str_docs_arr(arrOfDocs) {
     return arrOfDocs;
 
   return arrOfDocs.map((doc) => objectId2str_doc(doc));
-};
+}
 
 function randomizeArray(array) {
   for (let index = array.length - 1; index > 0; index--) {
-    let rdmIdx= Math.floor(Math.random() * (index + 1));
+    let rdmIdx = Math.floor(Math.random() * (index + 1));
     [array[index], array[rdmIdx]] = [array[rdmIdx], array[index]];
   }
   return array;
 }
 
-function checkPassword(password){
-  if(!password) throw "No password provided";
-  if(typeof password !== "string") throw "Password is not a string";
-  if(password.length < 8) throw "Password must be at least 8 characters long";
-  if(password.length===0) throw "Password cannot be empty";
-  if(password.trim().match(/\s/g)) throw "Password cannot contain spaces";
-  if(!password.match(/[a-z]/g)) throw "Password must contain at least one lowercase letter";
-  if(!password.match(/[A-Z]/g)) throw "Password must contain at least one uppercase letter";
-  if(!password.match(/[0-9]/g)) throw "Password must contain at least one number";
-  if(!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)) throw "Password must contain at least one special character";
+function checkPassword(password) {
+  if (!password) throw "No password provided";
+  if (typeof password !== "string") throw "Password is not a string";
+  if (password.length < 8) throw "Password must be at least 8 characters long";
+  if (password.length === 0) throw "Password cannot be empty";
+  if (password.trim().match(/\s/g)) throw "Password cannot contain spaces";
+  if (!password.match(/[a-z]/g))
+    throw "Password must contain at least one lowercase letter";
+  if (!password.match(/[A-Z]/g))
+    throw "Password must contain at least one uppercase letter";
+  if (!password.match(/[0-9]/g))
+    throw "Password must contain at least one number";
+  if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
+    throw "Password must contain at least one special character";
 
   return true;
 }
 
-function checkUsername(username){
-  if(!username) throw "No username provided";
-  if(typeof username !== "string") throw "Username is not a string";
-  if(username.length < 4) throw "Username must be at least 4 characters long";
-  if(username.trim().length===0) throw "Username cannot be empty";
-  if(username.trim().match(/\s/g)) throw "Username cannot contain spaces";
-  if(username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g)) throw "Username cannot contain special characters except underscore and dash";
+function checkUsername(username) {
+  if (!username) throw "No username provided";
+  if (typeof username !== "string") throw "Username is not a string";
+  if (username.length < 4) throw "Username must be at least 4 characters long";
+  if (username.trim().length === 0) throw "Username cannot be empty";
+  if (username.trim().match(/\s/g)) throw "Username cannot contain spaces";
+  if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
+    throw "Username cannot contain special characters except underscore and dash";
 
   return true;
 }
@@ -212,5 +234,5 @@ export {
   objsEqual,
   randomizeArray,
   checkPassword,
-  checkUsername
+  checkUsername,
 };

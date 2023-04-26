@@ -56,7 +56,7 @@ const getAllBirdsNames = async () => {
 
 const getLocalBirds = async (countryCode, city) => {
   countryCode = checkStr(countryCode, "country code");
-  city = checkStr(city, "city");
+  city = checkStr(city, "city").toLowerCase();
 
   const birdsCollection = await birds();
   let localBirds;
