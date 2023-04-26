@@ -1,0 +1,19 @@
+<main class = "log-in-page">
+    <h1>Log-In</h1>
+    <p class="login_blurb">Enter your usename and password.</p>
+    <form method="POST" action="/users/login" id = "login-form">
+        <label for="username">Username:</label>
+        <br>
+        <input type="text" id="username" name="username">
+        <br>
+        <label for="password">Password:</label>
+        <br>
+        <input type="password" id="password" name="password">
+        <br>
+        <input class="login-button" type="submit" value="Log In">
+    </form>
+    <div id="error" class="error" hidden></div>
+    <br>
+    <a class = "registerLink" href="/users/signup">Don't have an account? Click here to sign-up!</a>
+</main>
+<script src='/public/js/login/login.js'></script>

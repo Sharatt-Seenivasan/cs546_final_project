@@ -286,4 +286,5 @@ export {
   randomizeArray,
   checkPassword,
   checkUserName,
+  checkZipCode
 };
