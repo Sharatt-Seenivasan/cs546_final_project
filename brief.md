@@ -17,6 +17,21 @@
 - non-empty string
 - trimmed
 
+`checkUserName(username)`
+
+- no spaces allowed
+- at least 3 characters long
+- no special characters, except "_" and "-"
+
+`checkPassWord(password)`
+
+- no spaces allowed
+- at least 8 characters long
+- at least 1 lowercase letter
+- at least 1 Uppercase letter
+- at least 1 number
+- at least 1 special character
+
 `checkId(id, idName)`
 
 - valid ObjectId string
@@ -30,26 +45,54 @@
 - minimumLength refers the length AFTER prefix
 
 `checkImgUrl(url, imgName)`
-
+checkNumber
 - supported extensions : [".jpg", ".jpeg", ".png", ".gif", ".svg"], including their uppercase variants
 
-`checkCountryCode(countryCode)`
+`checkCountryCode(countryCode, countryCodeName)`
 
 JUST `checkStr`
+
+`checkCity(city, cityName)`
+
+- trimmed and lowercased
+
+`checkZipCode(zipCode, zipCodeName)`
+
+- 5-digits string
 
 `checkGeoCode(geocode, geocodeName)`
 
 - latitude: number
 - longitude: number
-- country: string
-- countryCode: string
-- city: string
+- country: `checkStr`
+- countryCode: `checkCountryCode()`
+- city: `checkCity()`
 
-`checkNumber(num, numName, min, max)`
+`checkNumber(num, numFor, {inclusiveMin,inclusiveMax}={})`
 
-- No `min` nor `max` provided: JUST check type
-- `min` provided: check type & lower limit
-- `max` provided: check type & upper limit
+- No `inclusiveMin` nor `inclusiveMin` provided: JUST check type
+- `inclusiveMin` provided: check type & lower limit
+- `inclusiveMax` provided: check type & upper limit
+
+```js
+checkNumber(1,"eg1",{inclusiveMin:1,inclusiveMax:5})
+checkNumber(3,"eg2",{inclusiveMin:1})
+checkNumber(5,"eg3",{inclusiveMax:5})
+checkNumber(7,"eg4")
+```
+
+- 
+
+`checkDifficulty(difficulty, difficultyName)`
+
+- 1<= difficulty <=5
+- integer
+
+`toTitleCase(str)`
+
+```js
+"an apple a day" -> "An Apple A Day"
+```
 
 `checkStrArr(arr, arrName)`
 
@@ -66,16 +109,58 @@ JUST `checkStr`
 
 `deepEqual = (obj1, obj2)`
 
+- support mixed type
+
 - recursively
+
+`randomizeArray(array)`
+
+- JUST shuffle elements
 
 `objectId2str_doc(doc)`
 
-- replace any {\_id: new ObjectId('xxxx')} with  {\_id: 'xxxx'}
+- replace any {\_id: new ObjectId('xxxx')} with {\_id: 'xxxx'}
 - recursively
 
 `objectId2str_docs_arr(arrOfDocs)`
 
 - apply `objectId2str_doc(doc)` to each document element
+
+`extractKV(toObj,fromObj,[...keys],{ifFilterUndefined=false}={})`
+
+- in-place, fill `toObj`
+
+```js
+const toObj = {};
+const fromObj = {
+    aStr:"str",
+    aNum:1,
+    aBool: false,
+    anArr: ["rts",0,true],
+    anObj:{
+        bObj:{
+            cStr:"here"
+        },
+    }
+}
+extractKV(toObj, fromObj, ["aStr","anArr","anObj.bObj.cStr","XXX"]) // by default not fileter "undefined" out
+console.log(toObj)
+/*
+{
+    aStr: "str",
+    anArr: ["rts",0,true],
+    cStr: "here",
+    XXX: undefined
+}
+*/
+
+```
+
+`extractKV_objArr(fromObjArr,[...keys],{ifFilterUndefined=false}={})`
+
+- not in-place
+
+- apply `extractKV` to each element
 
 ## ./seed/seed.js
 
@@ -86,7 +171,7 @@ JUST `checkStr`
   - -bid: show bird ids after populating
   - -all: show all users information after populating
   - -v: verbose. show all above
-  - Only prompt like "seed done!" by default
+  - Only prompts like "seed done!" by default
 
 ## ./test/dbtest.js
 
@@ -112,9 +197,9 @@ all args required
 
 throw if no such id
 
-~~`getUserByUserName = async (username)`~~
+`getUserByUserName = async (username)`
 
-NOT exported
+throw if no such username
 
 `getAllUsers()`
 
@@ -192,6 +277,10 @@ all args required
 
 throw if no such id
 
+`getAllBirdsNames()`
+
+return  an array of array of birds names
+
 `getLocalBirds(countryCode, city)`
 
 throw if no user found.` city` can be "all", which gets users for some country
@@ -207,3 +296,45 @@ throw if no such id
 `updateBirdById( birdId, { url, names, geocode, difficulty } = {} ) `
 
 at least one field should be different and provided
+
+
+
+## ./data/questions
+
+`getQuestions4User(userId,{numberOfOptions=4, numberOfQuestions=5, countryCode, city, ifGlobal=false}={})`
+
+- if `ifGlobal===true`, then get questions for user from all birds. It overrides `countryCode` and `city`
+- `countryCode` and `city` should be both defined or undefined
+  - if both defined, get questions from `countryCode` and `city`
+  - if both undefined, get questions from user local
+- throw if not enough birds to make such a quiz set
+- `numberOfOptions` should be >=2
+- `numberOfQuestions` should be >=1
+- `city` is case INsensitive
+
+```js
+// get 5 4-option questions from the user local
+await getQuestions4User("642bdbf502ce2ade5ce6bfa0");
+// get 5 4-option questions from global(note "ifGlobal: true" dominates)
+await getQuestions4User("642bdbf502ce2ade5ce6bfa1",{ifGlobal:true, coutryCode:"XX", city:"anywhere"});
+// get 6 3-option questions from "US", "New York"
+await getQuestions4User("642bdbf502ce2ade5ce6bfa1",{numberOfOptions:3, numberOfQuestions:6, coutryCode:"US", city:"new YoRk"})
+```
+
+`getQuestions4Guest({numberOfOptions=4, numberOfQuestions=5, countryCode, city}={})`
+
+- `countryCode` and `city` should be both defined or undefined
+  - if both defined, get questions from `countryCode` and `city`
+  - if both undefined, get questions from global
+- throw if not enough birds to make such a quiz set
+- `numberOfOptions` should be >=2
+- `numberOfQuestions` should be >=1
+- `city` is case INsensitive
+
+```js
+// get 2 6-option questions from global
+await getQuestions4Guest({numberOfQuestions:2, numberOfOptions:6});
+// get 5 4-option questions from "US", "New York"
+await getQuestions4Guest({numberOfQuestions:2, numberOfOptions:6, countryCode:"US", city:"nEw yOrk"});
+```
+

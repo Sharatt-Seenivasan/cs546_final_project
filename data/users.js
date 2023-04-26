@@ -105,23 +105,23 @@ const updatePersonalInfoById = async (
 
     switch (k) {
       case "username":
-        fields2Update.k = checkStr(v, `username at ${__name}`);
-        if (fields2Update.k === theUser.username)
+        fields2Update[k] = checkStr(v, `username at ${__name}`);
+        if (fields2Update[k] === theUser.username)
           throw `Username is already ${v}, please provide a new one to update`;
         break;
       case "hashed_password":
-        fields2Update.k = checkStr(v, `hashed_password at ${__name}`);
-        if (fields2Update.k === theUser.hashed_password)
+        fields2Update[k] = checkStr(v, `hashed_password at ${__name}`);
+        if (fields2Update[k] === theUser.hashed_password)
           throw `Password is already ${v}, please provide a new one to update`;
         break;
       case "icon":
-        fields2Update.k = checkImgUrl(v, `icon at ${__name}`);
-        if (fields2Update.k === theUser.icon)
+        fields2Update[k] = checkImgUrl(v, `icon at ${__name}`);
+        if (fields2Update[k] === theUser.icon)
           throw `Icon is already ${v}, please provide a new one to update`;
         break;
       case "geocode":
-        fields2Update.k = checkGeoCode(v, `geocode at ${__name}`);
-        if (objsEqual(fields2Update.k, theUser.geocode))
+        fields2Update[k] = checkGeoCode(v, `geocode at ${__name}`);
+        if (objsEqual(fields2Update[k], theUser.geocode))
           throw `Geocode is already ${v}, please provide a new one to update`;
         break;
       default:
@@ -382,6 +382,7 @@ const topNthLocalUsersByHighScore = async (n, countryCode, city) => {
 export {
   createUser,
   getUserById,
+  getUserByUserName,
   getAllUsers,
   removeUserById,
   updatePersonalInfoById,
@@ -390,5 +391,4 @@ export {
   topNthGlobalUsers,
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
-  getUserByUserName,
 };
