@@ -5,14 +5,17 @@ import {
   topNthLocalUsersByHighScore,
 } from "../data/users.js";
 import {
-  checkUsername,
+  checkUserName,
   checkPassword,
+  checkCountryCode,
+  checkCity,
+  checkZipCode,
   checkImgUrl,
   checkGeoCode,
 } from "../helpers.js";
 import { getUserByUserName, updatePersonalInfoById } from "../data/users.js";
 import { geocoderConfig } from "../config/settings.js";
-import nodeGeocode from "node-geocoder";    
+import nodeGeocode from "node-geocoder";
 const saltRounds = 16;
 const router = Router();
 const geocoder = nodeGeocode(geocoderConfig);
@@ -85,7 +88,7 @@ router
       if (!username || !password || !icon || !geocodeName) {
         return res.status(400).json({ error: "All fields are required!" });
       }
-      if (!checkUsername(username)) {
+      if (!checkUserName(username)) {
         return res.status(400).json({ error: "Username is not valid!" });
       }
       if (!checkPassword(password)) {
@@ -134,7 +137,7 @@ router
   .post(async (req, res) => {
     try {
       const { username, password } = req.body;
-      if (!checkUsername(username)) {
+      if (!checkUserName(username)) {
         return res.status(400).json({ error: "Username is not valid!" });
       }
       if (!checkPassword(password)) {
@@ -156,83 +159,123 @@ router
   });
 
 router
-  .route("/user/user_profile")
+  .route("/user/profile")
   .get(async (req, res) => {
-    if (!req.sesstion.user) {
-      return res.redirect("/login");
-    }
-    user = await getUserByUserName(req.session.user.username);
-    if (!user) {
-      return res.redirect("/login");
-    }
+    const username = req.session.user && req.session.user.username;
+    if (!username) return res.redirect("/login");
 
-    const geocode = await geocoder.geocode("user.geo");
-    const info = {
-      username: user.username,
-      usericon: user.icon,
-      usercountry: geocode[0].country,
-      usercity: geocode[0].city,
-    };
-
-    return res.render("user_profile", { title: "User Profile", user: info });
-  })
-
-  .put(async (req, res) => {
+    let user;
     try {
-      const { username, password, icon, geocodeName } = req.body;
-      if (!username || !password || !icon || !geocodeName) {
-        return res.status(400).json({ error: "All fields are required!" });
-      }
-      if (!checkUsername(info.username) || info.username === user.username) {
-        return res.status(400).json({ error: "Username is not valid!" });
-      }
-      if (!checkPassword(info.password) || info.password === user.password) {
-        return res.status(400).json({ error: "Password is not valid!" });
-      }
-      if (!checkImgUrl(info.icon, "Icon") || info.icon === user.icon) {
-        return res.status(400).json({ error: "Icon is not valid!" });
-      }
-      if (
-        typeof info.geocodeName !== "string" ||
-        info.geocodeName.length === 0 ||
-        info.geocodeName.trim().length === 0 ||
-        info.geocodeName.trim().match(/\s/g) ||
-        info.geocodeName.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g) ||
-        info.geocodeName === user.geocodeName
-      ) {
-        return res.status(400).json({ error: "GeocodeName is not valid!" });
-      }
-      const geocode = await geocoder.geocode(geocodeName);
-      if (!checkGeoCode(geocode, geocodeName)) {
-        return res.status(400).json({ error: "Geocode is not valid!" });
-      }
+      user = await getUserByUserName(username);
+    } catch (error) {
+      return res.status(500).send("Internal Server Error");
+    }
 
-      const user = await getUserByUserName(username);
-      if (!user) {
-        return res.status(400).json({ error: "Username does not exist!" });
-      }
+    user = {
+      username: user.username,
+      icon: user.icon,
+      country: user.geocode.country,
+      countryCode: user.geocode.countryCode,
+      city: user.geocode.city,
+      zipCode: user.geocode.zipCode,
+      lifetime_score: user.lifetime_score,
+      high_score: user.high_score,
+      submission: user.submission,
+      last_questions: user.last_questions,
+    };
+    return res.render("user_profile", { title: "User Profile", user });
+  })
+  .put(async (req, res) => {
+    const username = req.session.user && req.session.user.username;
+    if (!username) return res.redirect("/login");
 
-      const updateUser = await updatePersonalInfoById(
-        user._id,
-        username,
-        password,
-        icon,
-        geocode
-      );
-      if (!updateUser) {
-        return res.status(400).json({ error: "Update failed!" });
+    let user;
+    try {
+      user = await getUserByUserName(username);
+    } catch (error) {
+      return res.status(500).send("Internal Server Error");
+    }
+
+    let {
+      newUserName,
+      newPassword,
+      newConfirmPassword,
+      newIcon,
+      newCountryCode,
+      newCity,
+      newZipCode,
+    } = req.body;
+
+    let fields2Update = [
+      newUserName,
+      newPassword,
+      newConfirmPassword,
+      newIcon,
+      newCountryCode,
+      newCity,
+      newZipCode,
+    ];
+    if (fields2Update.every((field) => field === undefined))
+      throw "No field to update!";
+
+    fields2Update = {};
+    const errors = [];
+    if (newUserName) {
+      try {
+        newUserName = checkUserName(newUserName);
+        if (newUserName === user.username)
+          throw "Username is the same as before!";
+      } catch (error) {
+        errors.push(error);
       }
-      req.session.user = updateUser;
-      return res.render("user_profile", {
+    }
+    if (newPassword) {
+      try {
+        newPassword = checkPassword(newPassword);
+        if (newPassword !== newConfirmPassword)
+          throw "Password and Confirm Password are not the same!";
+        newPassword = await bcrypt.hash(newPassword, saltRounds);
+        if (newPassword === user.hashed_password)
+          throw "Password is the same as before!";
+      } catch (error) {
+        errors.push(error);
+      }
+    }
+    if (newIcon) {
+      try {
+        newIcon = checkImgUrl(newIcon, "Icon");
+        if ((newIcon = user.icon)) throw "Icon is the same as before!";
+      } catch (error) {
+        errors.push(error);
+      }
+    }
+    if (newCountryCode || newCity || newZipCode) {
+      try {
+        newCountryCode = checkCountryCode(newCountryCode, `new country code`);
+        newCity = checkCity(newCity, `new city`);
+        newZipCode = checkZipCode(newZipCode, `new zip code`);
+        if (
+          newCountryCode === user.geocode.countryCode &&
+          newCity === user.geocode.city &&
+          newZipCode === user.geocode.zipCode
+        )
+          throw "country code, city and zip code are the same as before!";
+      } catch (error) {
+        errors.push(error);
+      }
+    }
+
+    if (errors.length > 0) {
+      return res.status(400).render("user_profile", {
         title: "User Profile",
-        user: req.session.user,
+        errors,
       });
-    } catch (e) {
-      return res.status(400).json(e);
     }
   })
-
   .patch(async (req, res) => {
+    const username = req.session.user && req.session.user.username;
+    if (!username) return res.redirect("/login");
+
     try {
       const info = req.body;
       if (!info || Object.keys(info).length === 0) {
@@ -247,7 +290,7 @@ router
         return res.redirect("/login");
       }
 
-      if (info.username && !checkUsername(info.username)) {
+      if (info.username && !checkUserName(info.username)) {
         return res.status(400).json({ error: "Username is not valid!" });
       }
 
@@ -296,18 +339,20 @@ router
     }
   });
 
-router.route("/user/submit").get(async (req, res) => {
-  if (!req.sesstion.user) {
-    return res.redirect("/login");
-  }
-  user = await getUserByUserName(req.session.user.username);
-  if (!user) {
-    return res.redirect("/login");
+router.route("/user/post").get(async (req, res) => {
+  const username = req.session.user && req.session.user.username;
+  if (!username) return res.redirect("/login");
+
+  let theUser;
+  try {
+    theUser = await getUserByUserName(username);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
 
   return res.render("image_submission_form", {
     title: "Bird Image Submission Form",
-    user: req.session.user,
+    user: theUser,
   });
 });
 

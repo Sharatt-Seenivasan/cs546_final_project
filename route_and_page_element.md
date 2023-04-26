@@ -26,7 +26,7 @@
   - if logged in, show a link to logout
     - <a herf="/logout">Logout</a>
 
-- PUT `/user/profile`
+- PATCH`/user/profile`
 
   - client-side input check
 

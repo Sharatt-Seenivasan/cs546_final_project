@@ -81,6 +81,13 @@ function checkCity(city,cityName){
   return city.toLowerCase(); // trimmed and lowercased
 }
 
+function checkZipCode(zipCode,zipCodeName){
+  zipCode = checkStr(zipCode, zipCodeName);
+  if(zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  if(zipCode.match(/\d{5}/g)[0]!==zipCode) throw `${zipCodeName} must contain only digits`;
+  return zipCode; // trimmed
+}
+
 function checkGeoCode(geocode, geocodeName) {
   if (!geocode) throw "No geocode provided";
   if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
@@ -190,7 +197,7 @@ function checkPassword(password) {
   return true;
 }
 
-function checkUsername(username) {
+function checkUserName(username) {
   username = checkStr(username, "username"); // trimmed
   if (username.length < 3) throw "Username must be at least 3 characters long";
   if (username.length === 0) throw "Username cannot be empty";
@@ -217,5 +224,5 @@ export {
   objsEqual,
   randomizeArray,
   checkPassword,
-  checkUsername,
+  checkUserName,
 };
