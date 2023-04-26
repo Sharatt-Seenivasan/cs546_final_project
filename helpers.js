@@ -1,44 +1,39 @@
 import { ObjectId } from "mongodb";
 
-function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
-  if (!num) throw `No ${numFor} provided`;
-  if (typeof num !== "number") throw `${numFor} is not a number`;
-  if (!inclusiveMin && !inclusiveMax) return num;
-  if (inclusiveMin || inclusiveMin === 0) {
-    inclusiveMin = checkNumber(num, `${numFor} min`);
-    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}`;
-  }
-  if (inclusiveMax || inclusiveMax === 0) {
-    inclusiveMax = checkNumber(num, `${numFor} max`);
-    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}`;
-  }
-
-  return num; // nothing changed
-}
-
-function checkDifficulty(difficulty, difficultyName) {
-  difficulty = checkNumber(difficulty, difficultyName, {
-    inclusiveMin: 1,
-    inclusiveMax: 5,
-  });
-  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer`;
-  return difficulty; // nothing changed, required to be an integer
-}
-
-function toTitleCase(str) {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.replace(word[0], word[0].toUpperCase()))
-    .join(" ");
-}
-
 function checkStr(str, strName) {
   if (!str) throw `No string provided for ${strName}`;
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
   if (str.length === 0) throw `${strName} is empty`;
   return str; // trimmed
+}
+
+function checkPassword(password) {
+  password = checkStr(password, "password"); // trimmed
+  if (password.length === 0) throw "Password cannot be empty";
+  if (password.length < 8) throw "Password must be at least 8 characters long";
+  if (password.match(/\s/g)) throw "Password cannot contain spaces";
+  if (!password.match(/[a-z]/g))
+    throw "Password must contain at least one lowercase letter";
+  if (!password.match(/[A-Z]/g))
+    throw "Password must contain at least one uppercase letter";
+  if (!password.match(/[0-9]/g))
+    throw "Password must contain at least one number";
+  if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
+    throw "Password must contain at least one special character";
+
+  return true;
+}
+
+function checkUserName(username) {
+  username = checkStr(username, "username"); // trimmed
+  if (username.length < 3) throw "Username must be at least 3 characters long";
+  if (username.length === 0) throw "Username cannot be empty";
+  if (username.match(/\s/g)) throw "Username cannot contain spaces";
+  if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
+    throw "Username cannot contain special characters except underscore and dash";
+
+  return username; // trimmed
 }
 
 function checkId(id, idName) {
@@ -122,6 +117,39 @@ function checkGeoCode(geocode, geocodeName) {
   geocode.city = checkCity(geocode.city, `${geocodeName} city`);
 
   return geocode; // have country, countryCode, city trimmed
+}
+
+function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
+  if (!num) throw `No ${numFor} provided`;
+  if (typeof num !== "number") throw `${numFor} is not a number`;
+  if (!inclusiveMin && !inclusiveMax) return num;
+  if (inclusiveMin || inclusiveMin === 0) {
+    inclusiveMin = checkNumber(num, `${numFor} min`);
+    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}`;
+  }
+  if (inclusiveMax || inclusiveMax === 0) {
+    inclusiveMax = checkNumber(num, `${numFor} max`);
+    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}`;
+  }
+
+  return num; // nothing changed
+}
+
+function checkDifficulty(difficulty, difficultyName) {
+  difficulty = checkNumber(difficulty, difficultyName, {
+    inclusiveMin: 1,
+    inclusiveMax: 5,
+  });
+  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer`;
+  return difficulty; // nothing changed, required to be an integer
+}
+
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
 }
 
 function checkStrArr(arr, arrName) {
@@ -237,33 +265,6 @@ function extractKV_objArr(fromObjArr, [...keys], {ifFilterUndefined = false}={})
   return toObjArr;
 }
 
-function checkPassword(password) {
-  password = checkStr(password, "password"); // trimmed
-  if (password.length === 0) throw "Password cannot be empty";
-  if (password.length < 8) throw "Password must be at least 8 characters long";
-  if (password.match(/\s/g)) throw "Password cannot contain spaces";
-  if (!password.match(/[a-z]/g))
-    throw "Password must contain at least one lowercase letter";
-  if (!password.match(/[A-Z]/g))
-    throw "Password must contain at least one uppercase letter";
-  if (!password.match(/[0-9]/g))
-    throw "Password must contain at least one number";
-  if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Password must contain at least one special character";
-
-  return true;
-}
-
-function checkUserName(username) {
-  username = checkStr(username, "username"); // trimmed
-  if (username.length < 3) throw "Username must be at least 3 characters long";
-  if (username.length === 0) throw "Username cannot be empty";
-  if (username.match(/\s/g)) throw "Username cannot contain spaces";
-  if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Username cannot contain special characters except underscore and dash";
-
-  return username; // trimmed
-}
 
 export {
   toTitleCase,
