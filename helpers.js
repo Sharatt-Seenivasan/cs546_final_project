@@ -16,6 +16,15 @@ function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
   return num; // nothing changed
 }
 
+function checkDifficulty(difficulty, difficultyName) {
+  difficulty = checkNumber(difficulty, difficultyName, {
+    inclusiveMin: 1,
+    inclusiveMax: 5,
+  });
+  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer`;
+  return difficulty; // nothing changed, required to be an integer
+}
+
 function toTitleCase(str) {
   return str
     .toLowerCase()
@@ -71,20 +80,21 @@ function checkImgUrl(url, imgName) {
   return url; // trimmed and replaced spaces with %20
 }
 
-function checkCountryCode(countryCode,countryCodeName) {
+function checkCountryCode(countryCode, countryCodeName) {
   countryCode = checkStr(countryCode, countryCodeName);
   return countryCode; // trimmed
 }
 
-function checkCity(city,cityName){
+function checkCity(city, cityName) {
   city = checkStr(city, cityName);
   return city.toLowerCase(); // trimmed and lowercased
 }
 
-function checkZipCode(zipCode,zipCodeName){
+function checkZipCode(zipCode, zipCodeName) {
   zipCode = checkStr(zipCode, zipCodeName);
-  if(zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
-  if(zipCode.match(/\d{5}/g)[0]!==zipCode) throw `${zipCodeName} must contain only digits`;
+  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  if (zipCode.match(/\d{5}/g)[0] !== zipCode)
+    throw `${zipCodeName} must contain only digits`;
   return zipCode; // trimmed
 }
 
@@ -100,13 +110,15 @@ function checkGeoCode(geocode, geocodeName) {
     throw `${geocodeName} latitude is not a number`;
   if (typeof longitude !== "number")
     throw `${geocodeName} longitude is not a number`;
-  if(!country)
-    throw `${geocodeName} country is missing`
-  if(!countryCode)throw `${geocodeName} country code is missing`
-  if(!city)throw `${geocode} city is missing`
-  
+  if (!country) throw `${geocodeName} country is missing`;
+  if (!countryCode) throw `${geocodeName} country code is missing`;
+  if (!city) throw `${geocode} city is missing`;
+
   geocode.country = checkStr(geocode.country, `${geocodeName} country`);
-  geocode.countryCode = checkCountryCode(geocode.countryCode, `${geocodeName} countryCode`);
+  geocode.countryCode = checkCountryCode(
+    geocode.countryCode,
+    `${geocodeName} countryCode`
+  );
   geocode.city = checkCity(geocode.city, `${geocodeName} city`);
 
   return geocode; // have country, countryCode, city trimmed
@@ -184,6 +196,47 @@ function randomizeArray(array) {
   return array;
 }
 
+function extractKV(toObj, fromObj, [...keys], ifFilterUndefined = false) {
+  if (!fromObj || typeof fromObj !== "object" || Array.isArray(fromObj))
+    return fromObj;
+  keys.map((key) => checkStr(key, "key to extract"));
+
+  for (const key of keys) {
+    const [firstKey, ...restKeys] = key.split(".");
+    const subFromObj = fromObj[firstKey];
+
+    if (restKeys.length === 0) {
+      if (!ifFilterUndefined || subFromObj!==undefined) {
+        toObj[firstKey] = subFromObj;
+      }
+      continue;
+    }
+
+    extractKV(toObj, subFromObj, restKeys, ifFilterUndefined);
+  }
+
+  return toObj;
+}
+
+function extractKV_objArr(fromObjArr, [...keys], ifFilterUndefined = false) {
+  if (
+    !fromObjArr ||
+    !Array.isArray(fromObjArr) ||
+    fromObjArr.some((e) => typeof e !== "object" || Array.isArray(e))
+  )
+    return fromObjArr;
+
+  const toObjArr = [];
+
+  fromObjArr.map((fromObj) => {
+    const toObj = {};
+    extractKV(toObj, fromObj, keys, ifFilterUndefined);
+    toObjArr.push(toObj);
+  });
+
+  return toObjArr;
+}
+
 function checkPassword(password) {
   password = checkStr(password, "password"); // trimmed
   if (password.length === 0) throw "Password cannot be empty";
@@ -219,6 +272,7 @@ export {
   checkUrl,
   checkImgUrl,
   checkCountryCode,
+  checkDifficulty,
   checkGeoCode,
   checkCity,
   checkNumber,
@@ -227,6 +281,8 @@ export {
   objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
+  extractKV,
+  extractKV_objArr,
   randomizeArray,
   checkPassword,
   checkUserName,

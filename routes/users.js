@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import {
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
+  updatePlayerInfoById,
 } from "../data/users.js";
 import {
   checkUserName,
@@ -11,15 +12,19 @@ import {
   checkCity,
   checkZipCode,
   checkImgUrl,
+  checkDifficulty,
   checkGeoCode,
   checkStr,
+  checkStrArr,
 } from "../helpers.js";
 import { getUserByUserName, updatePersonalInfoById } from "../data/users.js";
 import { geocoderConfig } from "../config/settings.js";
-import nodeGeocode from "node-geocoder";
+import NodeGeocoder from "node-geocoder";
+import xss from "xss";
+import { createBird } from "../data/birds.js";
 const saltRounds = 16;
 const router = Router();
-const geocoder = nodeGeocode(geocoderConfig);
+const geocoder = NodeGeocoder(geocoderConfig);
 
 router.route("/leaderboard/local").get(async (req, res) => {
   //code here for GET
@@ -343,12 +348,12 @@ router
 router
   .route("/user/post")
   .get(async (req, res) => {
-    const username = req.session.user && req.session.user.username;
-    if (!username) return res.redirect("/login");
+    const _id = req.session.user && req.session.user._id;
+    if (!_id) return res.redirect("/login");
 
     let theUser;
     try {
-      theUser = await getUserByUserName(username);
+      theUser = await getUserByUserName(_id);
     } catch (error) {
       res.status(500).send("Internal Server Error");
     }
@@ -359,11 +364,11 @@ router
     });
   })
   .post(async (req, res) => {
-    const username = req.session.user && req.session.user.username;
-    if (!username) return res.redirect("/login");
+    const _id = req.session.user && req.session.user._id;
+    if (!_id) return res.redirect("/login");
 
     const {
-      bird_name,
+      bird_names,
       bird_img,
       bird_countryCode,
       bird_city,
@@ -371,19 +376,45 @@ router
     } = req.body;
 
     try {
-      bird_name = checkStr(bird_name, "Bird Name");
+      bird_names = checkStr(bird_names, "Bird Names");
+      bird_names = bird_names.split(",");
+      bird_names = checkStrArr(bird_names, "Bird Names");
       bird_img = checkImgUrl(bird_img, "Bird Image");
       bird_countryCode = checkCountryCode(
         bird_countryCode,
         "Bird Country Code"
       );
       bird_city = checkCity(bird_city, "Bird City");
-      bird_difficulty = checkDifficulty(parseFloat(bird_difficulty), "Bird Difficulty");
+      bird_difficulty = checkDifficulty(
+        parseInt(bird_difficulty),
+        "Bird Difficulty"
+      );
     } catch (error) {
-      return res.status(400).render("image_submission_form", {error});
+      return res.status(400).render("image_submission_form", { error });
     }
 
-    
+    try {
+      let geocode = await geocoder.geocode({
+        countryCode: bird_countryCode,
+        address: bird_city
+      });
+      geocode = checkGeoCode(geocode, "Bird Geocode");
+    } catch (error) {
+      
+    }
+
+    try {
+      const birdId = await createBird({
+        userId: _id,
+        url: bird_img,
+        names: bird_names,
+        geocode: 
+      });
+      await updatePlayerInfoById(
+        req.session.user._id,
+        {$pushSubmission:{bridId:}}
+      );
+    } catch (error) {}
   });
 
 export default router;
