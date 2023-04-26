@@ -1,6 +1,16 @@
 
 
-# Any bad input problem(400+), route re-render the page; Any db or route problem(500+), route send "Internal Server Error";
+> Any client-side problem(400+), re-render the page with additional error, except 403
+>
+> - res.status(400).render('original_page',{errors:[error1,...]})
+>
+> - error passed from route to handlebars as String[] errors
+> - if 403 is applicable
+>   - redirect to an error page telling user that he is not authorized
+>
+> Any server-side problem(500+), send "Internal Server Error" with specific error
+>
+> - res.status(500).send("Internal Server Error:", error)
 
 # /user
 
@@ -15,6 +25,9 @@
   - if logged in, show links to local and global leaderboard
     - <a herf="/leaderboard/local">Local Leaderboard</a>
     - <a herf="/leaderboard/global">Global Leaderboard</a>
+- POST `/user`
+  - reserved for AJAX
+
 - GET `/user/profile`
   - if logged in, display user profile as a form, he can update them
     - username
@@ -112,6 +125,14 @@
   - if logged in, show a local leaderboard, with user score
     - show a link to global leaderboard
       - <a herf="/leaderboard/global">Global Leaderboard</a>
+
+- POST `/leaderboard/local`
+
+  - reserved for AJAX
+
+- POST `/leaderboard/global`
+
+  - reserved for AJAX
 
   
 
