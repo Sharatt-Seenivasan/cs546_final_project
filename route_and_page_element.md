@@ -1,7 +1,6 @@
 # /user
 
 - if NOT logged in, redirect to `/login`
-
 - GET `/user`
   - if logged in, display user data
     - user current score
@@ -28,8 +27,28 @@
     - <a herf="/logout">Logout</a>
 
 - PUT `/user/profile`
+
   - client-side input check
+
   - submit the form to server
+
+- GET `/user/post`
+  - a form for user to post bird quiz
+    - bird name
+    - bird picture 
+    - bird location
+    - difficulty for reference
+
+- POST `/user/post`
+  - client side check
+  - submit the form to server
+
+# /logout
+
+- GET `/logout`
+  - destroy session
+  - a link back to quiz
+    - <a herf="/quiz">To quiz</a>
 
 
 
