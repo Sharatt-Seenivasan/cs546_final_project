@@ -8,6 +8,16 @@ function checkStr(str, strName) {
   return str; // trimmed
 }
 
+function checkUserName(username) {
+  username = checkStr(username, "username"); // trimmed
+  if (username.length < 3) throw "Username must be at least 3 characters long";
+  if (username.match(/\s/g)) throw "Username cannot contain spaces";
+  if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
+    throw "Username cannot contain special characters except underscore and dash";
+
+  return username; // trimmed
+}
+
 function checkPassword(password) {
   password = checkStr(password, "password"); // trimmed
   if (password.length === 0) throw "Password cannot be empty";
@@ -22,18 +32,7 @@ function checkPassword(password) {
   if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
     throw "Password must contain at least one special character";
 
-  return true;
-}
-
-function checkUserName(username) {
-  username = checkStr(username, "username"); // trimmed
-  if (username.length < 3) throw "Username must be at least 3 characters long";
-  if (username.length === 0) throw "Username cannot be empty";
-  if (username.match(/\s/g)) throw "Username cannot contain spaces";
-  if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Username cannot contain special characters except underscore and dash";
-
-  return username; // trimmed
+  return password;
 }
 
 function checkId(id, idName) {
@@ -224,7 +223,12 @@ function randomizeArray(array) {
   return array;
 }
 
-function extractKV(toObj, fromObj, [...keys], {ifFilterUndefined = false}={}) {
+function extractKV(
+  toObj,
+  fromObj,
+  [...keys],
+  { ifFilterUndefined = false } = {}
+) {
   if (!fromObj || typeof fromObj !== "object" || Array.isArray(fromObj))
     return fromObj;
   keys.map((key) => checkStr(key, "key to extract"));
@@ -234,7 +238,7 @@ function extractKV(toObj, fromObj, [...keys], {ifFilterUndefined = false}={}) {
     const subFromObj = fromObj[firstKey];
 
     if (restKeys.length === 0) {
-      if (!ifFilterUndefined || subFromObj!==undefined) {
+      if (!ifFilterUndefined || subFromObj !== undefined) {
         toObj[firstKey] = subFromObj;
       }
       continue;
@@ -246,7 +250,11 @@ function extractKV(toObj, fromObj, [...keys], {ifFilterUndefined = false}={}) {
   return toObj;
 }
 
-function extractKV_objArr(fromObjArr, [...keys], {ifFilterUndefined = false}={}) {
+function extractKV_objArr(
+  fromObjArr,
+  [...keys],
+  { ifFilterUndefined = false } = {}
+) {
   if (
     !fromObjArr ||
     !Array.isArray(fromObjArr) ||
@@ -264,7 +272,6 @@ function extractKV_objArr(fromObjArr, [...keys], {ifFilterUndefined = false}={})
 
   return toObjArr;
 }
-
 
 export {
   toTitleCase,
