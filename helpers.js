@@ -196,6 +196,21 @@ function checkUsername(username){
   return true;
 }
 
+function checkBirdName(birdName){
+  if(!birdName) throw "No bird name provided!";
+  if(typeof birdName !== "string") throw "Bird name must be a string!";
+  if(birdName.trim().length===0) throw "Bird name cannot be empty!";
+  if(birdName.trim().match(/\s/g)) throw "Bird name cannot contain spaces";
+  if(birdName.match(/[^A-Za-z\s\(\)]/)) throw "Bird name cannot contain any special characters (excluding parentheses in some special cases) or numbers";
+
+  const regexPattern = /^[A-Za-z\s]+(\s\([A-Za-z\s]+\))?$/
+  if(regexPattern.text(birdName)){
+    return true
+  }
+
+  throw "Bird name is invalid!"
+}
+
 export {
   toTitleCase,
   checkStr,
@@ -212,5 +227,6 @@ export {
   objsEqual,
   randomizeArray,
   checkPassword,
-  checkUsername
+  checkUsername,
+  checkBirdName
 };

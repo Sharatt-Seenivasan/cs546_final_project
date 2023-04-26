@@ -239,7 +239,7 @@ router.
 
     router.
         route('/user/submit')
-        .get((async (req, res) => {
+        .get(async (req, res) => {
             if(!req.sesstion.user){
                 return res.redirect('/login');
             }
@@ -248,10 +248,61 @@ router.
                 return res.redirect('/login');
             }
             
-            return res.render('image_submission_form',{title: 'Bird Image Submission Form', user: req.session.user})
-        
-        
-    }))
+            return res.render('image_submission_form',{title: 'Bird Image Submission Form',user: req.session.user})
+        })
+        .put(async (req,res)=>{
+            try{
+                const {imageLinkInput, birdNameInput,countryInput,stateInput,cityInput,zipCodeInput,difficultyInput} = req.body;
+                
+                if(!imageLinkInput || imageLinkInput === undefined) {
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'Image link was not provided!'});
+                }
+
+                if(!birdNameInput || birdNameInput === undefined) {
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'Bird name was not provided!'});
+                }
+
+                if(!countryInput || countryInput === undefined || countryInput === "invalid") {
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'Country was not selected!'});
+                }
+
+                /*Not sure if state and city need to be necessary for submission*/
+                if(!stateInput || stateInput === undefined) {
+                     return res.status(400).json({title: 'Bird Image Submission Form',error: 'State/Region/Province was not provided!'});
+                }
+
+            
+                // if(!cityInput || cityInput === undefined) {
+                //     return res.status(400).json({title: 'Bird Image Submission Form',error: 'City was not provided!'});
+                // }
+
+                if(!zipCodeInput || zipCodeInput === undefined) {
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'Zipcode was not provided!'});
+                }
+
+                if(!difficultyInput || difficultyInput === undefined) {
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'Difficulty input was not provided!'});
+                }
+
+                if(!(checkImgUrl(imageLinkInput,"Bird Image Link"))){
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'The provided link to the image was invalid!'});
+                }
+
+                if(!checkBirdName(birdNameInput)){
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'The provided common bird name is invalid!'});
+                }
+
+                if(!zipCodeInput.match(/^[\d\w\s-]+$/)){
+                    return res.status(400).json({title: 'Bird Image Submission Form',error: 'The provided zip code is invalid!'});
+                }
+
+
+                
+
+            }catch(e){
+                return res.status(400).json(e);
+            }
+        })
 
 
 export default router;

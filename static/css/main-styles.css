@@ -28,3 +28,8 @@ body {
 }
 
 /*Use this section for styles that apply to the user profile*/
+
+/*Use this section for styles that apply to the image submission form*/
+#image-submission-form-header{
+    text-align: center;
+}
