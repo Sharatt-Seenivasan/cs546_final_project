@@ -6,6 +6,8 @@ import {
   checkStr,
   checkStrArr,
   checkGeoCode,
+  checkCountryCode,
+  checkCity,
   checkNumber,
   checkId,
   objectId2str_doc,
@@ -15,11 +17,12 @@ import {
 } from "../helpers.js";
 
 const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
-  userId = checkId(userId, "user id");
-  url = checkImgUrl(url, "bird picture");
-  names = checkStrArr(names, "bird names");
-  geocode = checkGeoCode(geocode, "bird geocode");
-  difficulty = checkNumber(difficulty, "bird difficulty", 1, 5);
+  const __name = createBird.name;
+  userId = checkId(userId, `user id at ${__name}`);
+  url = checkImgUrl(url, `bird url at ${__name}`);
+  names = checkStrArr(names,  `bird names at ${__name}`);
+  geocode = checkGeoCode(geocode, `bird geocode at ${__name}`);
+  difficulty = checkNumber(difficulty, `difficulty at ${__name}`, 1, 5);
 
   const birdFields = { url, names, geocode, difficulty };
 
@@ -35,7 +38,8 @@ const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
 };
 
 const getBirdById = async (birdId) => {
-  birdId = checkId(birdId, "bird id");
+  const __name = getBirdById.name;
+  birdId = checkId(birdId, `bird id at ${__name}`);
 
   const birdsCollection = await birds();
   const theBird = await birdsCollection.findOne({ _id: new ObjectId(birdId) });
@@ -55,8 +59,9 @@ const getAllBirdsNames = async () => {
 };
 
 const getLocalBirds = async (countryCode, city) => {
-  countryCode = checkStr(countryCode, "country code");
-  city = checkStr(city, "city");
+  const __name = getLocalBirds.name;
+  countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
+  city = checkCity(city, `city at ${__name}`);
 
   const birdsCollection = await birds();
   let localBirds;
@@ -83,7 +88,8 @@ const getAllBirds = async () => {
 };
 
 const removeBirdById = async (birdId) => {
-  birdId = checkId(birdId, "bird id");
+  const __name = removeBirdById.name;
+  birdId = checkId(birdId, `bird id at ${__name}`);
 
   const birdsCollection = await birds();
   const deleteInfo = await birdsCollection.findOneAndDelete({
@@ -101,6 +107,8 @@ const updateBirdById = async (
   birdId,
   { url, names, geocode, difficulty } = {}
 ) => {
+  const __name = updateBirdById.name;
+  birdId = checkId(birdId, `bird id at ${__name}`);
   const theBird = await getBirdById(birdId);
   const fields2Update = { url, names, geocode, difficulty };
 
@@ -111,22 +119,22 @@ const updateBirdById = async (
     }
     switch (k) {
       case "url":
-        fields2Update.k = checkImgUrl(v, "bird picture");
+        fields2Update.k = checkImgUrl(v, `bird url at ${__name}`);
         if (fields2Update.k === theBird.k)
           throw `${k} is already ${v},please provide a new one to update`;
         break;
       case "names":
-        fields2Update.k = checkStrArr(v, "bird names");
+        fields2Update.k = checkStrArr(v, `bird names at ${__name}`);
         if (arrsEqual(fields2Update.k, theBird.k))
           throw `${k} is already ${v},please provide a new one to update`;
         break;
       case "geocode":
-        fields2Update.k = checkGeoCode(v, "bird geocode");
+        fields2Update.k = checkGeoCode(v, `bird geocode at ${__name}`);
         if (objsEqual(fields2Update.k, theBird.k))
           throw `${k} is already ${v},please provide a new one to update`;
         break;
       case "difficulty":
-        fields2Update.k = checkNumber(v, "bird difficulty", 1, 5);
+        fields2Update.k = checkNumber(v, `bird difficulty at ${__name}`, 1, 5);
         if (fields2Update.k === theBird.k)
           throw `${k} is already ${v},please provide a new one to update`;
         break;

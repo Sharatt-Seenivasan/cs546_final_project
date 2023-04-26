@@ -1,11 +1,12 @@
 import express from "express";
-const app = express();
-import configRoutes from "./routes/index.js";
-
 import exphbs from "express-handlebars";
+import session from "express-session";
+
+import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -23,6 +24,13 @@ const hbs = exphbs.create({
   },
   partialsDir: ["views/partials/"], // by default
 });
+
+app.use(session({
+  name: 'AuthCookie',
+  secret:'some secret string!',
+  resave: false,
+  saveUninitialized: true
+}))
 
 //app.use("/public", express.static(__dirname + "/public"));
 app.use("/static", express.static(__dirname + "/static"));

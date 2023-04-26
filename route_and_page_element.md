@@ -1,7 +1,20 @@
+
+
+> Any client-side problem(400+), re-render the page with additional error, except 403
+>
+> - res.status(400).render('original_page',{errors:[error1,...]})
+>
+> - error passed from route to handlebars as String[] errors
+> - if 403 is applicable
+>   - redirect to an error page telling user that he is not authorized
+>
+> Any server-side problem(500+), send "Internal Server Error" with specific error
+>
+> - res.status(500).send("Internal Server Error:", error)
+
 # /user
 
 - if NOT logged in, redirect to `/login`
-
 - GET `/user`
   - if logged in, display user data
     - user current score
@@ -12,6 +25,9 @@
   - if logged in, show links to local and global leaderboard
     - <a herf="/leaderboard/local">Local Leaderboard</a>
     - <a herf="/leaderboard/global">Global Leaderboard</a>
+- POST `/user`
+  - reserved for AJAX
+
 - GET `/user/profile`
   - if logged in, display user profile as a form, he can update them
     - username
@@ -27,9 +43,32 @@
   - if logged in, show a link to logout
     - <a herf="/logout">Logout</a>
 
-- PUT `/user/profile`
+- PATCH`/user/profile`
+
   - client-side input check
+
   - submit the form to server
+
+- GET `/user/post`
+  - a form for user to post bird quiz
+    - bird name
+    - bird picture 
+    - bird location
+    - difficulty for reference
+
+- POST `/user/post`
+  - client side check
+  - submit the form to server
+    - server "throws" by re-rendering
+
+
+
+# /logout
+
+- GET `/logout`
+  - destroy session
+  - a link back to quiz
+    - <a herf="/quiz">To quiz</a>
 
 
 
@@ -43,10 +82,10 @@
     - confirm password
     - link to login
       - <a herf="/login">Already have an account?</a>
-
 - POST `/signup`
   - client-side input check
   - submit the form to server
+    - server "throws" by re-rendering
 
 
 
@@ -64,6 +103,7 @@
 - POST `/login`
   - client-side input check
   - submit the form to server
+    - server "throws" by re-rendering
 
 
 
@@ -85,6 +125,14 @@
   - if logged in, show a local leaderboard, with user score
     - show a link to global leaderboard
       - <a herf="/leaderboard/global">Global Leaderboard</a>
+
+- POST `/leaderboard/local`
+
+  - reserved for AJAX
+
+- POST `/leaderboard/global`
+
+  - reserved for AJAX
 
   
 

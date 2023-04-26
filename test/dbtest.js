@@ -186,17 +186,19 @@ try {
 }
 
 console.log("-------------------questions retrieval ---------------");
-try{
-  console.log("expected :") 
-  console.log(await questionData.getQuestionsUser(allUsers[0]['_id']));
-}catch(error){
-  console.log("Unexpected : "+error);
+try {
+  const getUserQuestions1 = await questionData.getQuestions4User(
+    allUsers[0]["_id"]
+  );
+  console.log("Expected", getUserQuestion1);
+} catch (error) {
+  console.log("Unexpected : ", error);
 }
-try{
-  console.log("expected :") 
-  console.log(await questionData.getQuestionsGuest());
-}catch(error){
-  console.log("Unexpected : "+error);
+try {
+  const getGuestQuestions2 = await questionData.getQuestions4Guest();
+  console.log("Expected", getGuestQuestions2);
+} catch (error) {
+  console.log("Unexpected : ", error);
 }
 
 // ------------------ done ---------------------

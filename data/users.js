@@ -1,7 +1,7 @@
 import { usersCollection as users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import {
-  toTitleCase,
+  checkUserName,
   checkStr,
   checkId,
   checkImgUrl,
@@ -13,24 +13,17 @@ import {
   objsEqual,
 } from "../helpers.js";
 
-const createUser = async ({
-  username,
-  hashed_password,
-  icon,
-  geocode,
-} = {}) => {
-  username = checkStr(username, "user name");
-  hashed_password = checkStr(hashed_password, "password");
-  icon = checkImgUrl(icon, "user icon");
-  geocode = checkGeoCode(geocode, "geocode");
-  username = toTitleCase(username);
+const createUser = async ({ username, hashed_password } = {}) => {
+  const __name = createUser.name;
+  username = checkUserName(username, `username at ${__name}`);
+  hashed_password = checkStr(hashed_password, `hashed_password at ${__name}`);
 
   const userCollection = await users();
   const userFields = {
     username,
     hashed_password,
-    icon,
-    geocode,
+    icon: "",
+    geocode:{},
     lifetime_score: 0,
     high_score: 0,
     submission: [],
@@ -50,7 +43,8 @@ const createUser = async ({
 };
 
 const getUserById = async (userId) => {
-  userId = checkId(userId, "user id");
+  const __name = getUserById.name;
+  userId = checkId(userId, `user id at ${__name}`);
 
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
@@ -60,8 +54,8 @@ const getUserById = async (userId) => {
 };
 
 const getUserByUserName = async (username) => {
-  username = checkStr(username, "user name");
-  username = username.toLowerCase();
+  const __name = getUserByUserName.name;
+  username = checkUserName(username, `username at ${__name}`);
   const userCollection = await users();
   const theUser = await userCollection.findOne({ username });
   if (!theUser) throw `User ${username} not found`;
@@ -77,7 +71,8 @@ const getAllUsers = async () => {
 };
 
 const removeUserById = async (userId) => {
-  userId = checkId(userId, "user id");
+  const __name = removeUserById.name;
+  userId = checkId(userId, `user id at ${__name}`);
 
   const userCollection = await users();
   const deletionInfo = await userCollection.findOneAndDelete({
@@ -93,6 +88,7 @@ const updatePersonalInfoById = async (
   userId,
   { username, hashed_password, icon, geocode } = {}
 ) => {
+  const __name = updatePersonalInfoById.name;
   const theUser = await getUserById(userId);
   const fields2Update = {
     username,
@@ -109,22 +105,22 @@ const updatePersonalInfoById = async (
 
     switch (k) {
       case "username":
-        fields2Update.k = checkStr(v, "user name");
+        fields2Update.k = checkStr(v, `username at ${__name}`);
         if (fields2Update.k === theUser.username)
           throw `Username is already ${v}, please provide a new one to update`;
         break;
       case "hashed_password":
-        fields2Update.k = checkStr(v, "password");
+        fields2Update.k = checkStr(v, `hashed_password at ${__name}`);
         if (fields2Update.k === theUser.hashed_password)
           throw `Password is already ${v}, please provide a new one to update`;
         break;
       case "icon":
-        fields2Update.k = checkImgUrl(v, "user icon");
+        fields2Update.k = checkImgUrl(v, `icon at ${__name}`);
         if (fields2Update.k === theUser.icon)
           throw `Icon is already ${v}, please provide a new one to update`;
         break;
       case "geocode":
-        fields2Update.k = checkGeoCode(v, "geocode");
+        fields2Update.k = checkGeoCode(v, `geocode at ${__name}`);
         if (objsEqual(fields2Update.k, theUser.geocode))
           throw `Geocode is already ${v}, please provide a new one to update`;
         break;
@@ -133,12 +129,12 @@ const updatePersonalInfoById = async (
     }
   }
   if (Object.keys(fields2Update).length === 0)
-    throw "No field provided to update";
+    throw "No field provided to update personal info";
 
   const userCollection = await users();
 
   if (username) {
-    username = toTitleCase(username);
+    username = checkUserName(username, `username at ${__name}`);
     const ifUserNameExisted = await userCollection.findOne({ username });
     if (ifUserNameExisted) throw `User ${username} already existed`;
   }
@@ -176,13 +172,14 @@ const updatePlayerInfoById = async (userId, operation) => {
   if ($pullSubmission)
     updateInfo = await pullSubmissionByBirdId($pullSubmission);
   if ($pullLastQuestions)
-    updateInfo = await pullLastQuestionsById($pullLastQuestions);
+    updateInfo = await pullLastQuestionsByIds($pullLastQuestions);
 
   return updateInfo;
 };
 
 const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
-  id = checkId(id, "user id");
+  const __name = incrementScoresById.name;
+  id = checkId(id, `user id at ${__name}`);
 
   const userCollection = await users();
   const ifExists = await userCollection.findOne({ _id: new ObjectId(id) });
@@ -192,11 +189,14 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   let high_score_inc = 0,
     lifetime_score_inc = 0;
   if (high_score)
-    high_score_inc = checkNumber(high_score, "high score increment");
+    high_score_inc = checkNumber(
+      high_score,
+      `high score increment at ${__name}`
+    );
   if (lifetime_score)
     lifetime_score_inc = checkNumber(
       lifetime_score,
-      "lifetime score increment"
+      `lifetime score increment at ${__name}`
     );
 
   if (high_score_inc < 0) throw "high score increment cannot be negative";
@@ -215,7 +215,8 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
 };
 
 const pullSubmissionByBirdId = async ({ birdId } = {}) => {
-  birdId = checkId(birdId, "bird id");
+  const __name = pullSubmissionByBirdId.name;
+  birdId = checkId(birdId, `bird id at ${__name}`);
 
   const userCollection = await users();
   const ifExists = await userCollection.findOne({
@@ -237,8 +238,9 @@ const pullSubmissionByBirdId = async ({ birdId } = {}) => {
 };
 
 const pushSubmissionByIds = async (userId, { birdId } = {}) => {
-  userId = checkId(userId, "user id");
-  birdId = checkId(birdId, "bird id");
+  const __name = pushSubmissionByIds.name;
+  userId = checkId(userId, `user id at ${__name}`);
+  birdId = checkId(birdId, `bird id at ${__name}`);
 
   const userCollection = await users();
   let ifExists = await userCollection.findOne({ _id: new ObjectId(userId) });
@@ -261,8 +263,9 @@ const pushSubmissionByIds = async (userId, { birdId } = {}) => {
 };
 
 const pushLastQuestionsByIds = async (userId, { birdId } = {}) => {
-  userId = checkId(userId, "user id");
-  birdId = checkId(birdId, "bird id");
+  const __name = pushLastQuestionsByIds.name;
+  userId = checkId(userId, `user id at ${__name}`);
+  birdId = checkId(birdId, `bird id at ${__name}`);
 
   const userCollection = await users();
   let ifExists = await userCollection.findOne({ _id: new ObjectId(userId) });
@@ -285,9 +288,10 @@ const pushLastQuestionsByIds = async (userId, { birdId } = {}) => {
 };
 
 const topNthLocalUsers = async (n, countryCode, city) => {
-  n = checkNumber(n, "topNth", 1, null);
-  countryCode = checkCountryCode(countryCode, "country code");
-  city = checkStr(city, "city");
+  const __name = topNthLocalUsers.name;
+  n = checkNumber(n, `n at ${__name}`, { inclusiveMin: 1 });
+  countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
+  city = checkStr(city, `city at ${__name}`);
 
   const userCollection = await users();
   let topUsers;
@@ -313,8 +317,8 @@ const topNthLocalUsers = async (n, countryCode, city) => {
 };
 
 const topNthGlobalUsers = async (n) => {
-  //topUsers;
-  n = checkNumber(n, "topNth", 1, null);
+  const __name = topNthGlobalUsers.name;
+  n = checkNumber(n, `n at ${__name}`, { inclusiveMin: 1 });
 
   const userCollection = await users();
   const topUsers = await userCollection
@@ -327,25 +331,30 @@ const topNthGlobalUsers = async (n) => {
   return objectId2str_docs_arr(topUsers);
 };
 
-const topNthGlobalUsersByHighScore = async(n) => {
-    //topUsers;
-    n = checkNumber(n, "topNth", 1, null);
+const topNthGlobalUsersByHighScore = async (n) => {
+  const __name = topNthGlobalUsersByHighScore.name;
+  n = checkNumber(n, `n at ${topNthGlobalUsersByHighScore}`, {
+    inclusiveMin: 1,
+  });
 
-    const userCollection = await users();
-    const topUsers = await userCollection
-      .find({})
-      .sort({ high_score: -1 })
-      .limit(n)
-      .toArray();
-    if (!topUsers) throw `Could not get top ${n} users`;
-  
-    return objectId2str_docs_arr(topUsers);
-}
+  const userCollection = await users();
+  const topUsers = await userCollection
+    .find({})
+    .sort({ high_score: -1 })
+    .limit(n)
+    .toArray();
+  if (!topUsers) throw `Could not get top ${n} users`;
+
+  return objectId2str_docs_arr(topUsers);
+};
 
 const topNthLocalUsersByHighScore = async (n, countryCode, city) => {
-  n = checkNumber(n, "topNth", 1, null);
-  countryCode = checkCountryCode(countryCode, "country code");
-  city = checkStr(city, "city");
+  const __name = topNthLocalUsersByHighScore.name;
+  n = checkNumber(n, `n at ${topNthLocalUsersByHighScore}`, {
+    inclusiveMin: 1,
+  });
+  countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
+  city = checkStr(city, `city at ${__name}`);
 
   const userCollection = await users();
   let topUsers;
@@ -381,5 +390,5 @@ export {
   topNthGlobalUsers,
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
-  getUserByUserName
+  getUserByUserName,
 };
