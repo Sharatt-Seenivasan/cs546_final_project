@@ -188,13 +188,13 @@ try {
 console.log("-------------------questions retrieval ---------------");
 try{
   console.log("expected :") 
-  console.log(await questionData.getQuestionsUser(allUsers[0]['_id']));
+  console.log(await questionData.getQuestions4User(allUsers[0]['_id']));
 }catch(error){
   console.log("Unexpected : "+error);
 }
 try{
   console.log("expected :") 
-  console.log(await questionData.getQuestionsGuest());
+  console.log(await questionData.getQuestions4Guest());
 }catch(error){
   console.log("Unexpected : "+error);
 }

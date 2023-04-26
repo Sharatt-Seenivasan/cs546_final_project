@@ -1,48 +1,68 @@
 import { getUserById } from "./users.js";
 import { getLocalBirds, getAllBirdsNames, getAllBirds } from "./birds.js";
-import { checkId, checkNumber, checkCountryCode,checkCity } from "../helpers.js";
+import {
+  checkStr,
+  checkId,
+  checkNumber,
+  checkCountryCode,
+  checkCity,
+} from "../helpers.js";
+import { get } from "prompt";
 
-const getQuestion4User = async (
+const getQuestions4User = async (
   userId,
   {
     numberOfOptions = 4,
     numberOfQuestions = 5,
-    local_or_global = "global",
+    countryCode,
+    city,
+    ifGlobal = false,
   } = {}
 ) => {
-  const __name = getQuestion4User.name;
+  const __name = getQuestions4User.name;
   userId = checkId(userId, "user id");
   if (numberOfQuestions || numberOfQuestions === 0) {
-    numberOfQuestions = checkNumber(numberOfQuestions, `questions number at ${__name}`, {
-      inclusiveMin: 1,
-    });
+    numberOfQuestions = checkNumber(
+      numberOfQuestions,
+      `questions number at ${__name}`,
+      {
+        inclusiveMin: 1,
+      }
+    );
   }
   if (numberOfOptions || numberOfOptions === 0) {
-    numberOfOptions = checkNumber(numberOfOptions, `options number at ${__name}`, {
-      inclusiveMin: 2,
-    });
+    numberOfOptions = checkNumber(
+      numberOfOptions,
+      `options number at ${__name}`,
+      {
+        inclusiveMin: 2,
+      }
+    );
   }
-  if (local_or_global) {
-    local_or_global = checkStr(local_or_global, `local_or_global at ${__name}`);
-    local_or_global = local_or_global.trim().toLowerCase();
-    if (["local", "global"].includes(local_or_global)) {
-      throw `local_or_global option must be either "local" or "global"`;
-    }
-  }
+  if ((!countryCode && city) || (city && !countryCode))
+    throw `at ${__name}, countryCode and city should be both defined or undefined`;
+  if (countryCode)
+    countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
+  if (city) city = checkCity(city, `city at ${__name}`);
 
   const theUser = await getUserById(userId);
   const qAnswered = theUser.last_questions;
+  const qSubmitted = theUser.submission;
 
   let allBirds, unseenBirds;
-  if (local_or_global === "global") {
+  if (ifGlobal) {
     allBirds = await getAllBirds();
+  } else if (!countryCode && !city) {
+    allBirds = await getLocalBirds(
+      theUser.geocode.countryCode,
+      theUser.geocode.city
+    );
+  } else {
+    allBirds = await getLocalBirds(countryCode, city);
   }
-  if (local_or_global === "local") {
-    const userCountry = theUser.geocode && theUser.geocode.countryCode;
-    const userCity = theUser.geocode && theUser.geocode.city;
-    allBirds = await getLocalBirds(userCountry, userCity);
-  }
-  unseenBirds = allBirds.filter((bird) => !qAnswered.includes(bird._id));
+  unseenBirds = allBirds.filter(
+    (bird) => !qAnswered.includes(bird._id) && !qSubmitted.includes(bird._id)
+  );
 
   let questions = [];
   let rdmUnseenBirdIdx, rdmAnswerIdx;
@@ -66,8 +86,8 @@ const getQuestion4User = async (
   }
 
   if (
-    q.length < numberOfQuestions ||
-    q.some((question) => question.options.length < numberOfOptions)
+    questions.length < numberOfQuestions ||
+    questions.some((question) => question.options.length < numberOfOptions)
   ) {
     throw `Not enough birds in database to create a quiz with ${numberOfOptions} options`;
   }
@@ -75,25 +95,33 @@ const getQuestion4User = async (
   return questions;
 };
 
-const getQuestion4Guest = async ({
+const getQuestions4Guest = async ({
   numberOfOptions = 4,
   numberOfQuestions = 5,
   countryCode,
   city,
 } = {}) => {
-  const __name = getQuestion4Guest.name;
+  const __name = getQuestions4Guest.name;
   if (numberOfQuestions || numberOfQuestions === 0) {
-    numberOfQuestions = checkNumber(numberOfQuestions, `questions number at ${__name}`, {
-      inclusiveMin: 1,
-    });
+    numberOfQuestions = checkNumber(
+      numberOfQuestions,
+      `questions number at ${__name}`,
+      {
+        inclusiveMin: 1,
+      }
+    );
   }
   if (numberOfOptions || numberOfOptions === 0) {
-    numberOfOptions = checkNumber(numberOfOptions, `option number at ${__name}`, {
-      inclusiveMin: 2,
-    });
+    numberOfOptions = checkNumber(
+      numberOfOptions,
+      `option number at ${__name}`,
+      {
+        inclusiveMin: 2,
+      }
+    );
   }
-  if((countryCode && !city) || (!countryCode && city)){
-    throw `countryCode and city must be both defined or both undefined at getQuestions4Guest`;
+  if ((countryCode && !city) || (!countryCode && city)) {
+    throw `countryCode and city must be both defined or both undefined at ${__name}`;
   }
   if (countryCode) {
     countryCode = checkCountryCode(countryCode, `countryCode at ${__name}`);
@@ -105,7 +133,7 @@ const getQuestion4Guest = async ({
   if (!countryCode && !city) {
     const allBirds = await getAllBirds();
   } else {
-    const allBirds = await getLocalBirds(countryCode,city);
+    const allBirds = await getLocalBirds(countryCode, city);
   }
 
   let questions = [];
@@ -139,4 +167,4 @@ const getQuestion4Guest = async ({
   return questions;
 };
 
-export { getQuestion4User, getQuestion4Guest };
+export { getQuestions4User, getQuestions4Guest };

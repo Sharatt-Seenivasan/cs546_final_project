@@ -100,10 +100,14 @@ function checkGeoCode(geocode, geocodeName) {
     throw `${geocodeName} latitude is not a number`;
   if (typeof longitude !== "number")
     throw `${geocodeName} longitude is not a number`;
-
-  geocode.country = checkStr(geocode.country, "country");
-  geocode.countryCode = checkCountryCode(geocode.countryCode, "countryCode");
-  geocode.city = checkCity(geocode.city, "city");
+  if(!country)
+    throw `${geocodeName} country is missing`
+  if(!countryCode)throw `${geocodeName} country code is missing`
+  if(!city)throw `${geocode} city is missing`
+  
+  geocode.country = checkStr(geocode.country, `${geocodeName} country`);
+  geocode.countryCode = checkCountryCode(geocode.countryCode, `${geocodeName} countryCode`);
+  geocode.city = checkCity(geocode.city, `${geocodeName} city`);
 
   return geocode; // have country, countryCode, city trimmed
 }
@@ -216,6 +220,7 @@ export {
   checkImgUrl,
   checkCountryCode,
   checkGeoCode,
+  checkCity,
   checkNumber,
   checkStrArr,
   objectId2str_doc,
