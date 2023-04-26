@@ -196,7 +196,7 @@ function randomizeArray(array) {
   return array;
 }
 
-function extractKV(toObj, fromObj, [...keys], ifFilterUndefined = false) {
+function extractKV(toObj, fromObj, [...keys], {ifFilterUndefined = false}={}) {
   if (!fromObj || typeof fromObj !== "object" || Array.isArray(fromObj))
     return fromObj;
   keys.map((key) => checkStr(key, "key to extract"));
@@ -218,7 +218,7 @@ function extractKV(toObj, fromObj, [...keys], ifFilterUndefined = false) {
   return toObj;
 }
 
-function extractKV_objArr(fromObjArr, [...keys], ifFilterUndefined = false) {
+function extractKV_objArr(fromObjArr, [...keys], {ifFilterUndefined = false}={}) {
   if (
     !fromObjArr ||
     !Array.isArray(fromObjArr) ||

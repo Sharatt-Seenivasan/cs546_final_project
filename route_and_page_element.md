@@ -1,3 +1,7 @@
+
+
+# Any bad input problem(400+), route re-render the page; Any db or route problem(500+), route send "Internal Server Error";
+
 # /user
 
 - if NOT logged in, redirect to `/login`

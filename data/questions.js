@@ -128,10 +128,11 @@ const getQuestions4Guest = async ({
     city = checkCity(city, `city at ${__name}`);
   }
 
+  let allBirds;
   if (!countryCode && !city) {
-    const allBirds = await getAllBirds();
+    allBirds = await getAllBirds();
   } else {
-    const allBirds = await getLocalBirds(countryCode, city);
+    allBirds = await getLocalBirds(countryCode, city);
   }
 
   let questions = [];
@@ -156,8 +157,8 @@ const getQuestions4Guest = async ({
   }
 
   if (
-    q.length < numberOfQuestions ||
-    q.every((question) => question.options.length < numberOfOptions)
+    questions.length < numberOfQuestions ||
+    questions.every((question) => question.options.length < numberOfOptions)
   ) {
     throw `Not enough birds in database to create a quiz with ${numberOfOptions} options`;
   }
