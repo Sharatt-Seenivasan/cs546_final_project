@@ -42,6 +42,9 @@
 - POST `/user/post`
   - client side check
   - submit the form to server
+    - server "throws" by re-rendering
+
+
 
 # /logout
 
@@ -62,10 +65,10 @@
     - confirm password
     - link to login
       - <a herf="/login">Already have an account?</a>
-
 - POST `/signup`
   - client-side input check
   - submit the form to server
+    - server "throws" by re-rendering
 
 
 
@@ -83,6 +86,7 @@
 - POST `/login`
   - client-side input check
   - submit the form to server
+    - server "throws" by re-rendering
 
 
 
