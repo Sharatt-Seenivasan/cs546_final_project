@@ -12,6 +12,7 @@ import {
   checkZipCode,
   checkImgUrl,
   checkGeoCode,
+  checkStr,
 } from "../helpers.js";
 import { getUserByUserName, updatePersonalInfoById } from "../data/users.js";
 import { geocoderConfig } from "../config/settings.js";
@@ -339,21 +340,50 @@ router
     }
   });
 
-router.route("/user/post").get(async (req, res) => {
-  const username = req.session.user && req.session.user.username;
-  if (!username) return res.redirect("/login");
+router
+  .route("/user/post")
+  .get(async (req, res) => {
+    const username = req.session.user && req.session.user.username;
+    if (!username) return res.redirect("/login");
 
-  let theUser;
-  try {
-    theUser = await getUserByUserName(username);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
+    let theUser;
+    try {
+      theUser = await getUserByUserName(username);
+    } catch (error) {
+      res.status(500).send("Internal Server Error");
+    }
 
-  return res.render("image_submission_form", {
-    title: "Bird Image Submission Form",
-    user: theUser,
+    return res.render("image_submission_form", {
+      title: "Bird Image Submission Form",
+      user: theUser,
+    });
+  })
+  .post(async (req, res) => {
+    const username = req.session.user && req.session.user.username;
+    if (!username) return res.redirect("/login");
+
+    const {
+      bird_name,
+      bird_img,
+      bird_countryCode,
+      bird_city,
+      bird_difficulty,
+    } = req.body;
+
+    try {
+      bird_name = checkStr(bird_name, "Bird Name");
+      bird_img = checkImgUrl(bird_img, "Bird Image");
+      bird_countryCode = checkCountryCode(
+        bird_countryCode,
+        "Bird Country Code"
+      );
+      bird_city = checkCity(bird_city, "Bird City");
+      bird_difficulty = checkDifficulty(parseFloat(bird_difficulty), "Bird Difficulty");
+    } catch (error) {
+      return res.status(400).render("image_submission_form", {error});
+    }
+
+    
   });
-});
 
 export default router;

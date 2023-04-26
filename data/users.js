@@ -13,24 +13,17 @@ import {
   objsEqual,
 } from "../helpers.js";
 
-const createUser = async ({
-  username,
-  hashed_password,
-  icon,
-  geocode,
-} = {}) => {
+const createUser = async ({ username, hashed_password } = {}) => {
   const __name = createUser.name;
   username = checkUserName(username, `username at ${__name}`);
   hashed_password = checkStr(hashed_password, `hashed_password at ${__name}`);
-  icon = checkImgUrl(icon, `icon at ${__name}`);
-  geocode = checkGeoCode(geocode, `geocode at ${__name}`);
 
   const userCollection = await users();
   const userFields = {
     username,
     hashed_password,
-    icon,
-    geocode,
+    icon: "",
+    geocode:{},
     lifetime_score: 0,
     high_score: 0,
     submission: [],
@@ -141,7 +134,7 @@ const updatePersonalInfoById = async (
   const userCollection = await users();
 
   if (username) {
-    username = checkUserName(username,`username at ${__name}`);
+    username = checkUserName(username, `username at ${__name}`);
     const ifUserNameExisted = await userCollection.findOne({ username });
     if (ifUserNameExisted) throw `User ${username} already existed`;
   }
@@ -196,7 +189,10 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   let high_score_inc = 0,
     lifetime_score_inc = 0;
   if (high_score)
-    high_score_inc = checkNumber(high_score, `high score increment at ${__name}`);
+    high_score_inc = checkNumber(
+      high_score,
+      `high score increment at ${__name}`
+    );
   if (lifetime_score)
     lifetime_score_inc = checkNumber(
       lifetime_score,
@@ -337,7 +333,9 @@ const topNthGlobalUsers = async (n) => {
 
 const topNthGlobalUsersByHighScore = async (n) => {
   const __name = topNthGlobalUsersByHighScore.name;
-  n = checkNumber(n, `n at ${topNthGlobalUsersByHighScore}`, { inclusiveMin: 1 });
+  n = checkNumber(n, `n at ${topNthGlobalUsersByHighScore}`, {
+    inclusiveMin: 1,
+  });
 
   const userCollection = await users();
   const topUsers = await userCollection
@@ -352,7 +350,9 @@ const topNthGlobalUsersByHighScore = async (n) => {
 
 const topNthLocalUsersByHighScore = async (n, countryCode, city) => {
   const __name = topNthLocalUsersByHighScore.name;
-  n = checkNumber(n, `n at ${topNthLocalUsersByHighScore}`, { inclusiveMin: 1 });
+  n = checkNumber(n, `n at ${topNthLocalUsersByHighScore}`, {
+    inclusiveMin: 1,
+  });
   countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
   city = checkStr(city, `city at ${__name}`);
 

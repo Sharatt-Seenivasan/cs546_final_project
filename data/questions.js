@@ -1,13 +1,11 @@
 import { getUserById } from "./users.js";
-import { getLocalBirds, getAllBirdsNames, getAllBirds } from "./birds.js";
+import { getLocalBirds, getAllBirds } from "./birds.js";
 import {
-  checkStr,
   checkId,
   checkNumber,
   checkCountryCode,
   checkCity,
 } from "../helpers.js";
-import { get } from "prompt";
 
 const getQuestions4User = async (
   userId,
