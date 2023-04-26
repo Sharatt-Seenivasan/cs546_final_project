@@ -71,9 +71,14 @@ function checkImgUrl(url, imgName) {
   return url; // trimmed and replaced spaces with %20
 }
 
-function checkCountryCode(countryCode) {
-  countryCode = checkStr(countryCode, "countryCode");
+function checkCountryCode(countryCode,countryCodeName) {
+  countryCode = checkStr(countryCode, countryCodeName);
   return countryCode; // trimmed
+}
+
+function checkCity(city,cityName){
+  city = checkStr(city, cityName);
+  return city.toLowerCase(); // trimmed and lowercased
 }
 
 function checkGeoCode(geocode, geocodeName) {
@@ -91,29 +96,9 @@ function checkGeoCode(geocode, geocodeName) {
 
   geocode.country = checkStr(geocode.country, "country");
   geocode.countryCode = checkCountryCode(geocode.countryCode, "countryCode");
-  geocode.city = checkStr(geocode.city, "city").toLowerCase();
+  geocode.city = checkCity(geocode.city, "city");
 
   return geocode; // have country, countryCode, city trimmed
-}
-
-function checkNumber(num, numName, min, max) {
-  if (!num && num !== 0) throw `No ${numName} provided`;
-  if (typeof num !== "number") throw `${numName} is not a number`;
-
-  if (typeof min !== "number" && typeof max !== "number") return num; // nothing changed
-
-  if (typeof min !== "number" && num > max)
-    throw `${numName} must be smaller than ${max}`;
-  if (typeof max !== "number" && num < min)
-    throw `${numName} must be bigger than ${min}`;
-
-  if (typeof min === "number" && typeof max === "number") {
-    if (min > max) throw "min must be smaller than max";
-
-    if (num < min || num > max)
-      throw `${numName} must be between ${min} and ${max}`;
-  }
-  return num; // nothing changed
 }
 
 function checkStrArr(arr, arrName) {
@@ -189,11 +174,10 @@ function randomizeArray(array) {
 }
 
 function checkPassword(password) {
-  if (!password) throw "No password provided";
-  if (typeof password !== "string") throw "Password is not a string";
-  if (password.length < 8) throw "Password must be at least 8 characters long";
+  password = checkStr(password, "password"); // trimmed
   if (password.length === 0) throw "Password cannot be empty";
-  if (password.trim().match(/\s/g)) throw "Password cannot contain spaces";
+  if (password.length < 8) throw "Password must be at least 8 characters long";
+  if (password.match(/\s/g)) throw "Password cannot contain spaces";
   if (!password.match(/[a-z]/g))
     throw "Password must contain at least one lowercase letter";
   if (!password.match(/[A-Z]/g))
@@ -207,15 +191,14 @@ function checkPassword(password) {
 }
 
 function checkUsername(username) {
-  if (!username) throw "No username provided";
-  if (typeof username !== "string") throw "Username is not a string";
-  if (username.length < 4) throw "Username must be at least 4 characters long";
-  if (username.trim().length === 0) throw "Username cannot be empty";
-  if (username.trim().match(/\s/g)) throw "Username cannot contain spaces";
+  username = checkStr(username, "username"); // trimmed
+  if (username.length < 3) throw "Username must be at least 3 characters long";
+  if (username.length === 0) throw "Username cannot be empty";
+  if (username.match(/\s/g)) throw "Username cannot contain spaces";
   if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
     throw "Username cannot contain special characters except underscore and dash";
 
-  return true;
+  return username; // trimmed
 }
 
 export {

@@ -1,6 +1,6 @@
 import { getUserById } from "./users.js";
 import { getLocalBirds, getAllBirdsNames, getAllBirds } from "./birds.js";
-import { checkId, checkNumber, checkCountryCode } from "../helpers.js";
+import { checkId, checkNumber, checkCountryCode,checkCity } from "../helpers.js";
 
 const getQuestion4User = async (
   userId,
@@ -10,19 +10,20 @@ const getQuestion4User = async (
     local_or_global = "global",
   } = {}
 ) => {
+  const __name = getQuestion4User.name;
   userId = checkId(userId, "user id");
   if (numberOfQuestions || numberOfQuestions === 0) {
-    numberOfQuestions = checkNumber(numberOfQuestions, "number of question at getQuestions4User", {
+    numberOfQuestions = checkNumber(numberOfQuestions, `questions number at ${__name}`, {
       inclusiveMin: 1,
     });
   }
   if (numberOfOptions || numberOfOptions === 0) {
-    numberOfOptions = checkNumber(numberOfOptions, "number of options at getQuestions4User", {
+    numberOfOptions = checkNumber(numberOfOptions, `options number at ${__name}`, {
       inclusiveMin: 2,
     });
   }
   if (local_or_global) {
-    local_or_global = checkStr(local_or_global, "local or global option at getQuestions4User ");
+    local_or_global = checkStr(local_or_global, `local_or_global at ${__name}`);
     local_or_global = local_or_global.trim().toLowerCase();
     if (["local", "global"].includes(local_or_global)) {
       throw `local_or_global option must be either "local" or "global"`;
@@ -61,6 +62,7 @@ const getQuestion4User = async (
       }
     }
     q["options"] = options;
+    questions.push(q);
   }
 
   if (
@@ -79,13 +81,14 @@ const getQuestion4Guest = async ({
   countryCode,
   city,
 } = {}) => {
+  const __name = getQuestion4Guest.name;
   if (numberOfQuestions || numberOfQuestions === 0) {
-    numberOfQuestions = checkNumber(numberOfQuestions, "number of question at getQuestions4Guest", {
+    numberOfQuestions = checkNumber(numberOfQuestions, `questions number at ${__name}`, {
       inclusiveMin: 1,
     });
   }
   if (numberOfOptions || numberOfOptions === 0) {
-    numberOfOptions = checkNumber(numberOfOptions, "number of options at getQuestions4Guest", {
+    numberOfOptions = checkNumber(numberOfOptions, `option number at ${__name}`, {
       inclusiveMin: 2,
     });
   }
@@ -93,10 +96,10 @@ const getQuestion4Guest = async ({
     throw `countryCode and city must be both defined or both undefined at getQuestions4Guest`;
   }
   if (countryCode) {
-    countryCode = checkCountryCode(countryCode, "country code at getQuestions4Guest");
+    countryCode = checkCountryCode(countryCode, `countryCode at ${__name}`);
   }
   if (city) {
-    city = checkStr(city, "city at getQuestions4Guest").toLowerCase();
+    city = checkCity(city, `city at ${__name}`);
   }
 
   if (!countryCode && !city) {
@@ -123,6 +126,7 @@ const getQuestion4Guest = async ({
       }
     }
     q["options"] = options;
+    questions.push(q);
   }
 
   if (
