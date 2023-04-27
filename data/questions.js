@@ -39,7 +39,7 @@ const getQuestionsUser = async (userId)=>{
             }
             randomizeArray(options);
             let question = {
-                url,correct,options,difficulty
+                birdid,url,correct,options,difficulty
             };
             questions.push(question);
         }
@@ -64,7 +64,7 @@ const getQuestionsUser = async (userId)=>{
             }
             randomizeArray(options);
             let question = {
-                url,correct,options,difficulty
+                birdid,url,correct,options,difficulty
             };
             questions.push(question);
         }
@@ -78,12 +78,12 @@ const getQuestionsUser = async (userId)=>{
 const getQuestionsGuest=async()=>{
     let birds,names;
     try{
-        birds =await getAllBirds(country,city);
+        birds =await getAllBirds();
     }catch(error){
         console.log(error);
     }
     try{
-    let names = await getAllBirdsNames();
+        names = await getAllBirdsNames();
     }
     catch(error){
         console.log(error);
@@ -91,6 +91,7 @@ const getQuestionsGuest=async()=>{
     let questions = [];
     for( let index=0;index<birds.length;index++){
         const url=birds[index]['url'];
+        const birdid = birds[index]['_id'];
         const correct = birds[index]['names'][Math.floor(Math.random()*birds[index]['names'].length)];
         let options = [];
         options.push(correct);
@@ -106,7 +107,7 @@ const getQuestionsGuest=async()=>{
         }
         randomizeArray(options);
         let question = {
-            url,correct,options,difficulty
+            birdid,url,correct,options,difficulty
         };
         questions.push(question);
     }
