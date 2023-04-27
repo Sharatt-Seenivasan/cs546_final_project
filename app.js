@@ -25,6 +25,11 @@ const hbs = exphbs.create({
   partialsDir: ["views/partials/"], // by default
 });
 
+
+hbs.handlebars.registerHelper('equal', function(value1, value2) {
+  return value1 === value2;
+})
+
 app.use(session({
   name: 'AuthCookie',
   secret:'some secret string!',
