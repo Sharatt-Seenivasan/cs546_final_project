@@ -76,6 +76,8 @@ const getQuestions4User = async (
       if (options.length === rdmAnswerIdx + 1) {
         q["answer"] = birdName;
         q["image"] = theBird.url;
+        q["_id"] = theBird._id;
+        q["difficulty"] = theBird.difficulty;
         unseenBirds.splice(rdmUnseenBirdIdx, 1);
       }
     }
@@ -149,6 +151,8 @@ const getQuestions4Guest = async ({
       if (options.length === rdmAnswerIdx + 1) {
         q["answer"] = birdName;
         q["image"] = theBird.url;
+        q["_id"] = theBird._id;
+        q["difficulty"] = theBird.difficulty;
         allBirds.splice(rdmBirdIdx, 1);
       }
     }
