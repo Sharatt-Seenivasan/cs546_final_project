@@ -1,5 +1,5 @@
 node_modules/
 package-lock.json
-draft.js
+draft*
 .vscode
 .DS_Store

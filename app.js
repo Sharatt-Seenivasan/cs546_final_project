@@ -1,16 +1,38 @@
 import express from "express";
-import session from 'express-session';
-const app = express();
-import configRoutes from "./routes/index.js";
-
 import exphbs from "express-handlebars";
+import session from "express-session";
+
+import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-//app.use("/public", express.static(__dirname + "/public"));
+const hbs = exphbs.create({
+  defaultLayout: "main",
+  helpers: {
+    asJSON: (obj, spacing) => {
+      if (typeof spacing === "number")
+        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
+      return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+    inc: (value, options) =>{
+      return parseInt(value) + 1;
+    },
+  },
+  partialsDir: ["views/partials/"], // by default
+});
+
+app.use(session({
+  name: 'AuthCookie',
+  secret:'some secret string!',
+  resave: false,
+  saveUninitialized: true
+}))
+
+app.use("/public", express.static(__dirname + "/public"));
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
