@@ -28,13 +28,19 @@ body {
 }
 
 #main_buttons{
-    position: relative;
-    vertical-align: middle;
-    text-align: right;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    margin-left: 25%;
 }
 
-#homepage_play_button{
+/* #homepage_play_button{
     text-align: left;
+} */
+
+#homepage_leaderboard_button{
+    margin-top: 10px
 }
 
 /*Use this section for styles that apply to the log-in page*/
