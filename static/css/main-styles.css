@@ -28,3 +28,11 @@ body {
 }
 
 /*Use this section for styles that apply to the user profile*/
+
+
+/*Use this section for styles that apply to the signup page*/
+.sign-up-page{
+    margin-top: 15%;
+    margin: auto;
+    width: 50%;
+}
