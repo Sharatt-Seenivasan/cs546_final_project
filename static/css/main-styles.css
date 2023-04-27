@@ -1,17 +1,45 @@
 /*Use this section of the CSS file for styles that apply to all pages*/
 
 body {
-    background-size: cover;
     background-image: url('/static/images/whos_that_pokemon_clean_background.png');
+    background-size: cover;
     background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 
 /*Use this section for styles that apply to the homepage*/
+#profile_container{
+    text-align: right;
+}
+
+#homepage_login_button{
+    margin-top: 20px;
+    margin-right: -100px;
+}
+
+#homepage_splash_title{
+    margin-left: -100px;
+}
+
+#title_pigeon_picture{
+    margin-top: 40px;
+}
+
+#main_buttons{
+    position: relative;
+    vertical-align: middle;
+    text-align: right;
+}
+
+#homepage_play_button{
+    text-align: left;
+}
 
 /*Use this section for styles that apply to the log-in page*/
 .log-in-page{
-    margin-top: 15%;
+    padding-top: 15%;
     margin: auto;
     width: 50%;
 }
