@@ -5,7 +5,7 @@ import path from 'path';
 const constructorMethod = (app) => {
     app.use('/users', userRoutes);
     app.use('/', (req, res) => {
-        res.render('homepage',{title: "Homepage"})
+        res.render('homepage',{title: "Homepage", user: req.session.user})
     });
 }
 

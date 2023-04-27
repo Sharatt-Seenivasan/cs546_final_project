@@ -1,6 +1,16 @@
 <main>
     <div class="container" id = "profile_container">
-        <a class="btn btn-dark btn-lg" href="/users/login" role="button" id ="homepage_login_button">Log In</a>
+        {{#if user}} 
+             <a href="/users/user/profile" class="btn btn-link" id = "user_icon_button">
+                {{#if user.icon}}
+                    <img src={{user.icon}} alt="User icon" class="homepage_user_icon">
+                {{else}}
+                    <img src="/static/images/default_bird_icon.png" alt="User Icon" class="homepage_user_icon">
+                {{/if}}
+            </a>
+        {{else}}
+            <a class="btn btn-dark btn-lg" href="/users/login" role="button" id ="homepage_login_button">Log In</a>
+        {{/if}}
     </div>
     <div class="container" id = "title_graphic_container">
         <img alt = "Who's that Bird!?" src="/static/images/whos_that_bird_logo.png" id = "homepage_splash_title">
@@ -12,7 +22,7 @@
         <div class = "play_button">
             <a href="#" class="btn btn-link" id = "homepage_play_button">
                 <img src="/static/images/play_button.png" alt="Play Button" class="play_button_image">
-             </a>
+            </a>
         </div>
         
         <div class = "leaderboard_button">
