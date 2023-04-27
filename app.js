@@ -37,7 +37,7 @@ app.use(session({
   saveUninitialized: true
 }))
 
-//app.use("/public", express.static(__dirname + "/public"));
+app.use("/public", express.static(__dirname + "/public"));
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

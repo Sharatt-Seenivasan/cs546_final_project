@@ -1,13 +1,20 @@
 /*Use this section of the CSS file for styles that apply to all pages*/
 
 body {
-    background-image: url('/static/images/whos_that_pokemon_clean_background.png');
     background-size: cover;
+    background-image: url('/static/images/whos_that_pokemon_clean_background.png');
     background-position: center;
-    background-repeat: no-repeat;
 }
 
+
 /*Use this section for styles that apply to the homepage*/
+
+/*Use this section for styles that apply to the log-in page*/
+.log-in-page{
+    margin-top: 15%;
+    margin: auto;
+    width: 50%;
+}
 
 /*Use this section for styles that apply to the in-game questions*/
 
