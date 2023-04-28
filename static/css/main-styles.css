@@ -4,10 +4,64 @@ body {
     background-image: url('/static/images/whos_that_pokemon_clean_background.png');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
+
 /*Use this section for styles that apply to the homepage*/
+#profile_container{
+    text-align: right;
+}
+
+#user_icon_button{
+    height: 50px;
+    width: 50px;
+}
+
+#homepage_login_button{
+    margin-top: 20px;
+    margin-right: -100px;
+}
+
+#homepage_splash_title{
+    margin-left: -100px;
+}
+
+#title_pigeon_picture{
+    margin-top: 40px;
+}
+
+#main_buttons{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    margin-left: 25%;
+}
+
+/* #homepage_play_button{
+    text-align: left;
+} */
+
+#homepage_leaderboard_button{
+    margin-top: 10px
+}
+
+.play_button_image:hover{
+    content: url("/static/images/play_button_hover.png");
+}
+
+.leaderboard_button_image:hover{
+    content: url("/static/images/leaderboard_button_hover.png");
+}
+
+/*Use this section for styles that apply to the log-in page*/
+.log-in-page{
+    padding-top: 15%;
+    margin: auto;
+    width: 50%;
+}
 
 /*Use this section for styles that apply to the in-game questions*/
 
@@ -28,3 +82,11 @@ body {
 }
 
 /*Use this section for styles that apply to the user profile*/
+
+
+/*Use this section for styles that apply to the signup page*/
+.sign-up-page{
+    margin-top: 15%;
+    margin: auto;
+    width: 50%;
+}
