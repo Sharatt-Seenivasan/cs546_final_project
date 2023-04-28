@@ -6,7 +6,7 @@
         <label for="timer">Time Remaining:</label><input type="text" id="timer" name="timer" value={{time}} style="background: transparent;border: none;">
         <div>
         <label for="question">
-            <img id="question" name="question" src={{question.url}}>
+            <img id="question" name="question" src={{question.image}}>
         </label>
         </div>
         <div id="options-container">
@@ -48,49 +48,6 @@
     }
     
 }, 1000);
+
 </script>
-<!--{{#each question}}
-    {{#ifEquals @index 0 }}
-    <script>console.log({{this.url}})</script>
-        <div class="header">
-            <h1>Score : <span id="score"></span></h1>
-            <h1> Question  <span id="questionNumber">{{index}}</span></h1>
-        </div>
-        <form  id="questionform">
-            <label for="question">
-                <img id="question" name="question" src={{@root.url}}>
-            </label>
-            <div id="options-container">
-                <input type="radio" id="optionA" name="options" value={{question.[index].options.[0]}}>
-                <label for="optionA">{{question.[index].options.[0]}}</label>
-                <input type="radio" id="optionB" name="options" value={{question.[index].options.[1]}}>
-                <label for="optionB">{{question.[index].options.[1]}}</label>
-                <input type="radio" id="optionC" name="options" value={{question.[index].options.[2]}}>
-                <label for="optionC">{{question.[index].options.[2]}}</label>
-                <input type="radio" id="optionD" name="options" value={{question.[index].options.[3]}}>
-                <label for="optionD">{{question.[index].options.[3]}}</label>
-            </div>
-            
-            <button id="next" name="next">Next</button>
-            
-        </form>
-       
-    {{/ifEquals}}
-    
-{{/each}}
 
-
-<script>
-   
-    var i = {{index}};
-    console.log({{question.[$(in)]}});
-    function testing(){
-      console.log("came here");  
-    }
-    function loadQuestion(questions){
-    console.log(questions);
-    index = document.getElementById('questionNumber').innerHTML-1;
-    document.getElementById('question').setAttribute('src',questions[index]['url']);
-    }
-
-</script>-->
