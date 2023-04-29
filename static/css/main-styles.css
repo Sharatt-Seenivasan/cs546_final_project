@@ -82,6 +82,10 @@ body {
 }
 
 /*Use this section for styles that apply to the user profile*/
+#profile-form{
+    width:200px;
+    padding:20px;
+}
 
 
 /*Use this section for styles that apply to the signup page*/
