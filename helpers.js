@@ -39,7 +39,7 @@ function checkPassword(password) {
 function checkId(id, idName) {
   id = checkStr(id, idName); // trimmed
   if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
-  return id; // trimmed
+  return xss(id); // trimmed
 }
 
 function checkUrl(url, urlName, minimumLength = 0) {
@@ -110,10 +110,10 @@ function checkGeoCode(geocode, geocodeName) {
   if (!city) throw `${geocode} city is missing`;
 
   geocode.country = xss(checkStr(geocode.country, `${geocodeName} country`));
-  geocode.countryCode = checkCountryCode(
+  geocode.countryCode = xss(checkCountryCode(
     geocode.countryCode,
     `${geocodeName} countryCode`
-  );
+  ));
   geocode.city = xss(checkCity(geocode.city, `${geocodeName} city`));
 
   return geocode; // have country, countryCode, city trimmed
