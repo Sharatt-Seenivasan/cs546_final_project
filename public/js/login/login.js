@@ -1,5 +1,13 @@
 const loginForm = document.getElementById("login-form");
 
+function checkStr(str, strName) {
+  if (!str) throw `No string provided for ${strName}`;
+  if (typeof str !== "string") throw `${strName} is not a string`;
+  str = str.trim();
+  if (str.length === 0) throw `${strName} is empty`;
+  return xss(str); // trimmed
+}
+
 function checkUserName(username) {
     username = checkStr(username, "username"); // trimmed
     if (username.length < 3) throw "Username must be at least 3 characters long";
