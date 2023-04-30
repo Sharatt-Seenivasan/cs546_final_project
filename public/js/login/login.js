@@ -5,11 +5,11 @@ function checkStr(str, strName) {
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
   if (str.length === 0) throw `${strName} is empty`;
-  return xss(str); // trimmed
+  return str; // trimmed
 }
 
 function checkUserName(username) {
-    username = checkStr(username, "username"); // trimmed
+    username = checkStr(username, "Username"); // trimmed
     if (username.length < 3) throw "Username must be at least 3 characters long";
     if (username.length === 0) throw "Username cannot be empty";
     if (username.match(/\s/g)) throw "Username cannot contain spaces";
@@ -20,7 +20,7 @@ function checkUserName(username) {
 }
 
 function checkPassword(password) {
-    password = checkStr(password, "password"); // trimmed
+    password = checkStr(password, "Password"); // trimmed
     if (password.length === 0) throw "Password cannot be empty";
     if (password.length < 8) throw "Password must be at least 8 characters long";
     if (password.match(/\s/g)) throw "Password cannot contain spaces";
@@ -77,7 +77,7 @@ if(loginForm){
             errorDiv.hidden = false;
             event.preventDefault();
         }
-        
+
         // if(!checkPassword(passwordInput)){
         //     errorDiv.innerHTML = "Password is invalid!"
         //     errorDiv.hidden = false;

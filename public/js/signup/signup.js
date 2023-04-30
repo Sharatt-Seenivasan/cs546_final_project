@@ -5,7 +5,7 @@ function checkStr(str, strName) {
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
   if (str.length === 0) throw `${strName} is empty`;
-  return xss(str); // trimmed
+  return str; // trimmed
 }
 
 function checkUserName(username) {
