@@ -46,6 +46,10 @@ app.use(express.urlencoded({ extended: true }));
 /*redirect middleware start*/
 app.use(saveLastPage)
 app.use('/users/login',loginRedirect)
+app.use('/users/signup',registerRedirect)
+app.use('/users/logout',logoutRedirect)
+app.use('/users/gameplay',gameplayRedirect)
+app.use('/users/gameresult',gameResultRedirect)
 
 /*redirect middleware end*/
 
