@@ -1,10 +1,12 @@
 <div class="header">
-            <h1>Score : <span id="score">{{score}}</span></h1>
-            <h1> Question  <span id="questionNumber">{{index}}</span></h1>
+            <h3>Score : <span id="score">{{score}}</span></h1>
+            <h3> Question  <span id="questionNumber">{{index}}</span></h1>
 </div>
     <form  id="questionform" name="questionform" action="/users/gameplay" method="POST">
-        <label for="timer">Time Remaining:</label><input type="text" id="timer" name="timer" value={{time}} style="background: transparent;border: none;">
-        <div>
+    <div id="tinmerContainer">
+        <label for="timer" id="timerLabel">Time Remaining:</label><input type="text"  id="timer" name="timer" value={{time}} >
+    </div>
+        <div id="imageContainer">
         <label for="question">
             <img id="question" name="question" src={{question.image}}>
         </label>
@@ -19,9 +21,9 @@
                 <input type="radio" id="optionD" name="options" value=3>
                 <label for="optionD">{{question.options.[3]}}</label>
         </div>
-            
+        <div id="btnContainer">
         <button id="next" name="next">Next</button>
-            
+        </div>
     </form>
 <script>
     var secs={{time}};
