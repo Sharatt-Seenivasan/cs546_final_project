@@ -90,3 +90,58 @@ body {
     margin: auto;
     width: 50%;
 }
+
+#timer{
+    background: transparent;
+    border: none;
+}
+
+
+#imageContainer{
+    display:flex;
+    justify-content: center;
+}
+#question{
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    align-self: center;
+    align-content: center;
+    border: 1px rgb(218, 218, 218) solid;
+    background: #C4C4C4 no-repeat 0 0;
+}
+#options-container{
+    display:flex;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+    font-weight: bold;
+
+}
+#optionA,#optionB,#optionC,#optionD{
+    align-self: center;
+    align-content: center;
+}
+
+#btnContainer{
+    display:flex;
+    justify-content: center;
+}
+#next{
+    background-color: cadetblue;
+
+}
+#gamestartForm{
+    position:relative;
+    top:250px; 
+    left:750px;
+}
+#startBtn{
+    width: 200px;
+    height: 100px;
+    margin: -20px -50px; 
+
+    background-color: darkseagreen;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
