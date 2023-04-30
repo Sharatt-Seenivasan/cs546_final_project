@@ -58,19 +58,36 @@ if(loginForm){
             errorDiv.hidden = false;
             event.preventDefault();
         }
+        
 
-        if(!checkUserName(username)){
-            errorDiv.innerHTML = "Username is invalid!"
+        try {
+          checkUserName(username)
+        } catch (error) {
+            errorDiv.innerHTML = error
+            errorDiv.hidden = false;
+            event.preventDefault();
+        }
+
+        // if(!checkUserName(username)){
+        //     errorDiv.innerHTML = "Username is invalid!"
+        //     errorDiv.hidden = false;
+        //     event.preventDefault();
+        // }
+
+        try {
+          checkPassword(username)
+        } catch (error) {
+            errorDiv.innerHTML = error
             errorDiv.hidden = false;
             event.preventDefault();
         }
 
 
-        if(!checkPassword(passwordInput)){
-            errorDiv.innerHTML = "Password is invalid!"
-            errorDiv.hidden = false;
-            event.preventDefault();
-        }
+        // if(!checkPassword(passwordInput)){
+        //     errorDiv.innerHTML = "Password is invalid!"
+        //     errorDiv.hidden = false;
+        //     event.preventDefault();
+        // }
 
         if(passwordInput !== confirmPasswordInput){
             errorDiv.innerHTML = "The two passwords are not equal to each other!"
