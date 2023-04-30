@@ -37,52 +37,56 @@ function checkPassword(password) {
 }
 
 if(loginForm){
-    loginForm.addEventListener('submit', (event) => {
+    loginForm.addEventListener('submit', (event) => { 
 
-        const username = document.getElementById("username")
-        const passwordInput = document.getElementById("password")
-        const errorDiv = document.getElementById("error")
-        errorDiv.innerHTML = '';
-        errorDiv.hidden = true;
+      const username = document.getElementById("username")
+      const passwordInput = document.getElementById("password")
+      const errorDiv = document.getElementById("error")
+      errorDiv.innerHTML = '';
+      errorDiv.hidden = true;
 
-        if(!username.value || username.value === undefined){
-            errorDiv.innerHTML = "A username was not provided!"
-            errorDiv.hidden = false;
-            event.preventDefault();
-        }
-        if(!passwordInput.value || passwordInput.value === undefined){
-            errorDiv.innerHTML = "A password was not provided!"
-            errorDiv.hidden = false;
-            event.preventDefault();
-        }
+      if(!username.value || username.value === undefined){
+          errorDiv.innerHTML = "A username was not provided!"
+          errorDiv.hidden = false;
+          event.preventDefault();
+          return false; 
+      }
+      if(!passwordInput.value || passwordInput.value === undefined){
+          errorDiv.innerHTML = "A password was not provided!"
+          errorDiv.hidden = false;
+          event.preventDefault();
+          return false; 
+      }
 
-        try {
-          checkUserName(username)
-        } catch (error) {
-            errorDiv.innerHTML = error
-            errorDiv.hidden = false;
-            event.preventDefault();
-        }
+      try {
+        checkUserName(username.value)
+      } catch (error) {
+          errorDiv.innerHTML = error
+          errorDiv.hidden = false;
+          event.preventDefault();
+          return false; 
+      }
 
-        // if(!checkUserName(username)){
-        //     errorDiv.innerHTML = "Username is invalid!"
-        //     errorDiv.hidden = false;
-        //     event.preventDefault();
-        // }
-        
-        try {
-          checkPassword(username)
-        } catch (error) {
-            errorDiv.innerHTML = error
-            errorDiv.hidden = false;
-            event.preventDefault();
-        }
+      // if(!checkUserName(username)){
+      //     errorDiv.innerHTML = "Username is invalid!"
+      //     errorDiv.hidden = false;
+      //     event.preventDefault();
+      // }
+      
+      try {
+        checkPassword(passwordInput.value)
+      } catch (error) {
+          errorDiv.innerHTML = error
+          errorDiv.hidden = false;
+          event.preventDefault();
+          return false; 
+      }
 
-        // if(!checkPassword(passwordInput)){
-        //     errorDiv.innerHTML = "Password is invalid!"
-        //     errorDiv.hidden = false;
-        //     event.preventDefault();
-        // }
+      // if(!checkPassword(passwordInput)){
+      //     errorDiv.innerHTML = "Password is invalid!"
+      //     errorDiv.hidden = false;
+      //     event.preventDefault();
+      // }
 
     });
 
