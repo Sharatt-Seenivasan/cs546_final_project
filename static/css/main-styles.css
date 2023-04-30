@@ -68,6 +68,15 @@ body {
 /*Use this section for styles that apply to the end of the game*/
 
 /*Use this section for styles that apply to the leaderboard*/
+/* #local_leaderboard_button{
+    margin-left: 50%;
+}
+
+#global_leaderboard_button{
+    margin-left: 60%;
+} */
+
+
 .leaderboard-user-icon {
     height: 25px;
     width: 25px;
