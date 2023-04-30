@@ -92,7 +92,7 @@ if(loginForm){
       //     event.preventDefault();
       // }
 
-      if(passwordInput !== confirmPasswordInput){
+      if(passwordInput.value !== confirmPasswordInput.value){
           errorDiv.innerHTML = "The two passwords are not equal to each other!"
           errorDiv.hidden = false;
           event.preventDefault();
