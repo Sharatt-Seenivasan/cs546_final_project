@@ -8,6 +8,10 @@ body {
     background-repeat: no-repeat;
 }
 
+.error {
+    color: red;
+}
+
 
 /*Use this section for styles that apply to the homepage*/
 #profile_container{
