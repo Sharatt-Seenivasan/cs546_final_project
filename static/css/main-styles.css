@@ -19,6 +19,11 @@ body {
     width: 50px;
 }
 
+.homepage_user_icon{
+    height: 100px;
+    width: 100px;
+} 
+
 #homepage_login_button{
     margin-top: 20px;
     margin-right: -100px;
@@ -99,6 +104,8 @@ body {
     margin: auto;
     width: 50%;
 }
+
+/*Use this section for styles that apply to the gameplay*/
 
 #timer{
     background: transparent;
