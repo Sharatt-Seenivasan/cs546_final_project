@@ -13,7 +13,7 @@ import {
   objsEqual,
 } from "../helpers.js";
 
-const createUser = async ({ username, hashed_password } = {}) => {
+const createUser = async (username, hashed_password) => {
   const __name = createUser.name;
   username = checkUserName(username, `username at ${__name}`);
   hashed_password = checkStr(hashed_password, `hashed_password at ${__name}`);
@@ -364,14 +364,14 @@ const topNthLocalUsersByHighScore = async (n, countryCode, city) => {
       .sort({ high_score: -1 })
       .limit(n)
       .toArray();
-    if (topUsers.length === 0) throw `No users in ${countryCode}`;
+    //if (topUsers.length === 0) throw `No users in ${countryCode}`;
   } else {
     topUsers = await userCollection
       .find({ "geocode.countryCode": countryCode, "geocode.city": city })
       .sort({ high_score: -1 })
       .limit(n)
       .toArray();
-    if (topUsers.length === 0) throw `No users in ${city}, ${countryCode}`;
+    //if (topUsers.length === 0) throw `No users in ${city}, ${countryCode}`;
   }
   if (!topUsers)
     throw `Could not get top ${n} users in ${city}, ${countryCode}`;

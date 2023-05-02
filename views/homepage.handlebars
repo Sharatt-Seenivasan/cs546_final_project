@@ -1,0 +1,35 @@
+<main>
+    <div class="container" id = "profile_container">
+        {{#if user}} 
+             <a href="/users/user/profile" class="btn btn-link" id = "user_icon_button">
+                {{#if user.icon}}
+                    <img src={{user.icon}} alt="User icon" class="homepage_user_icon">
+                {{else}}
+                    <img src="/static/images/default_bird_icon.jpg" alt="User Icon" class="homepage_user_icon">
+                {{/if}}
+            </a>
+        {{else}}
+            <a class="btn btn-dark btn-lg" href="/users/login" role="button" id ="homepage_login_button">Log In</a>
+        {{/if}}
+    </div>
+    <div class="container" id = "title_graphic_container">
+        <img alt = "Who's that Bird!?" src="/static/images/whos_that_bird_logo.png" id = "homepage_splash_title">
+    </div>
+    <div class="container" id = "homepage_bird_picture">
+        <img alt = "Picture of a Pigeon" src="/static/images/pigeon_picture.jpg" id = "title_pigeon_picture">
+    </div>
+    <div class="container" id = "main_buttons">
+        <div class = "play_button">
+            <a href="/users/gamestart" class="btn btn-link" id = "homepage_play_button">
+                <img src="/static/images/play_button.png" alt="Play Button" class="play_button_image">
+            </a>
+        </div>
+        
+        <div class = "leaderboard_button">
+            <a href="/users/leaderboard/global" class="btn btn-link" id = "homepage_leaderboard_button">
+            <img src="/static/images/leaderboard_button.png" alt="Leaderboard Button" class="leaderboard_button_image">
+        </a>
+    </div>
+        
+    </div>
+</main>

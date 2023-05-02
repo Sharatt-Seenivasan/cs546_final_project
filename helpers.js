@@ -1,11 +1,12 @@
 import { ObjectId } from "mongodb";
+import xss from "xss";
 
 function checkStr(str, strName) {
   if (!str) throw `No string provided for ${strName}`;
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
   if (str.length === 0) throw `${strName} is empty`;
-  return str; // trimmed
+  return xss(str); // trimmed
 }
 
 function checkUserName(username) {
@@ -15,7 +16,7 @@ function checkUserName(username) {
   if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
     throw "Username cannot contain special characters except underscore and dash";
 
-  return username; // trimmed
+  return xss(username); // trimmed
 }
 
 function checkPassword(password) {
@@ -32,13 +33,13 @@ function checkPassword(password) {
   if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
     throw "Password must contain at least one special character";
 
-  return password;
+  return xss(password);
 }
 
 function checkId(id, idName) {
   id = checkStr(id, idName); // trimmed
   if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
-  return id; // trimmed
+  return xss(id); // trimmed
 }
 
 function checkUrl(url, urlName, minimumLength = 0) {
@@ -54,7 +55,7 @@ function checkUrl(url, urlName, minimumLength = 0) {
   if (url.split("//")[1].length < minimumLength)
     throw `${urlName} is too short`;
 
-  return url; // trimmed and replaced spaces with %20
+  return xss(url); // trimmed and replaced spaces with %20
 }
 
 function checkImgUrl(url, imgName) {
@@ -71,17 +72,17 @@ function checkImgUrl(url, imgName) {
     )}`;
   }
 
-  return url; // trimmed and replaced spaces with %20
+  return xss(url); // trimmed and replaced spaces with %20
 }
 
 function checkCountryCode(countryCode, countryCodeName) {
   countryCode = checkStr(countryCode, countryCodeName);
-  return countryCode; // trimmed
+  return xss(countryCode); // trimmed
 }
 
 function checkCity(city, cityName) {
   city = checkStr(city, cityName);
-  return city.toLowerCase(); // trimmed and lowercased
+  return xss(city.toLowerCase()); // trimmed and lowercased
 }
 
 function checkZipCode(zipCode, zipCodeName) {
@@ -89,7 +90,7 @@ function checkZipCode(zipCode, zipCodeName) {
   if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
   if (zipCode.match(/\d{5}/g)[0] !== zipCode)
     throw `${zipCodeName} must contain only digits`;
-  return zipCode; // trimmed
+  return xss(zipCode); // trimmed
 }
 
 function checkGeoCode(geocode, geocodeName) {
@@ -108,12 +109,12 @@ function checkGeoCode(geocode, geocodeName) {
   if (!countryCode) throw `${geocodeName} country code is missing`;
   if (!city) throw `${geocode} city is missing`;
 
-  geocode.country = checkStr(geocode.country, `${geocodeName} country`);
-  geocode.countryCode = checkCountryCode(
+  geocode.country = xss(checkStr(geocode.country, `${geocodeName} country`));
+  geocode.countryCode = xss(checkCountryCode(
     geocode.countryCode,
     `${geocodeName} countryCode`
-  );
-  geocode.city = checkCity(geocode.city, `${geocodeName} city`);
+  ));
+  geocode.city = xss(checkCity(geocode.city, `${geocodeName} city`));
 
   return geocode; // have country, countryCode, city trimmed
 }
@@ -294,4 +295,5 @@ export {
   randomizeArray,
   checkPassword,
   checkUserName,
+  checkZipCode
 };
