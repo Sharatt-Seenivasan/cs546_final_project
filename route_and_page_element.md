@@ -2,15 +2,16 @@
 
 > Any client-side problem(400+), re-render the page with additional error, except 403
 >
-> - res.status(400).render('original_page',{errors:[error1,...]})
->
+> - ~~res.status(400).render('original_page',{errors:[error1,...]})~~
+> - res.status(400).render('original_page',{error:xxx, title:xxx});
 > - error passed from route to handlebars as String[] errors
 > - if 403 is applicable
 >   - redirect to an error page telling user that he is not authorized
 >
-> Any server-side problem(500+), send "Internal Server Error" with specific error
->
-> - res.status(500).send("Internal Server Error:", error)
+> ~~Any server-side problem(500+), send "Internal Server Error" with specific error~~
+> Any server side problem(500+), re-render the page with additional error
+> - ~~res.status(500).send("Internal Server Error:", error)~~
+> - res.status(500).render('original_page',{error:xxx, title:xxx});
 
 # /user
 
