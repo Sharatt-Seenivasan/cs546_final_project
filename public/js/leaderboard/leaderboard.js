@@ -31,6 +31,7 @@ $(document).on('submit', '#location-search-form',function(event) {
         event.preventDefault(); 
         var citySearchBar = $('#citySearchBar').val(); 
         var countryInput= $('#countryInput').val();
+        var errorDiv = $('#error')
     
         if(citySearchBar && citySearchBar !== undefined && countryInput !== 'invalid' && checkCity(citySearchBar,citySearchBar)) {
             $.ajax({
@@ -40,6 +41,9 @@ $(document).on('submit', '#location-search-form',function(event) {
             }).then(function (response) {
                 fillLeaderboardTable(response)
             });
+        }
+        else {
+            errorDiv.html("The country and/or city selected is invalid!")
         }
 });
 
