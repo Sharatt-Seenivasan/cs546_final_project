@@ -5,6 +5,7 @@ import session from "express-session";
 import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { saveLastPage } from "./middleware.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -25,6 +26,11 @@ const hbs = exphbs.create({
   partialsDir: ["views/partials/"], // by default
 });
 
+
+hbs.handlebars.registerHelper('equal', function(value1, value2) {
+  return value1 === value2;
+})
+
 app.use(session({
   name: 'AuthCookie',
   secret:'some secret string!',
@@ -36,12 +42,18 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  name: 'AuthCookie',
-  secret: 'some secret string!',
-  resave: false,
-  saveUninitialized: true
-}));
+
+/*redirect middleware start*/
+app.use(saveLastPage)
+app.use('/users/login',loginRedirect)
+app.use('/users/signup',registerRedirect)
+app.use('/users/logout',logoutRedirect)
+app.use('/users/gameplay',gameplayRedirect)
+app.use('/users/gameresult',gameResultRedirect)
+
+/*redirect middleware end*/
+
+
 app.engine("handlebars", hbs.engine);
 app.set("views", __dirname + "/views"); // by default
 app.set("view engine", "handlebars");
