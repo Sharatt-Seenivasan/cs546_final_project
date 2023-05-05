@@ -448,4 +448,7 @@ router.route("/logout").get((req, res) => {
   res.render("logout", { username });
 });
 
+router.route("/quiz").get(async (req, res) => {
+});
+
 export default router;
