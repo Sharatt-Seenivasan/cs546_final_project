@@ -26,13 +26,13 @@ export async function logoutRedirect(req, res, next){
 
 
 export async function gameplayRedirect(req, res, next){
-    if(req.session.lastPage !== '/users/gamestart' &&  req.session.lastPage !== '/users/gameplay'){
+    if(req.session.lastPage !== '/game/gamestart' &&  req.session.lastPage !== '/users/gameplay'){
         return res.redirect('/');
     }
 }
 
 export async function gameResultRedirect(req, res, next){
-    if(req.session.lastPage !== '/users/gameplay'){
+    if(req.session.lastPage !== '/game/gameplay'){
         return res.redirect('/');
     }
 }
