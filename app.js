@@ -43,7 +43,7 @@ app.use("/static", express.static(__dirname + "/static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/*redirect middleware start*/
+/*redirect middleware start
 app.use(saveLastPage)
 app.use('/users/login',loginRedirect)
 app.use('/users/signup',registerRedirect)
@@ -51,7 +51,7 @@ app.use('/users/logout',logoutRedirect)
 app.use('/users/gameplay',gameplayRedirect)
 app.use('/users/gameresult',gameResultRedirect)
 
-/*redirect middleware end*/
+redirect middleware end*/
 
 
 app.engine("handlebars", hbs.engine);

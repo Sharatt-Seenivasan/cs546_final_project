@@ -236,24 +236,6 @@ router.
       }
       let score = req.session.score;
       return res.render('game_question', {title: 'Quiz',question : questions[index],index : index+1,score : score,time});
-      if(!req.session.questions || !req.session.timer){
-        res.redirect('/users/gamestart');
-      }else{
-        let questions = req.session.questions;
-        let index = req.session.index;
-        let time = req.session.timer;
-        if(!req.session.score){
-            req.session.score=0;
-        }
-        if(questions.length<=index){
-            if(req.session.timer>0){
-                req.session.score = (req.session.score)*(60/(60-req.session.timer));
-            }
-            res.redirect('/users/gameresult');
-        }
-        let score = req.session.score;
-        return res.render('game_question', {title: 'Quiz',question : questions[index],index : index+1,score : score,time});
-      }
       })
   .post(async(req,res)=>{
       let questions = req.session.questions;
@@ -338,7 +320,6 @@ router
       return res.status(500).render("login",{title: "Login", error: error})
       //return res.status(500).send("Internal Server Error:", error);
     }
-
     if (!user)
       return res.status(400).render("login", {
         title: "Login",
@@ -354,81 +335,6 @@ router
     req.session.user = { _id: user._id, username: user.username };
     return res.redirect("/user/profile");
   });
-    if(!req.session.questions){
-      res.redirect('/users/gamestart')
-    }else{
-        if(req.session.user){
-            let questions = req.session.questions;
-            let score = req.session.score;
-            let user =req.session.user;
-            for(let i=0;i<index;i++){
-                if(i<questions.length){
-                    let birdid = questions[i]['birdid'];
-                    await updatePlayerInfoById(user['_id'],{
-                      $pushLastQuestions: { birdid},
-                    });
-                }
-            }
-            delete req.session['questions'];
-            delete req.session['index'];
-            delete req.session['score'];
-            delete req.session['timer'];
-            res.render('game_end',{score});
-        }
-        else{
-            let score = req.session.score;
-            delete req.session['questions'];
-            delete req.session['index'];
-            delete req.session['score'];
-            delete req.session['timer'];
-            res.render('game_end',{score});
-        }
-      }
-      });
-      router
-      .route("/login")
-      .get(async (req, res) => {
-        const userId = req.session.user && req.session.user._id;
-        if (userId) return res.redirect("/user/user_profile");
-        return res.render("login", { title: "Login" });
-      })
-      .post(async (req, res) => {
-        const userId = req.session.user && req.session.user._id;
-        if (userId) return res.redirect("/user/user_profile");
-    
-        let { username, password } = req.body;
-        try {
-          username = checkUserName(username);
-          password = checkPassword(password);
-        } catch (error) {
-          return res
-            .status(400)
-            .render("login", { title: "Login", errors: [error] });
-        }
-    
-        let user;
-        try {
-          user = await getUserByUserName(username);
-        } catch (error) {
-          return res.status(500).send("Internal Server Error:", error);
-        }
-    
-        if (!user)
-          return res.status(400).render("login", {
-            title: "Login",
-            errors: ["Either username or password is incorrect!"],
-          });
-        if (!(await bcrypt.compare(password, user.hashed_password))) {
-          return res.status(400).render("login", {
-            title: "Login",
-            errors: ["Either username or password is incorrect!"],
-          });
-        }
-    
-        req.session.user = { _id: user._id, username: user.username };
-        return res.redirect("/user/user_profile")
-      });
-    
 router
   .route("/user/profile")
   .get(async (req, res) => {
