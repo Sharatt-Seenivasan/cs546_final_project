@@ -1,5 +1,5 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
+import bcrypt, { compareSync } from "bcrypt";
 import {
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
@@ -185,21 +185,24 @@ router
 router.
   route('/gameplay')
   .get(async (req, res) => {
-      let questions = req.session.questions;
-      let index = req.session.index;
-      let time = req.session.timer;
-      console.log(time);
-      if(!req.session.score){
-          req.session.score=0;
+      if(!req.session.questions || !req.session.timer){
+        res.redirect('/users/gamestart');
+      }else{
+        let questions = req.session.questions;
+        let index = req.session.index;
+        let time = req.session.timer;
+        if(!req.session.score){
+            req.session.score=0;
+        }
+        if(questions.length<=index){
+            if(req.session.timer>0){
+                req.session.score = (req.session.score)*(60/(60-req.session.timer));
+            }
+            res.redirect('/users/gameresult');
+        }
+        let score = req.session.score;
+        return res.render('game_question', {title: 'Quiz',question : questions[index],index : index+1,score : score,time});
       }
-      if(questions.length<=index){
-          if(req.session.timer>0){
-              req.session.score = (req.session.score)*(60/(60-req.session.timer));
-          }
-          res.redirect('/users/gameresult');
-      }
-      let score = req.session.score;
-      return res.render('game_question', {title: 'Quiz',question : questions[index],index : index+1,score : score,time});
       })
   .post(async(req,res)=>{
       let questions = req.session.questions;
@@ -227,31 +230,35 @@ router.
 router.
   route('/gameresult')
   .get(async (req, res) => {
-      if(req.session.user){
-          let questions = req.session.questions;
-          let score = req.session.score;
-          let user =req.session.user;
-          for(let i=0;i<index;i++){
-              if(i<questions.length){
-                  let birdid = questions[i]['birdid'];
-                  await updatePlayerInfoById(user['_id'],{
-                    $pushLastQuestions: { birdid},
-                  });
-              }
-          }
-          delete req.session['questions'];
-          delete req.session['index'];
-          delete req.session['score'];
-          delete req.session['timer'];
-          res.render('game_end',{score});
-      }
-      else{
-          let score = req.session.score;
-          delete req.session['questions'];
-          delete req.session['index'];
-          delete req.session['score'];
-          delete req.session['timer'];
-          res.render('game_end',{score});
+    if(!req.session.questions){
+      res.redirect('/users/gamestart')
+    }else{
+        if(req.session.user){
+            let questions = req.session.questions;
+            let score = req.session.score;
+            let user =req.session.user;
+            for(let i=0;i<index;i++){
+                if(i<questions.length){
+                    let birdid = questions[i]['birdid'];
+                    await updatePlayerInfoById(user['_id'],{
+                      $pushLastQuestions: { birdid},
+                    });
+                }
+            }
+            delete req.session['questions'];
+            delete req.session['index'];
+            delete req.session['score'];
+            delete req.session['timer'];
+            res.render('game_end',{score});
+        }
+        else{
+            let score = req.session.score;
+            delete req.session['questions'];
+            delete req.session['index'];
+            delete req.session['score'];
+            delete req.session['timer'];
+            res.render('game_end',{score});
+        }
       }
       });
       router
@@ -295,7 +302,7 @@ router.
         }
     
         req.session.user = { _id: user._id, username: user.username };
-        return res.redirect("/user/user_profile");
+        return res.redirect("/user/user_profile")
       });
     
     router
