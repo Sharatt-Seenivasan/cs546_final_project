@@ -1,56 +1,56 @@
-// const geocoder = require('geocoder');
+import {  checkPassword, checkUserName, checkImgUrl} from "../helpers.js";
 
-// function populateCitiesByCountry(country) {
-//   geocoder.geocode(country, function(err, data) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       const cities = data.results
-//         .map(result => result.address_components)
-//         .flat()
-//         .filter(component => component.types.includes('locality'))
-//         .map(city => city.long_name);
+const profileForm = document.getElementById("profile-form");
 
-//       const citySelect = document.getElementById('city-select');
+if(profileForm){
+    profileForm.addEventListener('submit', (event) => {
+        const username= document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm-password");
+        const icon= document.getElementById("icon");
+        const country= document.getElementById("country-select");
+        const city= document.getElementById("userCity");
+        const error= document.getElementById("error");
 
-//       citySelect.innerHTML = '';
-//       cities.forEach(city => {
-//         const option = document.createElement('option');
-//         option.value = city;
-//         option.text = city;
-//         citySelect.appendChild(option);
-//       });
-//     }
-//   });
-// }
+        error.innerHTML = '';
+        error.hidden = true;
 
+        if(!checkUserName(username)){
+            error.innerHTML= "Username is invalid!";
+            error.hidden= false;
+            event.preventDefault();
+        }
 
-// function populateCountries() {
+        if(!checkPassword(passwordInput)){
+            error.innerHTML= "Password is invalid!";
+            error.hidden= false;
+            event.preventDefault();
+        }
 
-//   geocoder.geocode('countries', function(err, data) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       const countries = data.results
-//         .map(result => result.address_components)
-//         .flat()
-//         .filter(component => component.types.includes('country'))
-//         .map(country => country.long_name);
+        if(passwordInput.value !== confirmPasswordInput.value){
+            error.innerHTML= "Passwords do not match!";
+            error.hidden= false;
+            event.preventDefault();
+        }
 
-//       const countrySelect = document.getElementById('country-select');
-//       countries.forEach(country => {
-//         const option = document.createElement('option');
-//         option.value = country;
-//         option.text = country;
-//         countrySelect.appendChild(option);
-//       });
+        if(!checkImgUrl(icon)){
+            error.innerHTML= "Icon is invalid!";
+            error.hidden= false;
+            event.preventDefault();
+        }
 
-//       countrySelect.addEventListener('change', function(event) {
-//         const selectedCountry = event.target.value;
-//         populateCitiesByCountry(selectedCountry);
-//       });
-//     }
-//   });
-// }
+        if(country.value === "Select Country"){
+            error.innerHTML= "Country is invalid!";
+            error.hidden= false;
+            event.preventDefault();
+        }
 
-// populateCountries();
+        if(!city.value || city.value === undefined){
+            error.innerHTML= "City is invalid!";
+            error.hidden= false;
+            event.preventDefault();
+        }
+
+        
+    });
+}
