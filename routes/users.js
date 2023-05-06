@@ -155,15 +155,16 @@ router
     try {
       user = await getUserByUserName(username);
     } catch (error) {
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
       //return res.status(500).render("login",{title: "Login", error: error})
       //return res.status(500).send("Internal Server Error:", error);
     }
-    if (!user)
+    if (!user) {
       return res.status(400).render("login", {
         title: "Login",
         error: "Either username or password is incorrect!",
       });
+    }
     if (!(await bcrypt.compare(password, user.hashed_password))) {
       return res.status(400).render("login", {
         title: "Login",
@@ -205,50 +206,50 @@ router
     //     }
     //   }
     // });
-      router
-      .route("/login")
-      .get(async (req, res) => {
-        const userId = req.session.user && req.session.user._id;
-        if (userId) return res.redirect("/user/profile");
-        return res.render("login", { title: "Login" });
-      })
-      .post(async (req, res) => {
-        const userId = req.session.user && req.session.user._id;
-        if (userId) return res.redirect("/user/profile");
+      // router
+      // .route("/login")
+      // .get(async (req, res) => {
+      //   const userId = req.session.user && req.session.user._id;
+      //   if (userId) return res.redirect("/user/profile");
+      //   return res.render("login", { title: "Login" });
+      // })
+      // .post(async (req, res) => {
+      //   const userId = req.session.user && req.session.user._id;
+      //   if (userId) return res.redirect("/user/profile");
     
-        let { username, password } = req.body;
-        try {
-          username = checkUserName(username);
-          password = checkPassword(password);
-        } catch (error) {
-          return res
-            .status(400)
-            .render("login", { title: "Login", errors: [error] });
-        }
+      //   let { username, password } = req.body;
+      //   try {
+      //     username = checkUserName(username);
+      //     password = checkPassword(password);
+      //   } catch (error) {
+      //     return res
+      //       .status(400)
+      //       .render("login", { title: "Login", errors: [error] });
+      //   }
     
-        let user;
-        try {
-          user = await getUserByUserName(username);
-        } catch (error) {
-          return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-          //return res.status(500).send("Internal Server Error:", error);
-        }
+      //   let user;
+      //   try {
+      //     user = await getUserByUserName(username);
+      //   } catch (error) {
+      //     return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //     //return res.status(500).send("Internal Server Error:", error);
+      //   }
     
-        if (!user)
-          return res.status(400).render("login", {
-            title: "Login",
-            errors: ["Either username or password is incorrect!"],
-          });
-        if (!(await bcrypt.compare(password, user.hashed_password))) {
-          return res.status(400).render("login", {
-            title: "Login",
-            errors: ["Either username or password is incorrect!"],
-          });
-        }
+      //   if (!user)
+      //     return res.status(400).render("login", {
+      //       title: "Login",
+      //       errors: ["Either username or password is incorrect!"],
+      //     });
+      //   if (!(await bcrypt.compare(password, user.hashed_password))) {
+      //     return res.status(400).render("login", {
+      //       title: "Login",
+      //       errors: ["Either username or password is incorrect!"],
+      //     });
+      //   }
     
-        req.session.user = { _id: user._id, username: user.username };
-        return res.redirect("/user/profile")
-      });
+      //   req.session.user = { _id: user._id, username: user.username };
+      //   return res.redirect("/user/profile")
+      // });
     
 router
   .route("/user/profile")
