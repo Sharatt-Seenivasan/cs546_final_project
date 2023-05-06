@@ -42,13 +42,13 @@ const getQuestions4User = async (
   if (countryCode)
     countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
   if (city) city = checkCity(city, `city at ${__name}`);
-
+  
   const theUser = await getUserById(userId);
   const qAnswered = theUser.last_questions;
   const qSubmitted = theUser.submission;
 
   let allBirds, unseenBirds;
-  if (ifGlobal) {
+  if (ifGlobal || (!countryCode && !city && !theUser.geocode.countryCode && !theUser.geocode.city) ) {
     allBirds = await getAllBirds();
   } else if (!countryCode && !city) {
     allBirds = await getLocalBirds(
