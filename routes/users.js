@@ -203,12 +203,12 @@ router
       .route("/login")
       .get(async (req, res) => {
         const userId = req.session.user && req.session.user._id;
-        if (userId) return res.redirect("/user/user_profile");
+        if (userId) return res.redirect("/user/profile");
         return res.render("login", { title: "Login" });
       })
       .post(async (req, res) => {
         const userId = req.session.user && req.session.user._id;
-        if (userId) return res.redirect("/user/user_profile");
+        if (userId) return res.redirect("/user/profile");
     
         let { username, password } = req.body;
         try {
@@ -240,7 +240,7 @@ router
         }
     
         req.session.user = { _id: user._id, username: user.username };
-        return res.redirect("/user/user_profile")
+        return res.redirect("/user/profile")
       });
     
 router
