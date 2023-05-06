@@ -50,11 +50,12 @@ const getBirdById = async (birdId) => {
 
 const getAllBirdsNames = async () => {
   const birdsCollection = await birds();
-  const allBirdsAsName = await birdsCollection
-    .find({})
-    .project({ name: 1 })
-    .toArray();
-  if (!allBirdsAsName) throw `Could not get all birds`;
+  const allBirds = await birdsCollection.find({}).toArray();
+  let arrayNames=[]
+  for(let index=0;index<allBirds.length;index++){
+    arrayNames.push(allBirds[index]['names'][0]);
+  }
+  if (!allBirds) throw `Could not get all birds`;
   return arrayNames;
 };
 
