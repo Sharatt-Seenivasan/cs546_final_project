@@ -450,7 +450,7 @@ router
       }
     }
 
-    if (newCountryCode && newCity && newZipCode) {
+    if (newCountryCode || newCity || newZipCode) {
       try {
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
