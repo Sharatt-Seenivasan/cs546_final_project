@@ -71,10 +71,10 @@ const getQuestions4User = async (
     while (options.length < numberOfOptions && unseenBirds.length > 0) {
       rdmUnseenBirdIdx = Math.floor(Math.random() * unseenBirds.length);
       const theBird = unseenBirds[rdmUnseenBirdIdx];
-      const birdName = theBird.names[0]; // take 1st name by default
-      options.push(birdName);
+      const birdNames = theBird.names[0]; // take 1st name by default
+      options.push(birdNames);
       if (options.length === rdmAnswerIdx + 1) {
-        q["answer"] = birdName;
+        q["answer"] = birdNames;
         q["image"] = theBird.url;
         q['difficulty'] = theBird.difficulty;
         q['birdid'] = theBird._id;
@@ -146,10 +146,10 @@ const getQuestions4Guest = async ({
     while (options.length < numberOfOptions && allBirds.length > 0) {
       rdmBirdIdx = Math.floor(Math.random() * allBirds.length);
       const theBird = allBirds[rdmBirdIdx];
-      const birdName = theBird.names[0]; // take 1st name by default
-      options.push(birdName);
+      const birdNames = theBird.names[0]; // take 1st name by default
+      options.push(birdNames);
       if (options.length === rdmAnswerIdx + 1) {
-        q["answer"] = birdName;
+        q["answer"] = birdNames;
         q["image"] = theBird.url;
         q['difficulty'] = theBird.difficulty;
         q['birdid'] = theBird._id;
