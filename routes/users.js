@@ -354,37 +354,37 @@ router
     req.session.user = { _id: user._id, username: user.username };
     return res.redirect("/user/profile");
   });
-    if(!req.session.questions){
-      res.redirect('/users/gamestart')
-    }else{
-        if(req.session.user){
-            let questions = req.session.questions;
-            let score = req.session.score;
-            let user =req.session.user;
-            for(let i=0;i<index;i++){
-                if(i<questions.length){
-                    let birdid = questions[i]['birdid'];
-                    await updatePlayerInfoById(user['_id'],{
-                      $pushLastQuestions: { birdid},
-                    });
-                }
-            }
-            delete req.session['questions'];
-            delete req.session['index'];
-            delete req.session['score'];
-            delete req.session['timer'];
-            res.render('game_end',{score});
-        }
-        else{
-            let score = req.session.score;
-            delete req.session['questions'];
-            delete req.session['index'];
-            delete req.session['score'];
-            delete req.session['timer'];
-            res.render('game_end',{score});
-        }
-      }
-      });
+    // if(!req.session.questions){
+    //   res.redirect('/users/gamestart')
+    // }else{
+    //     if(req.session.user){
+    //         let questions = req.session.questions;
+    //         let score = req.session.score;
+    //         let user =req.session.user;
+    //         for(let i=0;i<index;i++){
+    //             if(i<questions.length){
+    //                 let birdid = questions[i]['birdid'];
+    //                 await updatePlayerInfoById(user['_id'],{
+    //                   $pushLastQuestions: { birdid},
+    //                 });
+    //             }
+    //         }
+    //         delete req.session['questions'];
+    //         delete req.session['index'];
+    //         delete req.session['score'];
+    //         delete req.session['timer'];
+    //         res.render('game_end',{score});
+    //     }
+    //     else{
+    //         let score = req.session.score;
+    //         delete req.session['questions'];
+    //         delete req.session['index'];
+    //         delete req.session['score'];
+    //         delete req.session['timer'];
+    //         res.render('game_end',{score});
+    //     }
+    //   }
+    // });
       router
       .route("/login")
       .get(async (req, res) => {
