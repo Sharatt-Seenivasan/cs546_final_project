@@ -12,6 +12,10 @@ body {
     color: red;
 }
 
+#error {
+    color: red;
+}
+
 
 /*Use this section for styles that apply to the homepage*/
 #profile_container{

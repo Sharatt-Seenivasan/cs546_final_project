@@ -43,7 +43,7 @@ router
     try {
       user = await getUserById(userId);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
     return res.render("user", {
@@ -90,7 +90,8 @@ router
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
       //return res.status(500).send("Internal Server Error:", error);
-      return res.status(500).render("signup",{title: "Sign Up", error: error})
+      //return res.status(500).render("signup",{title: "Sign Up", error: error})
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
     let user;
@@ -105,7 +106,8 @@ router
     } catch (error) {
         if(!error.includes("not found")) {
           //return res.status(500).send("Internal Server Error:", error);
-          return res.status(500).render("signup",{title: "Sign Up", error: error})
+          //return res.status(500).render("signup",{title: "Sign Up", error: error})
+          return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         }
     }
 
@@ -119,7 +121,8 @@ router
       req.session.user = { _id: newUser._id, username: newUser.username };
       return res.redirect('/login');
     } catch (error) {
-      return res.status(500).render("signup",{title: "Sign Up", error: error})
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //return res.status(500).render("signup",{title: "Sign Up", error: error})
     }
     // const newUser = await createUser(username, password);
     // req.session.user = { _id: newUser._id, username: newUser.username };
@@ -152,7 +155,8 @@ router
     try {
       user = await getUserByUserName(username);
     } catch (error) {
-      return res.status(500).render("login",{title: "Login", error: error})
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //return res.status(500).render("login",{title: "Login", error: error})
       //return res.status(500).send("Internal Server Error:", error);
     }
     if (!user)
@@ -226,7 +230,8 @@ router
         try {
           user = await getUserByUserName(username);
         } catch (error) {
-          return res.status(500).send("Internal Server Error:", error);
+          return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+          //return res.status(500).send("Internal Server Error:", error);
         }
     
         if (!user)
@@ -256,7 +261,8 @@ router
       user = await getUserById(req.session.user._id);
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: error})
-      return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
     return res.render("user_profile", {
@@ -391,7 +397,8 @@ router
       user = await getUserById(req.session.user._id);
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
-      return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
     let {
@@ -475,7 +482,8 @@ router
       });
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
-      return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
     if (!geocodes) {
@@ -505,7 +513,8 @@ router
       try {
         user = await getUserByUserName(userId);
       } catch (error) {
-        return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         //res.status(500).send("Internal Server Error");
       }
   
@@ -561,7 +570,8 @@ router
           { ifFilterUndefined: false }
         );
       } catch (error) {
-        return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
   
@@ -588,7 +598,8 @@ router
           difficulty: bird_difficulty,
         });
       } catch (error) {
-        return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
   
@@ -598,7 +609,8 @@ router
           $pushSubmission: { birdId },
         });
       } catch (error) {
-        return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
 
@@ -610,7 +622,8 @@ router
           { ifFilterUndefined: false }
         );
       } catch (error) {
-        return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
 
