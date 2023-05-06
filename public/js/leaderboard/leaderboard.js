@@ -36,7 +36,7 @@ $(document).on('submit', '#location-search-form',function(event) {
         if(citySearchBar && citySearchBar !== undefined && countryInput !== 'invalid' && checkCity(citySearchBar,citySearchBar)) {
             $.ajax({
                 type: "POST",
-                url: '/users/leaderboard/local/',
+                url: '/leaderboard/local/',
                 data: {countryInput:countryInput ,citySearchBar: checkCity(citySearchBar,citySearchBar)}
             }).then(function (response) {
                 fillLeaderboardTable(response)

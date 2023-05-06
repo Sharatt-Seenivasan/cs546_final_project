@@ -100,6 +100,10 @@ body {
 }
 
 /*Use this section for styles that apply to the user profile*/
+#profile-form{
+    width:200px;
+    padding:20px;
+}
 
 
 /*Use this section for styles that apply to the signup page*/
@@ -170,7 +174,7 @@ body {
     width: 115px;
     height: 50px;
     text-decoration: none;
-    background: #4E9CAF;
+    background: black;
     padding: 10px;
     text-align: center;
     border-radius: 5px;

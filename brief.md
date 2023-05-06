@@ -182,16 +182,18 @@ console.log(toObj)
 
 ## ./data/users.js
 
-`createUser({ username, hashed_password, icon, geocode } = {})`
+~~`createUser({ username, hashed_password, icon, geocode } = {})`~~
+
+`createUser( username, hashed_password, icon, geocode } = {})`
 
 all args required
 
 - username: string. case INsensitive
 - hash_password: string. NO further validation
-- icon: string.
-  - validate supported extension, and supported protocols(http:// , https://)
-  - NO length validation
-- geocode: object
+- ~~icon: string.~~
+  - ~~validate supported extension, and supported protocols(http:// , https://)~~
+  - ~~NO length validation~~
+- ~~geocode: object~~
 
 `getUserById = async (userId)`
 
@@ -217,7 +219,7 @@ await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa0",{username:"Bob"});
 await updatePersonalInfoById("642bdbf502ce2ade5ce6bfa1",{username:"Daniel",hashed_password:"e0f4f767ac88a9303e7317843ac20be980665a36f52397e5b26d4cc2bf54011d",icon:"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",geocode:{}})
 ````
 
-`updatePlayerInfoById(operation, userId)`
+`updatePlayerInfoById(userId, operation)`
 
 e.g
 
@@ -225,15 +227,15 @@ e.g
 // only support $inc so far for scores, standing for increment
 // at least 1 score increment should be provided
 // increment of high_score should >= 0, lifetime_score should be non-negative after increment
-await updatePlayerInfoById({$inc:{high_score:10,lifetime_score:-2}},"642bdbf502ce2ade5ce6bfa0");
-await updatePlayerInfoById({$inc:{lifetime_score:8}},"642bdbf502ce2ade5ce6bfa1");
+await updatePlayerInfoById("642bdbf502ce2ade5ce6bfa0",{$inc:{high_score:10,lifetime_score:-2}});
+await updatePlayerInfoById("642bdbf502ce2ade5ce6bfa1",{$inc:{lifetime_score:8}});
 
 // $pushSubmission, $pullSubmission
 await updatePlayerInfoById("642bdbf502ce2ade5ce6bfa3",{$pushSubmission:{birdId:"642bdbf502ce2ade5ce6bfa2"}});
 await updatePlayerInfoById(,"642bdbf502ce2ade5ce6bfa5",{$pullSubmission:{birdId:"642bdbf502ce2ade5ce6bfa4"}});
 
 // $pushLastQuestions
-await updatePlayerInfo({$pushLastQuestions:{birdId:"642bdbf502ce2ade5ce6bfa6"}},"642bdbf502ce2ade5ce6bfa7");
+await updatePlayerInfo("642bdbf502ce2ade5ce6bfa7",{$pushLastQuestions:{birdId:"642bdbf502ce2ade5ce6bfa6"}});
 ```
 
 ~~`incrementScoresById(id, { high_score, lifetime_score } = {})`~~
@@ -338,3 +340,4 @@ await getQuestions4Guest({numberOfQuestions:2, numberOfOptions:6});
 await getQuestions4Guest({numberOfQuestions:2, numberOfOptions:6, countryCode:"US", city:"nEw yOrk"});
 ```
 
+​	
