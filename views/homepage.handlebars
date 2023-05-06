@@ -1,9 +1,9 @@
 <main>
     <div class="container" id = "profile_container">
         {{#if user}} 
-             <a href="/users/user/profile" class="btn btn-link" id = "user_icon_button">
-                {{#if user.icon}}
-                    <img src={{user.icon}} alt="User icon" class="homepage_user_icon">
+            <a href="/users/user/profile" class="btn btn-link" id = "user_icon_button">
+                {{#if icon}}
+                    <img src={{icon}} alt="User icon" class="homepage_user_icon">
                 {{else}}
                     <img src="/static/images/default_bird_icon.jpg" alt="User Icon" class="homepage_user_icon">
                 {{/if}}

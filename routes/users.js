@@ -5,7 +5,8 @@ import {
   topNthLocalUsersByHighScore,
   updatePlayerInfoById,
   getUserByUserName,
-  getUserById
+  getUserById,
+  updatePersonalInfoById
 } from "../data/users.js";
 import {
   checkUserName,
@@ -274,15 +275,123 @@ router
     });
   })
   .patch(async (req, res) => {
+    // const hasUserId = req.session.user && req.session.user._id;
+    // if (!hasUserId) return res.redirect("/login");
+
+    // let user;
+    // try {
+    //   user = await getUserByUserName(req.session.user._id);
+    // } catch (error) {
+    //   return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
+    //   //return res.status(500).send("Internal Server Error:", error);
+    // }
+
+    // let {
+    //   newUserName,
+    //   newPassword,
+    //   newConfirmPassword,
+    //   newIcon,
+    //   newCountryCode,
+    //   newCity,
+    //   newZipCode,
+    // } = req.body;
+
+    // const fields2Update = {};
+    // const errors = [];
+    // if (newUserName) {
+    //   try {
+    //     newUserName = checkUserName(newUserName);
+    //     if (newUserName === user.username)
+    //       throw "Username is the same as before!";
+    //     fields2Update["username"] = newUserName;
+    //   } catch (error) {
+    //     errors.push(error);
+    //   }
+    // }
+    // if (newPassword) {
+    //   try {
+    //     newPassword = checkPassword(newPassword);
+    //     if (newPassword !== newConfirmPassword)
+    //       throw "Password and Confirm Password are not the same!";
+    //     newPassword = await bcrypt.hash(newPassword, saltRounds);
+    //     if (newPassword === user.hashed_password)
+    //       throw "Password is the same as before!";
+    //     fields2Update["hashed_password"] = newPassword;
+    //   } catch (error) {
+    //     errors.push(error);
+    //   }
+    // }
+    // if (newIcon) {
+    //   try {
+    //     newIcon = checkImgUrl(newIcon, "Icon");
+    //     if ((newIcon = user.icon)) throw "Icon is the same as before!";
+    //     fields2Update["icon"] = newIcon;
+    //   } catch (error) {
+    //     errors.push(error);
+    //   }
+    // }
+    // if (newCountryCode || newCity || newZipCode) {
+    //   try {
+    //     newCountryCode = checkCountryCode(newCountryCode, `new country code`);
+    //     newCity = checkCity(newCity, `new city`);
+    //     newZipCode = checkZipCode(newZipCode, `new zip code`);
+    //     if (
+    //       newCountryCode === user.geocode.countryCode &&
+    //       newCity === user.geocode.city &&
+    //       newZipCode === user.geocode.zipCode
+    //     )
+    //       throw "country code, city and zip code are the same as before!";
+    //   } catch (error) {
+    //     errors.push(error);
+    //   }
+    // }
+
+    // if (fields2Update.length === 0)
+    //   return res.render("user_profile", { title: "User Profile", errors });
+    // if (errors.length > 0) {
+    //   return res.status(400).render("user_profile", {
+    //     title: "User Profile",
+    //     errors,
+    //   });
+    // }
+
+    // let geocodes;
+    // try {
+    //   geocodes = await geocoder.geocode({
+    //     countryCode: newCountryCode,
+    //     city: newCity,
+    //     zipcode: newZipCode,
+    //   });
+    // } catch (error) {
+    //   return res.status(500).render("user_profile",{title: "User Profile", error: error})
+    //   //return res.status(500).send("Internal Server Error:", error);
+    // }
+
+    // if (!geocodes) {
+    //   return res.status(400).render("user_profile", {
+    //     errors: ["no such location found based on the input!"],
+    //   });
+    // }
+    // if (geocodes.length > 1) {
+    //   return res.status(400).render("user_profile", {
+    //     errors: ["more than one location found based on the input!"],
+    //   });
+    // }
+
+    // fields2Update["geocode"] = geocodes[0];
+    // const updatedUser = await updatePersonalInfoById(userId, fields2Update);
+  })
+  .post(async (req, res) => {
+    // reserved for AJAX
     const hasUserId = req.session.user && req.session.user._id;
     if (!hasUserId) return res.redirect("/login");
 
     let user;
     try {
-      user = await getUserByUserName(req.session.user._id);
+      user = await getUserById(req.session.user._id);
     } catch (error) {
-      return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
-      //return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
+      return res.status(500).send("Internal Server Error:", error);
     }
 
     let {
@@ -322,14 +431,17 @@ router
     }
     if (newIcon) {
       try {
+        //console.log(newIcon)
         newIcon = checkImgUrl(newIcon, "Icon");
-        if ((newIcon = user.icon)) throw "Icon is the same as before!";
+        if ((newIcon === user.icon)) throw "Icon is the same as before!";
+
         fields2Update["icon"] = newIcon;
       } catch (error) {
         errors.push(error);
       }
     }
-    if (newCountryCode || newCity || newZipCode) {
+
+    if (newCountryCode && newCity && newZipCode) {
       try {
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
@@ -346,7 +458,7 @@ router
     }
 
     if (fields2Update.length === 0)
-      return res.render("user_profile", { title: "User Profile", errors });
+      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
     if (errors.length > 0) {
       return res.status(400).render("user_profile", {
         title: "User Profile",
@@ -362,8 +474,8 @@ router
         zipcode: newZipCode,
       });
     } catch (error) {
-      return res.status(500).render("user_profile",{title: "User Profile", error: error})
-      //return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
+      return res.status(500).send("Internal Server Error:", error);
     }
 
     if (!geocodes) {
@@ -378,10 +490,9 @@ router
     }
 
     fields2Update["geocode"] = geocodes[0];
-    const updatedUser = await updatePersonalInfoById(userId, fields2Update);
-  })
-  .post(async (req, res) => {
-    // reserved for AJAX
+    const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
+
+    return res.redirect("/user/profile")
   });
     
   router

@@ -2,6 +2,17 @@ import { ObjectId } from "mongodb";
 import xss from "xss";
 
 function checkStr(str, strName) {
+  // if(strName.includes("updatePersonalInfoById"))
+  // {
+  //   console.log("#")
+  //   console.log(strName)
+  //   console.log(str)
+  //   console.log(typeof str)
+  // }
+  // console.log("#")
+  // console.log(strName)
+  // console.log(str)
+  // console.log(typeof str)
   if (!str) throw `No string provided for ${strName}`;
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
@@ -43,6 +54,10 @@ function checkId(id, idName) {
 }
 
 function checkUrl(url, urlName, minimumLength = 0) {
+  // if(urlName.includes("updatePersonalInfoById")){
+  //   console.log("check url 2")
+  //   console.log(url)
+  // }
   url = checkStr(url, urlName); // trimmed
   url = url.replace(/\s/, "%20");
 
@@ -59,6 +74,10 @@ function checkUrl(url, urlName, minimumLength = 0) {
 }
 
 function checkImgUrl(url, imgName) {
+  // if (imgName.includes("icon")){
+  //   console.log("check url 1")
+  //   console.log(url)
+  // }
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
   const supportedExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
