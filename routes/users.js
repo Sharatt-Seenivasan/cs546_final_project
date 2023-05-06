@@ -466,15 +466,6 @@ router
       }
     }
 
-    if (Object.keys(fields2Update).length === 0)
-      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
-    if (errors.length > 0) {
-      return res.status(400).render("user_profile", {
-        title: "User Profile",
-        errors,
-      });
-    }
-
     let geocodes;
     try {
       geocodes = await geocoder.geocode({
@@ -500,6 +491,17 @@ router
     }
 
     fields2Update["geocode"] = geocodes[0];
+
+    if (Object.keys(fields2Update).length === 0) {
+      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
+    }
+    if (errors.length > 0) {
+      return res.status(400).render("user_profile", {
+        title: "User Profile",
+        errors,
+      });
+    }
+
     const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
 
     return res.redirect("/user/profile")
