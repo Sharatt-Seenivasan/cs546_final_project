@@ -455,6 +455,9 @@ router
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
         newZipCode = checkZipCode(newZipCode, `new zip code`);
+        console.log(newCountryCode)
+        console.log(newCity)
+        console.log(newZipCode)
         if (
           newCountryCode === user.geocode.countryCode &&
           newCity === user.geocode.city &&
@@ -479,7 +482,8 @@ router
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
-    if (!geocodes) {
+
+    if (!geocodes || geocodes.length === 0) {
       return res.status(400).render("user_profile", {
         errors: ["no such location found based on the input!"],
       });
@@ -502,8 +506,12 @@ router
       });
     }
 
-    const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
-
+    try {
+      const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
+    } catch (error) {
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+    }
+    
     return res.redirect("/user/profile")
   });
     
