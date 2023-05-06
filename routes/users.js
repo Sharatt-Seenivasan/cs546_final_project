@@ -414,12 +414,61 @@ router
           //return res.status(500).send("Internal Server Error:", error);
         }
       });
-    
-    router.route("/logout").get((req, res) => {
-      const userId = req.session.user && req.session.user._id;
-      const username = req.session.user && req.session.user.username;
-      req.session.destroy();
-      res.render("logout", { username });
-    });
-    
-    export default router;
+
+      geocodes = checkGeoCode(geocode, "Bird Geocode");
+      geocodes = extractKV_objArr(
+        geocode,
+        ["latitude", "longitude", "country", "countryCode", "city"],
+        { ifFilterUndefined: false }
+      );
+    } catch (error) {
+      return res.status(500).send("Internal Server Error:", error);
+    }
+
+    if (!geocodes) {
+      return res.status(400).render("bird_submission", {
+        errors: ["no location found based on given country and city"],
+      });
+    }
+    if (geocodes.length > 1) {
+      return res.status(400).render("bird_submission", {
+        errors: [
+          "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
+        ],
+      });
+    }
+
+    let birdId;
+    try {
+      birdId = await createBird({
+        userId: userId,
+        url: bird_img,
+        names: bird_names,
+        geocode: geocodes[0],
+        difficulty: bird_difficulty,
+      });
+    } catch (error) {
+      return res.status(500).send("Internal Server Error:", error);
+    }
+
+    let updatedPersonalInfo;
+    try {
+      updatedPersonalInfo = await updatePlayerInfoById(userId, {
+        $pushSubmission: { birdId },
+      });
+    } catch (error) {
+      return res.status(500).send("Internal Server Error:", error);
+    }
+  });
+
+router.route("/logout").get((req, res) => {
+  const userId = req.session.user && req.session.user._id;
+  const username = req.session.user && req.session.user.username;
+  req.session.destroy();
+  res.render("logout", { username });
+});
+
+router.route("/quiz").get(async (req, res) => {
+});
+
+export default router;
