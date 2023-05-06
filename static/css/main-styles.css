@@ -105,6 +105,14 @@ body {
     padding:20px;
 }
 
+#bird_form_link_profile{
+    font-size: 20px
+}
+
+#user_profile_logout{
+    font-size: 30px
+}
+
 
 /*Use this section for styles that apply to the signup page*/
 .sign-up-page{
