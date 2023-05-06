@@ -88,11 +88,11 @@ try {
 }
 
 try {
-  const negativeLifetimeScroeResult = await usersData.updatePlayerInfoById(
+  const negativeLifetimeScoreResult = await usersData.updatePlayerInfoById(
     allUserIds[0],
     { $incScores: { lifetime_score: -1000 } }
   );
-  console.log("Unexpected", negativeLifetimeScroeResult);
+  console.log("Unexpected", negativeLifetimeScoreResult);
 } catch (error) {
   console.log("Expected", error);
 }
