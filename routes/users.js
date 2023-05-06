@@ -1,9 +1,10 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
+import bcrypt, { compareSync } from "bcrypt";
 import {
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
   updatePlayerInfoById,
+  getUserByUserName
 } from "../data/users.js";
 import {
   checkUserName,
@@ -18,66 +19,17 @@ import {
   checkStrArr,
   extractKV_objArr,
 } from "../helpers.js";
-import { getUserByUserName, updatePersonalInfoById } from "../data/users.js";
 import { geocoderConfig } from "../config/settings.js";
+import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
 import NodeGeocoder from "node-geocoder";
 import xss from "xss";
+import {createUser} from "../data/users.js"
 import { createBird } from "../data/birds.js";
 const saltRounds = 16;
 const router = Router();
 const geocoder = NodeGeocoder(geocoderConfig);
 
-router
-  .route("/leaderboard/local")
-  .get(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    const userCountryCode =
-      req.session.user &&
-      req.session.user.geocode &&
-      req.session.user.geocode.countryCode;
-    const userCity =
-      req.session.user &&
-      req.session.user.geocode &&
-      req.session.user.geocode.city;
 
-    let leaderboard;
-    try {
-      if (userId)
-        leaderboard = await topNthLocalUsersByHighScore(
-          100,
-          userCountryCode,
-          userCity
-        );
-      else
-        leaderboard = await topNthLocalUsersByHighScore(100, "US", "New York");
-    } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
-    }
-
-    return res.render("leaderboard", {
-      title: "Local Leaderboard",
-      leaderboard,
-    });
-  })
-  .post(async (req, res) => {
-    // reserved for AJAX
-  });
-
-router.route("/leaderboard/global").get(async (req, res) => {
-  const userId = req.session.user && req.session.user._id;
-
-  let leaderboard;
-  try {
-    leaderboard = await topNthGlobalUsersByHighScore(100);
-  } catch (error) {
-    return res.status(500).send("Internal Server Error:", error);
-  }
-
-  return res.render("leaderboard", {
-    title: "Global Leaderboard",
-    leaderboard,
-  });
-});
 
 router
   .route("/user")
@@ -114,59 +66,75 @@ router
   .route("/signup")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/user_profile");
+    if (userId) return res.redirect("/user/profile");
     return res.render("signup", { title: "Sign Up" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/user_profile");
+    if (userId) return res.redirect("/user/profile");
 
-    let { username, password, confirm_password } = req.body;
+    let { username, password, confirmPassword } = req.body;
     try {
       username = checkUserName(username);
       password = checkPassword(password);
-      if (password !== confirm_password)
+      if (password !== confirmPassword)
         throw "Password and confirm password do not match!";
     } catch (error) {
       return res
         .status(400)
-        .render("signup", { title: "Sign Up", errors: [error] });
+        .render("signup", { title: "Sign Up", error: error});
     }
     try {
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("signup",{title: "Sign Up", error: error})
     }
 
     let user;
+    //user = await getUserByUserName(username);
     try {
       user = await getUserByUserName(username);
+      if (user)
+        return res.status(400).render("signup", {
+          title: "Sign Up",
+          error: "Username already exists!",
+        });
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+        if(!error.includes("not found")) {
+          //return res.status(500).send("Internal Server Error:", error);
+          return res.status(500).render("signup",{title: "Sign Up", error: error})
+        }
     }
 
-    if (user)
-      return res.status(400).render("signup", {
-        title: "Sign Up",
-        errors: ["Username already exists!"],
-      });
-
-    const newUser = await createUser(username, password);
-    req.session.user = { _id: newUser._id, username: newUser.username };
-
-    return res.redirect("/user/user_profile");
+    // if (user)
+    //   return res.status(400).render("signup", {
+    //     title: "Sign Up",
+    //     error: "Username already exists!",
+    //   });
+    try {
+      const newUser = await createUser(username, password);
+      req.session.user = { _id: newUser._id, username: newUser.username };
+      return res.redirect('/login');
+    } catch (error) {
+      return res.status(500).render("signup",{title: "Sign Up", error: error})
+    }
+    // const newUser = await createUser(username, password);
+    // req.session.user = { _id: newUser._id, username: newUser.username };
+  
+    //return res.redirect('/login');
   });
 
 router
   .route("/login")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/user_profile");
+    if (userId) return res.redirect("/user/profile");
     return res.render("login", { title: "Login" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/user_profile");
+    if (userId) return res.redirect("/user/profile");
 
     let { username, password } = req.body;
     try {
@@ -175,43 +143,43 @@ router
     } catch (error) {
       return res
         .status(400)
-        .render("login", { title: "Login", errors: [error] });
+        .render("login", { title: "Login", error: error });
     }
 
     let user;
     try {
       user = await getUserByUserName(username);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("login",{title: "Login", error: error})
+      //return res.status(500).send("Internal Server Error:", error);
     }
-
     if (!user)
       return res.status(400).render("login", {
         title: "Login",
-        errors: ["Either username or password is incorrect!"],
+        error: "Either username or password is incorrect!",
       });
     if (!(await bcrypt.compare(password, user.hashed_password))) {
       return res.status(400).render("login", {
         title: "Login",
-        errors: ["Either username or password is incorrect!"],
+        error: "Either username or password is incorrect!",
       });
     }
 
     req.session.user = { _id: user._id, username: user.username };
-    return res.redirect("/user/user_profile");
+    return res.redirect("/user/profile");
   });
-
 router
   .route("/user/profile")
   .get(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/login");
+    const hasUserId = req.session.user && req.session.user._id;
+    if (!hasUserId) return res.redirect("/login");
 
     let user;
     try {
-      user = await getUserByUserName(userId);
+      user = await getUserByUserName(req.session.user._id);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("user_profile",{title: "User Profile", errors: error})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     return res.render("user_profile", {
@@ -229,14 +197,15 @@ router
     });
   })
   .patch(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/login");
+    const hasUserId = req.session.user && req.session.user._id;
+    if (!hasUserId) return res.redirect("/login");
 
     let user;
     try {
-      user = await getUserByUserName(userId);
+      user = await getUserByUserName(req.session.user._id);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     let {
@@ -316,7 +285,8 @@ router
         zipcode: newZipCode,
       });
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("user_profile",{title: "User Profile", error: error})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     if (!geocodes) {
@@ -336,65 +306,115 @@ router
   .post(async (req, res) => {
     // reserved for AJAX
   });
-
-router
-  .route("/user/post")
-  .get(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/login");
-
-    let user;
-    try {
-      user = await getUserByUserName(userId);
-    } catch (error) {
-      res.status(500).send("Internal Server Error");
-    }
-
-    return res.render("bird_submission", {
-      title: "Bird Image Submission Form",
-      user: user,
-    });
-  })
-  .post(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/login");
-
-    const {
-      bird_names,
-      bird_img,
-      bird_countryCode,
-      bird_city,
-      bird_zipCode,
-      bird_difficulty,
-    } = req.body;
-
-    try {
-      bird_names = checkStr(bird_names, "Bird Names");
-      bird_names = bird_names.split(",");
-      bird_names = checkStrArr(bird_names, "Bird Names");
-      bird_img = checkImgUrl(bird_img, "Bird Image");
-      bird_countryCode = checkCountryCode(
-        bird_countryCode,
-        "Bird Country Code"
-      );
-      bird_city = checkCity(bird_city, "Bird City");
-      if (bird_zipCode !== "")
-        bird_zipCode = checkZipCode(bird_zipCode, "Bird Zip Code");
-      bird_difficulty = checkDifficulty(
-        parseInt(bird_difficulty),
-        "Bird Difficulty"
-      );
-    } catch (error) {
-      return res.status(400).render("bird_submission", { errors: [error] });
-    }
-
-    let geocodes;
-    try {
-      geocodes = await geocoder.geocode({
-        countryCode: bird_countryCode,
-        address: bird_city,
-        zipcode: bird_zipCode,
+    
+    router
+      .route("/user/post")
+      .get(async (req, res) => {
+        const userId = req.session.user && req.session.user._id;
+        if (!userId) return res.redirect("/login");
+    
+        let user;
+        try {
+          user = await getUserByUserName(userId);
+        } catch (error) {
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //res.status(500).send("Internal Server Error");
+        }
+    
+        return res.render("bird_submission", {
+          title: "Bird Image Submission Form",
+          user: user,
+        });
+      })
+      .post(async (req, res) => {
+        const userId = req.session.user && req.session.user._id;
+        if (!userId) return res.redirect("/login");
+    
+        const {
+          bird_names,
+          bird_img,
+          bird_countryCode,
+          bird_city,
+          bird_zipCode,
+          bird_difficulty,
+        } = req.body;
+    
+        try {
+          bird_names = checkStr(bird_names, "Bird Names");
+          bird_names = bird_names.split(",");
+          bird_names = checkStrArr(bird_names, "Bird Names");
+          bird_img = checkImgUrl(bird_img, "Bird Image");
+          bird_countryCode = checkCountryCode(
+            bird_countryCode,
+            "Bird Country Code"
+          );
+          bird_city = checkCity(bird_city, "Bird City");
+          if (bird_zipCode !== "")
+            bird_zipCode = checkZipCode(bird_zipCode, "Bird Zip Code");
+          bird_difficulty = checkDifficulty(
+            parseInt(bird_difficulty),
+            "Bird Difficulty"
+          );
+        } catch (error) {
+          return res.status(400).render("bird_submission", { errors: [error] });
+        }
+    
+        let geocodes;
+        try {
+          geocodes = await geocoder.geocode({
+            countryCode: bird_countryCode,
+            address: bird_city,
+            zipcode: bird_zipCode,
+          });
+          geocodes = checkGeoCode(geocode, "Bird Geocode");
+          geocodes = extractKV_objArr(
+            geocode,
+            ["latitude", "longitude", "country", "countryCode", "city"],
+            { ifFilterUndefined: false }
+          );
+        } catch (error) {
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //return res.status(500).send("Internal Server Error:", error);
+        }
+    
+        if (!geocodes) {
+          return res.status(400).render("bird_submission", {
+            errors: ["no location found based on given country and city"],
+          });
+        }
+        if (geocodes.length > 1) {
+          return res.status(400).render("bird_submission", {
+            errors: [
+              "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
+            ],
+          });
+        }
+    
+        let birdId;
+        try {
+          birdId = await createBird({
+            userId: userId,
+            url: bird_img,
+            names: bird_names,
+            geocode: geocodes[0],
+            difficulty: bird_difficulty,
+          });
+        } catch (error) {
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //return res.status(500).send("Internal Server Error:", error);
+        }
+    
+        let updatedPersonalInfo;
+        try {
+          updatedPersonalInfo = await updatePlayerInfoById(userId, {
+            $pushSubmission: { birdId },
+          });
+        } catch (error) {
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //return res.status(500).send("Internal Server Error:", error);
+        }
       });
+
       geocodes = checkGeoCode(geocode, "Bird Geocode");
       geocodes = extractKV_objArr(
         geocode,

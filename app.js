@@ -5,6 +5,7 @@ import session from "express-session";
 import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { saveLastPage,loginRedirect,logoutRedirect,registerRedirect,gameResultRedirect,gameplayRedirect } from "./middleware.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -41,6 +42,17 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+/*redirect middleware start*/
+app.use(saveLastPage)
+app.use('/users/login',loginRedirect)
+app.use('/users/signup',registerRedirect)
+app.use('/users/logout',logoutRedirect)
+app.use('/game/gameplay',gameplayRedirect)
+app.use('/game/gameresult',gameResultRedirect)
+
+/*redirect middleware end*/
+
 
 app.engine("handlebars", hbs.engine);
 app.set("views", __dirname + "/views"); // by default
