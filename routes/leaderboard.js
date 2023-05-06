@@ -9,25 +9,25 @@ router
   .route("/local")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    const userCountryCode =
+    const hasUserCountryCode =
       req.session.user &&
       req.session.user.geocode &&
       req.session.user.geocode.countryCode;
-    const userCity =
+    const hasUserCity =
       req.session.user &&
       req.session.user.geocode &&
       req.session.user.geocode.city;
 
     let leaderboard;
     try {
-      if (userId)
+      if (userId && hasUserCountryCode && hasUserCity)
         leaderboard = await topNthLocalUsersByHighScore(
           100,
-          userCountryCode,
-          userCity
+          req.session.user.geocode.countryCode,
+          req.session.user.geocode.city
         );
       else
-        leaderboard = await topNthLocalUsersByHighScore(100, "US", "New York");
+        leaderboard = await topNthLocalUsersByHighScore(100, "US", "Hoboken");
     } catch (error) {
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
       //return res.status(500).send("Internal Server Error:", error);
