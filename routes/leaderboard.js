@@ -29,7 +29,8 @@ router
       else
         leaderboard = await topNthLocalUsersByHighScore(100, "US", "New York");
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     return res.render("leaderboard", {
@@ -63,7 +64,8 @@ router.route("/global").get(async (req, res) => {
   try {
     leaderboard = await topNthGlobalUsersByHighScore(100);
   } catch (error) {
-    return res.status(500).send("Internal Server Error:", error);
+    return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+    //return res.status(500).send("Internal Server Error:", error);
   }
 
   return res.render("leaderboard", {

@@ -1,26 +1,38 @@
 <main class="profile-page">
     <h1>Your Profile</h1>
+    <div id = "user_info">
+        <h3>User Statistics</h3>
+        <ul>
+            <li>Username: {{username}}</li>
+            <li>Lifetime Score: {{lifetime_score}}</li>
+            <li>High Score: {{high_score}}</li>
+            <li>Bird Submissions: {{num_submissions}}</li>
+        </ul>
+    </div>
+    <br>
+    <br>
     <div id="profile-div">
-        <form id="profile-form" name="profile-form" action="users/profile" method="post">
-            <label for="username">username:</label>
+        <h3>Edit User Information</h3>
+        <form id="profile-form" name="profile-form" action="/users/user/profile" method="post">
+            <label for="newUserName">New username:</label>
             <br>
-            <input type="text" id="username" name="username" placeholder="{{{username}}}">
+            <input type="text" id="newUserName" name="newUserName" placeholder="{{{username}}}">
             <br>
-            <label for="password">password:</label>
+            <label for="newPassword">New password:</label>
             <br>
-            <input type="password" id="password" name="password" placeholder="password">
+            <input type="password" id="newPassword" name="newPassword" placeholder="password">
             <br>
-            <label for="confirmPassword">confirm password:</label>
+            <label for="newConfirmPassword">Confirm password:</label>
             <br>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm password">
+            <input type="password" id="newConfirmPassword" name="newConfirmPassword" placeholder="Confirm password">
             <br>
-            <label for="icon">icon:</label>
+            <label for="newIcon">Icon image URL:</label>
             <br>
-            <input type="text" id="icon" name="icon" placeholder="{{{icon}}}">
+            <input type="text" id="newIcon" name="newIcon" placeholder="{{{icon}}}">
             <br>
-            <label for="country-select">Country:</label>
-            <select id="country-select" name="country-select">
-                <option value="invalid">{{{country}}}</option>
+            <label for="newCountryCode">Country:</label>
+            <select id="newCountryCode" name="newCountryCode" form = "profile-form">
+                <option value={{countryCode}}>{{{country}}}</option>
                 <option value="AF">Afghanistan</option>
                 <option value="AX">Aland Islands</option>
                 <option value="AL">Albania</option>
@@ -275,14 +287,24 @@
                 <option value="ZW">Zimbabwe</option>
             </select>
             <br>
-            <label for="userCity">city:</label>
+            <label for="newCity">City:</label>
             <br>
-            <input type="text" id="userCity" name="userCity" placeholder="{{{city}}}">
+            <input type="text" id="newCity" name="newCity" placeholder="{{{city}}}">
+            <br>
+            <label for="newZipCode">Zipcode:</label>
+            <br>
+            <input type="text" id="newZipCode" name="newZipCode" placeholder="{{{zipCode}}}">
             <br>
             <button type="submit" id="profile-submit">Submit</button>
         </form>
-        <div id="error" class="error" hidden></div>
+        <div id="error" class="error">{{errors}}</div>
     </div>
-    <a href="/logout">Logout</a>
+    <br>
+    <div id = "bird_submission_form_profile_link">
+        <p>Want to contribute to Who's That Bird? Click the link below to submit a bird image!<p>
+        <a href="/users/user/post" id = "bird_form_link_profile">Submit a bird image!</a>
+    </div>
+    <br>
+    <a href="/users/logout" id = "user_profile_logout">Logout</a>
 </main>
 <script src='/public/js/profile/profile.js'></script>
