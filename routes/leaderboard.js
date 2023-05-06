@@ -34,11 +34,26 @@ router
 
     return res.render("leaderboard", {
       title: "Local Leaderboard",
+      type: "local",
       leaderboard,
     });
   })
   .post(async (req, res) => {
     // reserved for AJAX
+    var countryInput = req.body.countryInput;
+    var citySearchTerm = req.body.citySearchBar;
+
+    try {
+      const leaderboard = await topNthLocalUsersByHighScore(
+        100,
+        countryInput,
+        citySearchTerm
+      );
+      return res.send(leaderboard)
+    }
+    catch(error){
+      return res.render('leaderboard',{title: "Local Leaderboard",type: "local",error:error})
+    }
   });
 
 router.route("/global").get(async (req, res) => {
