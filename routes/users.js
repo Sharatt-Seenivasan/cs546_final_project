@@ -4,7 +4,8 @@ import {
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
   updatePlayerInfoById,
-  getUserByUserName
+  getUserByUserName,
+  getUserById
 } from "../data/users.js";
 import {
   checkUserName,
@@ -248,13 +249,13 @@ router
   .get(async (req, res) => {
     const hasUserId = req.session.user && req.session.user._id;
     if (!hasUserId) return res.redirect("/login");
-
+    
     let user;
     try {
-      user = await getUserByUserName(req.session.user._id);
+      user = await getUserById(req.session.user._id);
     } catch (error) {
-      return res.status(500).render("user_profile",{title: "User Profile", errors: error})
-      //return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).render("user_profile",{title: "User Profile", errors: error})
+      return res.status(500).send("Internal Server Error:", error);
     }
 
     return res.render("user_profile", {
@@ -267,6 +268,7 @@ router
       zipCode: user.geocode.zipCode,
       lifetime_score: user.lifetime_score,
       high_score: user.high_score,
+      num_submissions: user.submission.length,
       submission: user.submission,
       last_questions: user.last_questions,
     });
