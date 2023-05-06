@@ -266,7 +266,6 @@ router
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
-
     return res.render("user_profile", {
       title: "User Profile",
       username: user.username,
@@ -274,7 +273,7 @@ router
       country: user.geocode.country,
       countryCode: user.geocode.countryCode,
       city: user.geocode.city,
-      zipCode: user.geocode.zipCode,
+      zipCode: user.geocode.zipcode,
       lifetime_score: user.lifetime_score,
       high_score: user.high_score,
       num_submissions: user.submission.length,
