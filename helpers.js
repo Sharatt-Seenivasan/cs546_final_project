@@ -65,8 +65,8 @@ function checkUrl(url, urlName, minimumLength = 0) {
 
   if (!supportedProtocols.some((p) => url.startsWith(p)))
     throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
-      ", "
-    )}`;
+      " "
+    )}, you provided ${url}`;
   if (url.split("//")[1].length < minimumLength)
     throw `${urlName} is too short`;
 
@@ -80,7 +80,7 @@ function checkImgUrl(url, imgName) {
   // }
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
-  const supportedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".svg"];
+  const supportedExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
   if (
     !supportedExtensions.some(
       (ext) => url.endsWith(ext) || url.endsWith(ext.toUpperCase())
