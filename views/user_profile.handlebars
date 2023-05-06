@@ -1,5 +1,8 @@
 <main class="profile-page">
     <h1>Your Profile</h1>
+    <div id = "user_info">
+
+    </div>
     <div id="profile-div">
         <form id="profile-form" name="profile-form" action="users/profile" method="post">
             <label for="username">New username:</label>
@@ -279,10 +282,12 @@
             <br>
             <input type="text" id="userCity" name="userCity" placeholder="{{{city}}}">
             <br>
+            <br>
             <button type="submit" id="profile-submit">Submit</button>
         </form>
         <div id="error" class="error" hidden></div>
     </div>
+    <br>
     <a href="/logout">Logout</a>
 </main>
 <script src='/public/js/profile/profile.js'></script>
