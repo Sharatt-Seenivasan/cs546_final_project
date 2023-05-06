@@ -1,5 +1,5 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
+import bcrypt, { compareSync } from "bcrypt";
 import {
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
@@ -77,7 +77,7 @@ router
       return res.send(leaderboard)
     }
     catch(error){
-      return res.render('leaderboard',{error:error})
+      return res.render('leaderboard',{title: "Local Leaderboard", error:error})
     }
 
 
@@ -90,7 +90,8 @@ router.route("/leaderboard/global").get(async (req, res) => {
   try {
     leaderboard = await topNthGlobalUsersByHighScore(100);
   } catch (error) {
-    return res.status(500).send("Internal Server Error:", error);
+    //return res.status(500).send("Internal Server Error:", error);
+    return res.status(500).render(leaderboard,{title: "Global Leaderboard", error:error})
   }
 
   return res.render("leaderboard", {
@@ -155,7 +156,8 @@ router
     try {
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      //return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("signup",{title: "Sign Up", error: error})
     }
 
     let user;
@@ -169,7 +171,8 @@ router
         });
     } catch (error) {
         if(!error.includes("not found")) {
-          return res.status(500).send("Internal Server Error:", error);
+          //return res.status(500).send("Internal Server Error:", error);
+          return res.status(500).render("signup",{title: "Sign Up", error: error})
         }
     }
 
@@ -178,11 +181,17 @@ router
     //     title: "Sign Up",
     //     error: "Username already exists!",
     //   });
-
-    const newUser = await createUser(username, password);
-    req.session.user = { _id: newUser._id, username: newUser.username };
+    try {
+      const newUser = await createUser(username, password);
+      req.session.user = { _id: newUser._id, username: newUser.username };
+      return res.redirect('/login');
+    } catch (error) {
+      return res.status(500).render("signup",{title: "Sign Up", error: error})
+    }
+    // const newUser = await createUser(username, password);
+    // req.session.user = { _id: newUser._id, username: newUser.username };
   
-    return res.redirect('/login');
+    //return res.redirect('/login');
   });
 
 router.
@@ -227,6 +236,24 @@ router.
       }
       let score = req.session.score;
       return res.render('game_question', {title: 'Quiz',question : questions[index],index : index+1,score : score,time});
+      if(!req.session.questions || !req.session.timer){
+        res.redirect('/users/gamestart');
+      }else{
+        let questions = req.session.questions;
+        let index = req.session.index;
+        let time = req.session.timer;
+        if(!req.session.score){
+            req.session.score=0;
+        }
+        if(questions.length<=index){
+            if(req.session.timer>0){
+                req.session.score = (req.session.score)*(60/(60-req.session.timer));
+            }
+            res.redirect('/users/gameresult');
+        }
+        let score = req.session.score;
+        return res.render('game_question', {title: 'Quiz',question : questions[index],index : index+1,score : score,time});
+      }
       })
   .post(async(req,res)=>{
       let questions = req.session.questions;
@@ -301,31 +328,106 @@ router
     } catch (error) {
       return res
         .status(400)
-        .render("login", { title: "Login", errors: [error] });
+        .render("login", { title: "Login", error: error });
     }
 
     let user;
     try {
       user = await getUserByUserName(username);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("login",{title: "Login", error: error})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     if (!user)
       return res.status(400).render("login", {
         title: "Login",
-        errors: ["Either username or password is incorrect!"],
+        error: "Either username or password is incorrect!",
       });
     if (!(await bcrypt.compare(password, user.hashed_password))) {
       return res.status(400).render("login", {
         title: "Login",
-        errors: ["Either username or password is incorrect!"],
+        error: "Either username or password is incorrect!",
       });
     }
 
     req.session.user = { _id: user._id, username: user.username };
     return res.redirect("/user/profile");
   });
+    if(!req.session.questions){
+      res.redirect('/users/gamestart')
+    }else{
+        if(req.session.user){
+            let questions = req.session.questions;
+            let score = req.session.score;
+            let user =req.session.user;
+            for(let i=0;i<index;i++){
+                if(i<questions.length){
+                    let birdid = questions[i]['birdid'];
+                    await updatePlayerInfoById(user['_id'],{
+                      $pushLastQuestions: { birdid},
+                    });
+                }
+            }
+            delete req.session['questions'];
+            delete req.session['index'];
+            delete req.session['score'];
+            delete req.session['timer'];
+            res.render('game_end',{score});
+        }
+        else{
+            let score = req.session.score;
+            delete req.session['questions'];
+            delete req.session['index'];
+            delete req.session['score'];
+            delete req.session['timer'];
+            res.render('game_end',{score});
+        }
+      }
+      });
+      router
+      .route("/login")
+      .get(async (req, res) => {
+        const userId = req.session.user && req.session.user._id;
+        if (userId) return res.redirect("/user/user_profile");
+        return res.render("login", { title: "Login" });
+      })
+      .post(async (req, res) => {
+        const userId = req.session.user && req.session.user._id;
+        if (userId) return res.redirect("/user/user_profile");
+    
+        let { username, password } = req.body;
+        try {
+          username = checkUserName(username);
+          password = checkPassword(password);
+        } catch (error) {
+          return res
+            .status(400)
+            .render("login", { title: "Login", errors: [error] });
+        }
+    
+        let user;
+        try {
+          user = await getUserByUserName(username);
+        } catch (error) {
+          return res.status(500).send("Internal Server Error:", error);
+        }
+    
+        if (!user)
+          return res.status(400).render("login", {
+            title: "Login",
+            errors: ["Either username or password is incorrect!"],
+          });
+        if (!(await bcrypt.compare(password, user.hashed_password))) {
+          return res.status(400).render("login", {
+            title: "Login",
+            errors: ["Either username or password is incorrect!"],
+          });
+        }
+    
+        req.session.user = { _id: user._id, username: user.username };
+        return res.redirect("/user/user_profile")
+      });
     
 router
   .route("/user/profile")
@@ -337,7 +439,8 @@ router
     try {
       user = await getUserByUserName(req.session.user._id);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("user_profile",{title: "User Profile", errors: error})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     return res.render("user_profile", {
@@ -362,7 +465,8 @@ router
     try {
       user = await getUserByUserName(req.session.user._id);
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     let {
@@ -442,7 +546,8 @@ router
         zipcode: newZipCode,
       });
     } catch (error) {
-      return res.status(500).send("Internal Server Error:", error);
+      return res.status(500).render("user_profile",{title: "User Profile", error: error})
+      //return res.status(500).send("Internal Server Error:", error);
     }
 
     if (!geocodes) {
@@ -473,7 +578,8 @@ router
         try {
           user = await getUserByUserName(userId);
         } catch (error) {
-          res.status(500).send("Internal Server Error");
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //res.status(500).send("Internal Server Error");
         }
     
         return res.render("bird_submission", {
@@ -528,7 +634,8 @@ router
             { ifFilterUndefined: false }
           );
         } catch (error) {
-          return res.status(500).send("Internal Server Error:", error);
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //return res.status(500).send("Internal Server Error:", error);
         }
     
         if (!geocodes) {
@@ -554,7 +661,8 @@ router
             difficulty: bird_difficulty,
           });
         } catch (error) {
-          return res.status(500).send("Internal Server Error:", error);
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //return res.status(500).send("Internal Server Error:", error);
         }
     
         let updatedPersonalInfo;
@@ -563,7 +671,8 @@ router
             $pushSubmission: { birdId },
           });
         } catch (error) {
-          return res.status(500).send("Internal Server Error:", error);
+          return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+          //return res.status(500).send("Internal Server Error:", error);
         }
       });
     

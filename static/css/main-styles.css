@@ -8,6 +8,10 @@ body {
     background-repeat: no-repeat;
 }
 
+.error {
+    color: red;
+}
+
 
 /*Use this section for styles that apply to the homepage*/
 #profile_container{
@@ -160,4 +164,18 @@ body {
     background-color: darkseagreen;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
+}
+#homepageBtn,#HomepageBtn,#LeaderBoardBtn{
+    display: inline-block;
+    width: 115px;
+    height: 50px;
+    text-decoration: none;
+    background: #4E9CAF;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+    margin-inline: 25px;
 }
