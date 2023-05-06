@@ -266,6 +266,7 @@ router
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
+
     return res.render("user_profile", {
       title: "User Profile",
       username: user.username,
@@ -455,9 +456,6 @@ router
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
         newZipCode = checkZipCode(newZipCode, `new zip code`);
-        console.log(newCountryCode)
-        console.log(newCity)
-        console.log(newZipCode)
         if (
           newCountryCode === user.geocode.countryCode &&
           newCity === user.geocode.city &&
@@ -468,14 +466,16 @@ router
         errors.push(error);
       }
     }
-
+    
     let geocodes;
     try {
-      geocodes = await geocoder.geocode({
-        countryCode: newCountryCode,
-        city: newCity,
-        zipcode: newZipCode,
-      });
+      //console.log(await geocoder.geocode("Hoboken, US, 07030"))
+      // geocodes = await geocoder.geocode({
+      //   countryCode: newCountryCode,
+      //   city: newCity,
+      //   zipcode: newZipCode,
+      // });
+      geocodes = await geocoder.geocode(`${newCity}, ${newCountryCode}, ${newZipCode}`)
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
