@@ -90,7 +90,7 @@ for (let idx = 0; idx < usernames.length; idx++) {
 
 const userIds = [];
 for (const user of users) {
-  const newUser = await usersData.createUser(user);
+  const newUser = await usersData.createUser(user.username,user.hashed_password);
   userIds.push(newUser._id);
 }
 console.log(VERBOSE || displayUserIds ? userIds : "");

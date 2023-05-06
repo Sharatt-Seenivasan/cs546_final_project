@@ -182,16 +182,18 @@ console.log(toObj)
 
 ## ./data/users.js
 
-`createUser({ username, hashed_password, icon, geocode } = {})`
+~~`createUser({ username, hashed_password, icon, geocode } = {})`~~
+
+`createUser( username, hashed_password, icon, geocode } = {})`
 
 all args required
 
 - username: string. case INsensitive
 - hash_password: string. NO further validation
-- icon: string.
-  - validate supported extension, and supported protocols(http:// , https://)
-  - NO length validation
-- geocode: object
+- ~~icon: string.~~
+  - ~~validate supported extension, and supported protocols(http:// , https://)~~
+  - ~~NO length validation~~
+- ~~geocode: object~~
 
 `getUserById = async (userId)`
 
