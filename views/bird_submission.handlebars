@@ -272,7 +272,7 @@
         <input type="text" id="bird_city" placeholder="Enter the name of the city where the picture was taken" class="form-control">
 
         <label for="bird_zipCode">Enter zipcode:</label>
-        <input type="text" id="bird_zipCode" placeholder="Enter the zipcode where the picture was taken" class="form-control">
+        <input type="text" id="bird_zipCode" placeholder="Enter the zipcode where the picture was taken if applicable" class="form-control">
 
         <label for="bird_difficulty">Select difficulty</label>
         <select name="bird_difficulty" id="bird_difficulty" form = "image-submission-form" class="form-control">
@@ -284,3 +284,4 @@
         <input class="submit-bird-button" type="submit" value="Submit bird image">
     </div>            
 </form>
+<div id="error" class="error">{{errors}}</div>

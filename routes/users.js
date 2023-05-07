@@ -574,9 +574,9 @@ router
           address: bird_city,
           zipcode: bird_zipCode,
         });
-        geocodes = checkGeoCode(geocode, "Bird Geocode");
+        geocodes = checkGeoCode(geocodes[0], "Bird Geocode");
         geocodes = extractKV_objArr(
-          geocode,
+          geocodes,
           ["latitude", "longitude", "country", "countryCode", "city"],
           { ifFilterUndefined: false }
         );
