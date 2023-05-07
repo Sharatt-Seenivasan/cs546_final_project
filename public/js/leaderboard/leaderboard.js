@@ -13,13 +13,15 @@ function checkCity(city, cityName) {
 }
 
 function fillLeaderboardTable(leaderboardTableData){
-    var table = $('#table leaderboard-table');
-    table.empty()
+    var table = $('.leaderboard-table');
+    table.find("tbody").empty()
 
     $.each(leaderboardTableData, function(index, user) {
+        // console.log(index)
+        // console.log(user)
         var row = $('<tr>').append(
           $('<td>').text(index),
-          $('<td>').text(user.icon),
+          $('<td>').append($('<img>').addClass('leaderboard-user-icon').attr('src', user.icon)),
           $('<td>').text(user.username),
           $('<td>').text(user.high_score)
         );
@@ -39,6 +41,7 @@ $(document).on('submit', '#location-search-form',function(event) {
                 url: '/leaderboard/local/',
                 data: {countryInput:countryInput ,citySearchBar: checkCity(citySearchBar,citySearchBar)}
             }).then(function (response) {
+                //console.log(response)
                 fillLeaderboardTable(response)
             });
         }
