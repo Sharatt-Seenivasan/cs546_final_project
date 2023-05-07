@@ -522,7 +522,7 @@ router
   
       let user;
       try {
-        user = await getUserByUserName(userId);
+        user = await getUserById(userId);
       } catch (error) {
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         return res.status(500).render('error',{error: `Internal Server Error: ${error}`})

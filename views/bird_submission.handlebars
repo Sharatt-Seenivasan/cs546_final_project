@@ -1,9 +1,10 @@
-<form method="POST" action="/user/post" id = "image-submission-form">
+<br>
+<form method="POST" action="/users/user/post" id = "image-submission-form">
     <div class="form-group">
         <label for="imageLinkInput">Enter link to the image:</label>
         <input type="text" id="imageLinkInput" placeholder="Enter the image link" class="form-control">
         
-        <label for="birdNameInput">Enter bird name:</label>
+        <label for="birdNameInput">Enter common names that the bird is called (seperate names with comma):</label>
         <input type="text" id="birdNameInput" placeholder="Enter the name of the bird in the image" class="form-control">
 
         <label for="countryInput">Select country:</label>
@@ -278,5 +279,7 @@
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
         </select> 
+        <br>
+        <input class="submit-bird-button" type="submit" value="Submit bird image">
     </div>            
 </form>
