@@ -625,31 +625,33 @@ router
         //return res.status(500).send("Internal Server Error:", error);
       }
 
-      try {
-        geocodes = checkGeoCode(geocode, "Bird Geocode");
-        geocodes = extractKV_objArr(
-          geocode,
-          ["latitude", "longitude", "country", "countryCode", "city"],
-          { ifFilterUndefined: false }
-        );
-      } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
-        //return res.status(500).send("Internal Server Error:", error);
-      }
+      return res.redirect('/user/profile')
 
-      if (!geocodes) {
-        return res.status(400).render("bird_submission", {
-          errors: ["no location found based on given country and city"],
-        });
-      }
-      if (geocodes.length > 1) {
-        return res.status(400).render("bird_submission", {
-          errors: [
-            "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
-          ],
-        });
-      }
+      // try {
+      //   geocodes = checkGeoCode(geocode, "Bird Geocode");
+      //   geocodes = extractKV_objArr(
+      //     geocode,
+      //     ["latitude", "longitude", "country", "countryCode", "city"],
+      //     { ifFilterUndefined: false }
+      //   );
+      // } catch (error) {
+      //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //   //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+      //   //return res.status(500).send("Internal Server Error:", error);
+      // }
+
+      // if (!geocodes) {
+      //   return res.status(400).render("bird_submission", {
+      //     errors: ["no location found based on given country and city"],
+      //   });
+      // }
+      // if (geocodes.length > 1) {
+      //   return res.status(400).render("bird_submission", {
+      //     errors: [
+      //       "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
+      //     ],
+      //   });
+      // }
 });
 
 
