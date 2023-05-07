@@ -68,12 +68,12 @@ router
   .route("/signup")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
     return res.render("signup", { title: "Sign Up" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
 
     let { username, password, confirmPassword } = req.body;
     try {
@@ -134,12 +134,12 @@ router
   .route("/login")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
     return res.render("login", { title: "Login" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
 
     let { username, password } = req.body;
     try {
@@ -173,7 +173,7 @@ router
     }
 
     req.session.user = { _id: user._id, username: user.username };
-    return res.redirect("/user/profile");
+    return res.redirect("/users/user/profile");
   });
     // if(!req.session.questions){
     //   res.redirect('/users/gamestart')
@@ -511,7 +511,7 @@ router
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
     
-    return res.redirect("/user/profile")
+    return res.redirect("/users/user/profile")
   });
     
   router
@@ -621,19 +621,19 @@ router
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
-  
-      let updatedPersonalInfo;
-      try {
-        updatedPersonalInfo = await updatePlayerInfoById(userId, {
-          $pushSubmission: { birdId: newBird._id},
-        });
-      } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
-        //return res.status(500).send("Internal Server Error:", error);
-      }
+      
+      // let updatedPersonalInfo;
+      // try {
+      //   updatedPersonalInfo = await updatePlayerInfoById(userId, {
+      //     $pushSubmission: { birdId: newBird._id},
+      //   });
+      // } catch (error) {
+      //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //   //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+      //   //return res.status(500).send("Internal Server Error:", error);
+      // }
 
-      return res.redirect('/user/profile')
+      return res.redirect("/users/user/profile")
 
       // try {
       //   geocodes = checkGeoCode(geocode, "Bird Geocode");
