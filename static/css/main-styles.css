@@ -25,6 +25,12 @@ body {
 #user_icon_button{
     height: 50px;
     width: 50px;
+    margin-right: 100px;
+}
+
+#homepage_logout_button{
+    margin-top: 20px;
+    margin-right: -100px;
 }
 
 .homepage_user_icon{
