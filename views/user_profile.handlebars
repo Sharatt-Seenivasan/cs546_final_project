@@ -10,7 +10,6 @@
         </ul>
     </div>
     <br>
-    <br>
     <div id="profile-div">
         <h3>Edit User Information</h3>
         <form id="profile-form" name="profile-form" action="/users/user/profile" method="post">
@@ -304,9 +303,10 @@
         <p>Want to contribute to Who's That Bird? Click the link below to submit a bird image!<p>
         <a href="/users/user/post" id = "bird_form_link_profile">Submit a bird image!</a>
     </div>
-    <br>
     <a href="/game/gamestart" id="user_profile_gamestart">Play Who's That Bird?</a>
-    <br>
-    <a href="/users/logout" id = "user_profile_logout">Logout</a>
+    <div class="container" id = "profile_buttons_container">
+        <a class="btn btn-dark btn-lg" href="/" role="button" id ="profile_homepage_button">Homepage</a>
+        <a class="btn btn-dark btn-lg" href="/users/logout" role="button" id ="profile_logout_button">Log Out</a>
+    </div>
 </main>
 <script src='/public/js/profile/profile.js'></script>

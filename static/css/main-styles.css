@@ -124,7 +124,12 @@ body {
 }
 
 #user_profile_gamestart{
+    margin-top: -10px;
     font-size: 30px
+}
+
+#profile_buttons_container{
+    margin-left: -20px;
 }
 
 
