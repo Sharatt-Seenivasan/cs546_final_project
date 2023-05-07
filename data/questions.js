@@ -42,11 +42,10 @@ const getQuestions4User = async (
   if (countryCode)
     countryCode = checkCountryCode(countryCode, `country code at ${__name}`);
   if (city) city = checkCity(city, `city at ${__name}`);
-  
   const theUser = await getUserById(userId);
   const qAnswered = theUser.last_questions;
   const qSubmitted = theUser.submission;
-
+  let allBirdsForNames = await getAllBirds();
   let allBirds, unseenBirds;
   if (ifGlobal || (!countryCode && !city && !theUser.geocode.countryCode && !theUser.geocode.city) ) {
     allBirds = await getAllBirds();
@@ -68,25 +67,35 @@ const getQuestions4User = async (
     let q = {},
       options = [];
     rdmAnswerIdx = Math.floor(Math.random() * numberOfOptions);
-    while (options.length < numberOfOptions && unseenBirds.length > 0) {
-      rdmUnseenBirdIdx = Math.floor(Math.random() * unseenBirds.length);
-      const theBird = unseenBirds[rdmUnseenBirdIdx];
-      const birdNames = theBird.names[0]; // take 1st name by default
-      options.push(birdNames);
-      if (options.length === rdmAnswerIdx + 1) {
-        q["answer"] = birdNames;
+    let birdholder=[];
+    while (options.length < numberOfOptions) {
+      if(options.length === rdmAnswerIdx){
+        rdmUnseenBirdIdx = Math.floor(Math.random() * unseenBirds.length);
+        const theBird = unseenBirds[rdmUnseenBirdIdx];
+        const birdName = theBird.names[Math.floor(Math.random() * theBird.names.length)];
+        options.push(birdName);
+        q["answer"] = birdName;
         q["image"] = theBird.url;
         q['difficulty'] = theBird.difficulty;
         q['birdid'] = theBird._id;
+        birdholder.push(theBird._id);
         unseenBirds.splice(rdmUnseenBirdIdx, 1);
+      }else{
+      const rdmAllBirdIdx = Math.floor(Math.random() * allBirdsForNames.length);
+      const theBird = allBirdsForNames[rdmAllBirdIdx];
+      if(birdholder.includes(theBird._id)){
+        continue;
+      }
+      const birdNames = theBird.names[Math.floor(Math.random() * theBird.names.length)];
+      options.push(birdNames);
+      birdholder.push(theBird._id);
       }
     }
     q["options"] = options;
     questions.push(q);
   }
-
   if (
-    questions.length < numberOfQuestions ||
+    questions.length == 0 ||
     questions.some((question) => question.options.length < numberOfOptions)
   ) {
     throw `Not enough birds in database to create a quiz with ${numberOfOptions} options`;
@@ -159,7 +168,6 @@ const getQuestions4Guest = async ({
     q["options"] = options;
     questions.push(q);
   }
-
   if (
     questions.length < numberOfQuestions ||
     questions.every((question) => question.options.length < numberOfOptions)

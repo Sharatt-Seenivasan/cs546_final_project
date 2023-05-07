@@ -197,7 +197,6 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
       lifetime_score,
       `lifetime score increment at ${__name}`
     );
-
   if (high_score_inc < 0) throw "high score increment cannot be negative";
   if (ifExists.lifetime_score + lifetime_score_inc < 0)
     throw "lifetime score cannot be negative after increment";
