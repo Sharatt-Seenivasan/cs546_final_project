@@ -98,7 +98,7 @@ router
     //user = await getUserByUserName(username);
     try {
       user = await getUserByUserName(username);
-      if (!Object.keys(user).length === 0){
+      if (user){
         return res.status(400).render("signup", {
           title: "Sign Up",
           error: "Username already exists!",
