@@ -41,9 +41,9 @@ router
 
       }
       else {
-        countryCode = "US"
-        city = "Hoboken"
-        leaderboard = await topNthLocalUsersByHighScore(100, 'US', 'Hoboken');
+        countryCode = 'US'
+        city = 'Hoboken'
+        leaderboard = await topNthLocalUsersByHighScore(100, countryCode, city);
       }
     } catch (error) {
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
