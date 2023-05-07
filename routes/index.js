@@ -10,10 +10,8 @@ const constructorMethod = (app) => {
     app.use('/leaderboard',leaderboardRoutes);
     app.use('/', async (req, res) => {
         if(req.session.user){
-            //console.log(await getUserByUserName(req.session.user.username))
-            // const user = await getUserByUserName(req.session.user.username)
-            const icon = req.session.user.icon
-            //console.log(icon)
+            const user = await getUserByUserName(req.session.user.username)
+            const icon = user.icon
             res.render('homepage',{title:"Homepage",user: req.session.user, icon: icon})
         }
         else {
