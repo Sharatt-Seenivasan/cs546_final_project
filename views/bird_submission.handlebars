@@ -1,14 +1,14 @@
 <br>
 <form method="POST" action="/users/user/post" id = "image-submission-form">
     <div class="form-group">
-        <label for="imageLinkInput">Enter link to the image:</label>
-        <input type="text" id="imageLinkInput" placeholder="Enter the image link" class="form-control">
+        <label for="bird_img">Enter link to the image:</label>
+        <input type="text" id="bird_img" placeholder="Enter the image link" class="form-control">
         
-        <label for="birdNameInput">Enter common names that the bird is called (seperate names with comma):</label>
-        <input type="text" id="birdNameInput" placeholder="Enter the name of the bird in the image" class="form-control">
+        <label for="bird_names">Enter common names that the bird is called (seperate names with comma):</label>
+        <input type="text" id="bird_names" placeholder="Enter the common names of the bird in the image" class="form-control">
 
-        <label for="countryInput">Select country:</label>
-        <select name="countryInput" id="countryInput" form = "image-submission-form" class="form-control">
+        <label for="bird_countryCode">Select country:</label>
+        <select name="bird_countryCode" id="bird_countryCode" form = "image-submission-form" class="form-control">
             <option value = "invalid">select country</option>
             <option value="AF">Afghanistan</option>
             <option value="AX">Aland Islands</option>
@@ -264,17 +264,18 @@
             <option value="ZW">Zimbabwe</option>
         </select> 
         
+        <!--
         <label for="stateInput">Enter state:</label>
         <input type="text" id="stateInput" placeholder="Enter the name of the state/province/territory where the picture was taken" class="form-control">
+        -->
+        <label for="bird_city">Enter city:</label>
+        <input type="text" id="bird_city" placeholder="Enter the name of the city where the picture was taken" class="form-control">
 
-        <label for="cityInput">Enter city:</label>
-        <input type="text" id="cityInput" placeholder="Enter the name of the city where the picture was taken if applicable" class="form-control">
+        <label for="bird_zipCode">Enter zipcode:</label>
+        <input type="text" id="bird_zipCode" placeholder="Enter the zipcode where the picture was taken" class="form-control">
 
-        <label for="zipCodeInput">Enter zipcode:</label>
-        <input type="text" id="zipCodeInput" placeholder="Enter the zipcode where the picture was taken if applicable" class="form-control">
-
-        <label for="difficultyInput">Select difficulty</label>
-        <select name="difficultyInput" id="difficultyInput" form = "image-submission-form" class="form-control">
+        <label for="bird_difficulty">Select difficulty</label>
+        <select name="bird_difficulty" id="bird_difficulty" form = "image-submission-form" class="form-control">
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
