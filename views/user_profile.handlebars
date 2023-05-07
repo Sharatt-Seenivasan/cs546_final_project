@@ -32,7 +32,7 @@
             <br>
             <label for="newCountryCode">Country:</label>
             <select id="newCountryCode" name="newCountryCode" form = "profile-form">
-                <option value="invalid">{{{country}}}</option>
+                <option value={{countryCode}}>{{{country}}}</option>
                 <option value="AF">Afghanistan</option>
                 <option value="AX">Aland Islands</option>
                 <option value="AL">Albania</option>
@@ -291,6 +291,9 @@
             <br>
             <input type="text" id="newCity" name="newCity" placeholder="{{{city}}}">
             <br>
+            <label for="newZipCode">Zipcode:</label>
+            <br>
+            <input type="text" id="newZipCode" name="newZipCode" placeholder="{{{zipCode}}}">
             <br>
             <button type="submit" id="profile-submit">Submit</button>
         </form>

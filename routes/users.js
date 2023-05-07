@@ -286,7 +286,7 @@ router
       country: user.geocode.country,
       countryCode: user.geocode.countryCode,
       city: user.geocode.city,
-      zipCode: user.geocode.zipCode,
+      zipCode: user.geocode.zipcode,
       lifetime_score: user.lifetime_score,
       high_score: user.high_score,
       num_submissions: user.submission.length,
@@ -463,7 +463,7 @@ router
       }
     }
 
-    if (newCountryCode && newCity && newZipCode) {
+    if (newCountryCode || newCity || newZipCode) {
       try {
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
@@ -478,30 +478,24 @@ router
         errors.push(error);
       }
     }
-
-    if (Object.keys(fields2Update).length === 0)
-      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
-    if (errors.length > 0) {
-      return res.status(400).render("user_profile", {
-        title: "User Profile",
-        errors,
-      });
-    }
-
+    
     let geocodes;
     try {
-      geocodes = await geocoder.geocode({
-        countryCode: newCountryCode,
-        city: newCity,
-        zipcode: newZipCode,
-      });
+      //console.log(await geocoder.geocode("Hoboken, US, 07030"))
+      // geocodes = await geocoder.geocode({
+      //   countryCode: newCountryCode,
+      //   city: newCity,
+      //   zipcode: newZipCode,
+      // });
+      geocodes = await geocoder.geocode(`${newCity}, ${newCountryCode}, ${newZipCode}`)
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
-    if (!geocodes) {
+
+    if (!geocodes || geocodes.length === 0) {
       return res.status(400).render("user_profile", {
         errors: ["no such location found based on the input!"],
       });
@@ -513,8 +507,23 @@ router
     }
 
     fields2Update["geocode"] = geocodes[0];
-    const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
 
+    if (Object.keys(fields2Update).length === 0) {
+      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
+    }
+    if (errors.length > 0) {
+      return res.status(400).render("user_profile", {
+        title: "User Profile",
+        errors,
+      });
+    }
+
+    try {
+      const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
+    } catch (error) {
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+    }
+    
     return res.redirect("/user/profile")
   });
     
