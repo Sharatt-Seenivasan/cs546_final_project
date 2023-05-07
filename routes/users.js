@@ -607,9 +607,9 @@ router
         });
       }
   
-      let birdId;
+      let newBird;
       try {
-        birdId = await createBird({
+        newBird = await createBird({
           userId: userId,
           url: bird_img,
           names: bird_names,
@@ -625,7 +625,7 @@ router
       let updatedPersonalInfo;
       try {
         updatedPersonalInfo = await updatePlayerInfoById(userId, {
-          $pushSubmission: { birdId },
+          $pushSubmission: { birdId: newBird._id},
         });
       } catch (error) {
         return res.status(500).render('error',{error: `Internal Server Error: ${error}`})

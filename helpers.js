@@ -114,7 +114,6 @@ function checkZipCode(zipCode, zipCodeName) {
 
 function checkGeoCode(geocode, geocodeName) {
   if (!geocode){
-    console.log(geocode)
     throw "No geocode provided";
   }
   if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
