@@ -14,21 +14,63 @@ const router = Router();
 router.
   route('/gamestart')
   .get(async (req,res)=>{
-      res.render('game_start',{title: 'Quiz'});
+      let flag=false;
+      if(req.session.user){
+        flag=true;
+      }
+      res.render('game_start',{title: 'Quiz',flag});
       })
   .post(async(req,res)=>{
-    if(req.session.user){
-
-        req.session.questions = await getQuestions4User(req.session.user['_id'],{
-            numberOfOptions : 4,
-            numberOfQuestions : 50,
-        });
-    }else{
-        req.session.questions =await getQuestions4Guest({
-            numberOfOptions : 4,
-            numberOfQuestions : 50,
-        } );
+    const {quizType} = req.body;
+    try{
+        if(req.session.user){
+            if(quizType=='local'){
+                let user=getUserById(req.session.user['_id']);
+                req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                    numberOfOptions : 4,
+                    numberOfQuestions : 50,
+                });
+                req.session.point_inc = 0;
+                req.session.point_dec = 1.5;
+            }else if(quizType=='country'){
+                let user=getUserById(req.session.user['_id']);
+                req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                    numberOfOptions : 4,
+                    numberOfQuestions : 50,
+                    city : "all",
+                    countryCode : user.geocode.countryCode,
+                });
+                req.session.point_inc = 0.5;
+                req.session.point_dec = 1;
+            }
+            else{
+                req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                    numberOfOptions : 4,
+                    numberOfQuestions : 50,
+                    ifGlobal : true,
+                });
+                req.session.point_inc = 1;
+                req.session.point_dec = 0.5;
+        
+            }
+        }else{
+            req.session.questions =await getQuestions4Guest({
+                numberOfOptions : 4,
+                numberOfQuestions : 50,
+            } );
+            req.session.point_inc = 1;
+            req.session.point_dec = 0.5;
+        }
+    }catch(error){
+        let flag =false;
+        if(req.session.user){
+            flag=true;
+        }
+        return res
+        .status(400)
+        .render("game_start", { title: "Quiz", error: error,flag});
     }
+
     req.session.index = 0;
     req.session.score = 0;
     req.session.timer = 60;
@@ -65,7 +107,10 @@ router.
           if(options){
               let correct = questions[index]['answer'];
               if(questions[index]['options'][options] == correct){
-                  req.session.score = req.session.score + questions[index]['difficulty'];
+                req.session.score = req.session.score + questions[index]['difficulty']+req.session.point_inc;
+              }
+              else{
+                req.session.score = req.session.score - req.session.point_dec;
               }
               req.session.timer = timer;
           }
@@ -73,7 +118,10 @@ router.
       }else{
           let correct = questions[index]['answer'];
           if(questions[index]['options'][options] == correct){
-              req.session.score = req.session.score + questions[index]['difficulty'];
+            req.session.score = req.session.score + questions[index]['difficulty']+req.session.point_inc;
+          }
+          else{
+            req.session.score = req.session.score - req.session.point_dec;
           }
           req.session.index = index + 1;
           req.session.timer = timer;

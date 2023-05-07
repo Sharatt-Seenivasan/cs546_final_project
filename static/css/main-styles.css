@@ -65,6 +65,16 @@ body {
     content: url("/static/images/play_button_hover.png");
 }
 
+.global_button_image:hover{
+    content: url("/static/images/global_text_hover.png");
+}
+.country_button_image:hover{
+    content: url("/static/images/country_text_hover.png");
+}
+.local_button_image:hover{
+    content: url("/static/images/local_text_hover.png");
+}
+
 .leaderboard_button_image:hover{
     content: url("/static/images/leaderboard_button_hover.png");
 }
@@ -173,18 +183,17 @@ body {
 }
 #gamestartForm{
     position:relative;
-    top:250px; 
-    left:750px;
+    top:30px; 
+    left:350px;
 }
-#startBtn{
-    width: 200px;
-    height: 100px;
-    margin: -20px -50px; 
-
-    background-color: darkseagreen;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
+#quizTypeLabel{
+    margin-inline-start: 170px;
+    font-size: xx-large;
+    font-family: fantasy;
+    font-weight: bold;
+    color: red;
 }
+
 #homepageBtn,#HomepageBtn,#LeaderBoardBtn{
     display: inline-block;
     width: 115px;

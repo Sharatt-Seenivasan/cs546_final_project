@@ -1,8 +1,39 @@
 <a href="/" id="homepageBtn" name="anchorBtn">Homepage</a>
 <div id="formContainer">
     <form  id="gamestartForm" action="/game/gamestart" method="POST">
-    <div id="gamestartContainer">
-        <button id="startBtn" type="submit">Start Quiz</button>
+    <input type="hidden" id="quizType" name="'quizType" value="global">
+    <p id='quizTypeLabel' name='quizTypeLabel' >Quiz Type</p>
+    <div class = "global_button">
+            <a href="#" class="btn btn-link" id = "global_play_button" onclick="globalFunction()">
+                <img src="/static/images/global_text.png" alt="Play Button" class="global_button_image">
+            </a>
     </div>
+    {{#if flag}}
+     <div class = "country_button">
+            <a href="#" class="btn btn-link" id = "country_play_button" onclick="countryFunction()">
+                <img src="/static/images/country_text.png" alt="Play Button" class="country_button_image">
+            </a>
+    </div>
+    <div class = "local_button">
+            <a href="#" class="btn btn-link" id = "local_play_button" onclick="localFunction()">
+                <img src="/static/images/local_text.png" alt="Play Button" class="local_button_image">
+            </a>
+    </div>
+    {{/if}}
+    <div id="error" class="error">{{error}}</div>
     </form>
+    <script>
+        function globalFunction(){
+            document.getElementById("quizType").value = "global";
+            document.getElementById("gamestartForm").submit();
+        }
+        function localFunction(){
+            document.getElementById("quizType").value = "local";
+            document.getElementById("gamestartForm").submit();
+        }
+        function countryFunction(){
+            document.getElementById("quizType").value = "country";
+            document.getElementById("gamestartForm").submit();
+        }
+    </script>
 </div>
