@@ -580,10 +580,11 @@ router
         else {
           geocodes = await geocoder.geocode(`${bird_city}, ${bird_countryCode}`)
         }
-        console.log(geocodes)
-        geocodes = checkGeoCode(geocodes, "Bird Geocode");
-        geocodes = extractKV_objArr(
-          geocodes,
+        
+        let geocode = geocodes[0]
+        geocode = checkGeoCode(geocode, "Bird Geocode");
+        geocode = extractKV_objArr(
+          geocode,
           ["latitude", "longitude", "country", "countryCode", "city"],
           { ifFilterUndefined: false }
         );
