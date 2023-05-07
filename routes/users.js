@@ -557,7 +557,7 @@ router
           "Bird Country Code"
         );
         bird_city = checkCity(bird_city, "Bird City");
-        if (bird_zipCode !== "")
+        if (bird_zipCode && bird_zipCode !== "")
           bird_zipCode = checkZipCode(bird_zipCode, "Bird Zip Code");
         bird_difficulty = checkDifficulty(
           parseInt(bird_difficulty),
@@ -569,12 +569,19 @@ router
   
       let geocodes;
       try {
-        geocodes = await geocoder.geocode({
-          countryCode: bird_countryCode,
-          address: bird_city,
-          zipcode: bird_zipCode,
-        });
-        geocodes = checkGeoCode(geocodes[0], "Bird Geocode");
+        // geocodes = await geocoder.geocode({
+        //   countryCode: bird_countryCode,
+        //   address: bird_city,
+        //   zipcode: bird_zipCode,
+        // });
+        if (bird_zipCode && bird_zipCode !== "") {
+          geocodes = await geocoder.geocode(`${bird_city}, ${bird_countryCode}, ${bird_zipCode}`)
+        }
+        else {
+          geocodes = await geocoder.geocode(`${bird_city}, ${bird_countryCode}`)
+        }
+        console.log(geocodes)
+        geocodes = checkGeoCode(geocodes, "Bird Geocode");
         geocodes = extractKV_objArr(
           geocodes,
           ["latitude", "longitude", "country", "countryCode", "city"],
