@@ -98,11 +98,13 @@ router
     //user = await getUserByUserName(username);
     try {
       user = await getUserByUserName(username);
-      if (!Object.keys(user).length === 0){}
+      if (!Object.keys(user).length === 0){
         return res.status(400).render("signup", {
           title: "Sign Up",
           error: "Username already exists!",
         });
+      }
+        
     } catch (error) {
         if(!error.includes("not found")) {
           //return res.status(500).send("Internal Server Error:", error);
