@@ -2,6 +2,8 @@ import { Router } from "express";
 import {
   topNthGlobalUsersByHighScore,
   topNthLocalUsersByHighScore,
+  getUserByUserName,
+  getUserById
 } from "../data/users.js";
 const router = Router();
 
@@ -9,25 +11,40 @@ router
   .route("/local")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    const userCountryCode =
-      req.session.user &&
-      req.session.user.geocode &&
-      req.session.user.geocode.countryCode;
-    const userCity =
-      req.session.user &&
-      req.session.user.geocode &&
-      req.session.user.geocode.city;
+
 
     let leaderboard;
+    let countryCode;
+    let city;
     try {
-      if (userId)
-        leaderboard = await topNthLocalUsersByHighScore(
-          100,
-          userCountryCode,
-          userCity
-        );
-      else
-        leaderboard = await topNthLocalUsersByHighScore(100, "US", "New York");
+      if (userId) {
+        const userInQuestion = await getUserById(userId)
+
+        const hasUserCountryCode =
+          req.session.user &&
+          userInQuestion.geocode &&
+          userInQuestion.geocode.countryCode;
+        const hasUserCity =
+          req.session.user &&
+          userInQuestion.geocode &&
+          userInQuestion.geocode.city;
+
+        if(hasUserCountryCode && hasUserCity) {
+          countryCode = userInQuestion.geocode.countryCode
+          city = userInQuestion.geocode.city
+          leaderboard = await topNthLocalUsersByHighScore(
+            100,
+            userInQuestion.geocode.countryCode,
+            userInQuestion.geocode.city
+          );   
+        }
+
+      }
+      else {
+        countryCode = 'US'
+        city = 'Hoboken'
+        leaderboard = await topNthLocalUsersByHighScore(100, countryCode, city);
+      }
     } catch (error) {
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
       //return res.status(500).send("Internal Server Error:", error);
@@ -36,6 +53,8 @@ router
     return res.render("leaderboard", {
       title: "Local Leaderboard",
       type: "local",
+      countryCode,
+      city,
       leaderboard,
     });
   })

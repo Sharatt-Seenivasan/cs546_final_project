@@ -11,8 +11,8 @@ const constructorMethod = (app) => {
     app.use('/', async (req, res) => {
         if(req.session.user){
             //console.log(await getUserByUserName(req.session.user.username))
-            const user = await getUserByUserName(req.session.user.username)
-            const icon = user.icon
+            // const user = await getUserByUserName(req.session.user.username)
+            const icon = req.session.user.icon
             //console.log(icon)
             res.render('homepage',{title:"Homepage",user: req.session.user, icon: icon})
         }

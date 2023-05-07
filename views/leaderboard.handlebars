@@ -264,13 +264,13 @@
       </select> 
       <br>
       <label for="citySearchBar">Search for city:</label>
-      <input type="text" id="citySearchBar" name="citySearchBar">
+      <input type="text" id="citySearchBar" name="citySearchBar" value = {{city}}>
       <br>
       <input class="search_button" type="submit" value="Search">
     </form>
   {{/if}}
   <br>
-  <div id="error" class="error" hidden>{{error}}</div>
+  <div id="error" class="error">{{error}}</div>
   <br>
 
   <table class="table leaderboard-table">
