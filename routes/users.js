@@ -98,17 +98,20 @@ router
     //user = await getUserByUserName(username);
     try {
       user = await getUserByUserName(username);
-      if (user)
+      if (user){
         return res.status(400).render("signup", {
           title: "Sign Up",
           error: "Username already exists!",
         });
+      }
+        
     } catch (error) {
         if(!error.includes("not found")) {
           //return res.status(500).send("Internal Server Error:", error);
           //return res.status(500).render("signup",{title: "Sign Up", error: error})
           return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         }
+        
     }
 
     // if (user)
@@ -154,10 +157,19 @@ router
     let user;
     try {
       user = await getUserByUserName(username);
+      if(Object.keys(user).length===0) {
+        return res.status(404).render("login", {
+          title: "Login",
+          error: "Could not find the username",
+        })
+      }
     } catch (error) {
-      //return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+
+        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      
+      
       //return res.status(500).render("login",{title: "Login", error: error})
-      //return res.status(500).send("Internal Server Error:", error);
+      // return res.status(500).send("Internal Server Error:", error);
     }
     if (!user) {
       return res.status(400).render("login", {
@@ -670,9 +682,6 @@ router.route("/logout").get((req, res) => {
   const username = req.session.user && req.session.user.username;
   req.session.destroy();
   res.render("logout", { username });
-});
-
-router.route("/quiz").get(async (req, res) => {
 });
 
 export default router;

@@ -30,7 +30,7 @@ const createUser = async (username, hashed_password) => {
     last_questions: [],
   };
 
-  const ifExistedInfo = await userCollection.findOne({ username: username });
+  const ifExistedInfo = await userCollection.findOne({ username: username});
   if (ifExistedInfo) throw `User ${username} already existed`;
 
   const insertInfo = await userCollection.insertOne(userFields);
@@ -57,8 +57,10 @@ const getUserByUserName = async (username) => {
   const __name = getUserByUserName.name;
   username = checkUserName(username, `username at ${__name}`);
   const userCollection = await users();
-  const theUser = await userCollection.findOne({ username });
-  if (!theUser) throw `User ${username} not found`;
+
+  // const patern=new RegExp(`^${username}$`);
+  const theUser = await userCollection.findOne({ username: { $regex: `${username}`, $options: "i" } });
+  if (!theUser) return {};
   return objectId2str_doc(theUser);
 };
 
