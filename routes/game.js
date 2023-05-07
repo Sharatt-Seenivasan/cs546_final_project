@@ -1,10 +1,12 @@
 import { Router } from "express";
 import {
   updatePlayerInfoById,
+  getUserById
 } from "../data/users.js";
 
-import { geocoderConfig } from "../config/settings.js";
+
 import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
+import { use } from "bcrypt/promises.js";
 
 const router = Router();
 
@@ -15,23 +17,22 @@ router.
       res.render('game_start',{title: 'Quiz'});
       })
   .post(async(req,res)=>{
-      if(req.session.user){
-          req.session.questions = await getQuestions4User({
+    if(req.session.user){
+
+        req.session.questions = await getQuestions4User(req.session.user['_id'],{
             numberOfOptions : 4,
             numberOfQuestions : 50,
-            countryCode : req.session.user['geocode.countryCode'],
-            city : req.session.user['geocode.city'],
-          });
-      }else{
-          req.session.questions =await getQuestions4Guest({
+        });
+    }else{
+        req.session.questions =await getQuestions4Guest({
             numberOfOptions : 4,
             numberOfQuestions : 50,
-          } );
-      }
-      req.session.index = 0;
-      req.session.score = 0;
-      req.session.timer = 60
-      res.redirect('/game/gameplay');
+        } );
+    }
+    req.session.index = 0;
+    req.session.score = 0;
+    req.session.timer = 60;
+    res.redirect('/game/gameplay');
 });
   
 router.
@@ -86,14 +87,26 @@ router.
       if(req.session.user){
           let questions = req.session.questions;
           let score = req.session.score;
-          let user =req.session.user;
+          let user =await getUserById(req.session.user['_id']);
+          let index = req.session.index;
           for(let i=0;i<index;i++){
               if(i<questions.length){
                   let birdid = questions[i]['birdid'];
                   await updatePlayerInfoById(user['_id'],{
-                    $pushLastQuestions: { birdid},
+                    $pushLastQuestions:  { birdId:birdid},
                   });
               }
+          }
+          let n_score=Number(score);
+          let l_score=Number(user['lifetime_score'])+n_score;
+          if(n_score>user['high_score']){
+            await updatePlayerInfoById(user['_id'],{
+                $incScores : {high_score:n_score,lifetime_score:l_score},
+            });
+          }else{
+            await updatePlayerInfoById(user['_id'],{
+                $incScores : {lifetime_score:l_score}
+            });
           }
           delete req.session['questions'];
           delete req.session['index'];

@@ -12,6 +12,10 @@ body {
     color: red;
 }
 
+#error {
+    color: red;
+}
+
 
 /*Use this section for styles that apply to the homepage*/
 #profile_container{
@@ -24,8 +28,8 @@ body {
 }
 
 .homepage_user_icon{
-    height: 100px;
-    width: 100px;
+    height: 75px;
+    width: 75px;
 } 
 
 #homepage_login_button{
@@ -105,6 +109,14 @@ body {
     padding:20px;
 }
 
+#bird_form_link_profile{
+    font-size: 20px
+}
+
+#user_profile_logout{
+    font-size: 30px
+}
+
 
 /*Use this section for styles that apply to the signup page*/
 .sign-up-page{
@@ -174,7 +186,7 @@ body {
     width: 115px;
     height: 50px;
     text-decoration: none;
-    background: #4E9CAF;
+    background: black;
     padding: 10px;
     text-align: center;
     border-radius: 5px;
