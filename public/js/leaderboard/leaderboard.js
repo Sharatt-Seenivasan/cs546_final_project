@@ -19,9 +19,10 @@ function fillLeaderboardTable(leaderboardTableData){
     $.each(leaderboardTableData, function(index, user) {
         // console.log(index)
         // console.log(user)
+        const iconToUse = user.icon ? user.icon : "/static/images/default_bird_icon.jpg";
         var row = $('<tr>').append(
           $('<td>').text(index),
-          $('<td>').append($('<img>').addClass('leaderboard-user-icon').attr('src', user.icon)),
+          $('<td>').append($('<img>').addClass('leaderboard-user-icon').attr('src', iconToUse)),
           $('<td>').text(user.username),
           $('<td>').text(user.high_score)
         );
