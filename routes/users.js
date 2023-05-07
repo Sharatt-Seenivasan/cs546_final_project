@@ -538,7 +538,7 @@ router
       const userId = req.session.user && req.session.user._id;
       if (!userId) return res.redirect("/login");
   
-      const {
+      let {
         bird_names,
         bird_img,
         bird_countryCode,
@@ -546,7 +546,7 @@ router
         bird_zipCode,
         bird_difficulty,
       } = req.body;
-  
+      
       try {
         bird_names = checkStr(bird_names, "Bird Names");
         bird_names = bird_names.split(",");
