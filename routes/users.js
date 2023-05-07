@@ -68,12 +68,12 @@ router
   .route("/signup")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
     return res.render("signup", { title: "Sign Up" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
 
     let { username, password, confirmPassword } = req.body;
     try {
@@ -134,12 +134,12 @@ router
   .route("/login")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
     return res.render("login", { title: "Login" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/user/profile");
+    if (userId) return res.redirect("/users/user/profile");
 
     let { username, password } = req.body;
     try {
@@ -173,7 +173,7 @@ router
     }
 
     req.session.user = { _id: user._id, username: user.username };
-    return res.redirect("/user/profile");
+    return res.redirect("/users/user/profile");
   });
     // if(!req.session.questions){
     //   res.redirect('/users/gamestart')
@@ -511,7 +511,7 @@ router
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
     
-    return res.redirect("/user/profile")
+    return res.redirect("/users/user/profile")
   });
     
   router
@@ -522,7 +522,7 @@ router
   
       let user;
       try {
-        user = await getUserByUserName(userId);
+        user = await getUserById(userId);
       } catch (error) {
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
@@ -538,7 +538,7 @@ router
       const userId = req.session.user && req.session.user._id;
       if (!userId) return res.redirect("/login");
   
-      const {
+      let {
         bird_names,
         bird_img,
         bird_countryCode,
@@ -546,7 +546,7 @@ router
         bird_zipCode,
         bird_difficulty,
       } = req.body;
-  
+      
       try {
         bird_names = checkStr(bird_names, "Bird Names");
         bird_names = bird_names.split(",");
@@ -557,7 +557,7 @@ router
           "Bird Country Code"
         );
         bird_city = checkCity(bird_city, "Bird City");
-        if (bird_zipCode !== "")
+        if (bird_zipCode && bird_zipCode !== "")
           bird_zipCode = checkZipCode(bird_zipCode, "Bird Zip Code");
         bird_difficulty = checkDifficulty(
           parseInt(bird_difficulty),
@@ -569,13 +569,21 @@ router
   
       let geocodes;
       try {
-        geocodes = await geocoder.geocode({
-          countryCode: bird_countryCode,
-          address: bird_city,
-          zipcode: bird_zipCode,
-        });
-        geocodes = checkGeoCode(geocode, "Bird Geocode");
-        geocodes = extractKV_objArr(
+        // geocodes = await geocoder.geocode({
+        //   countryCode: bird_countryCode,
+        //   address: bird_city,
+        //   zipcode: bird_zipCode,
+        // });
+        if (bird_zipCode && bird_zipCode !== "") {
+          geocodes = await geocoder.geocode(`${bird_city}, ${bird_countryCode}, ${bird_zipCode}`)
+        }
+        else {
+          geocodes = await geocoder.geocode(`${bird_city}, ${bird_countryCode}`)
+        }
+        
+        let geocode = geocodes[0]
+        geocode = checkGeoCode(geocode, "Bird Geocode");
+        geocode = extractKV_objArr(
           geocode,
           ["latitude", "longitude", "country", "countryCode", "city"],
           { ifFilterUndefined: false }
@@ -599,9 +607,9 @@ router
         });
       }
   
-      let birdId;
+      let newBird;
       try {
-        birdId = await createBird({
+        newBird = await createBird({
           userId: userId,
           url: bird_img,
           names: bird_names,
@@ -613,43 +621,45 @@ router
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
-  
-      let updatedPersonalInfo;
-      try {
-        updatedPersonalInfo = await updatePlayerInfoById(userId, {
-          $pushSubmission: { birdId },
-        });
-      } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
-        //return res.status(500).send("Internal Server Error:", error);
-      }
+      
+      // let updatedPersonalInfo;
+      // try {
+      //   updatedPersonalInfo = await updatePlayerInfoById(userId, {
+      //     $pushSubmission: { birdId: newBird._id},
+      //   });
+      // } catch (error) {
+      //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //   //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+      //   //return res.status(500).send("Internal Server Error:", error);
+      // }
 
-      try {
-        geocodes = checkGeoCode(geocode, "Bird Geocode");
-        geocodes = extractKV_objArr(
-          geocode,
-          ["latitude", "longitude", "country", "countryCode", "city"],
-          { ifFilterUndefined: false }
-        );
-      } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
-        //return res.status(500).send("Internal Server Error:", error);
-      }
+      return res.redirect("/users/user/profile")
 
-      if (!geocodes) {
-        return res.status(400).render("bird_submission", {
-          errors: ["no location found based on given country and city"],
-        });
-      }
-      if (geocodes.length > 1) {
-        return res.status(400).render("bird_submission", {
-          errors: [
-            "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
-          ],
-        });
-      }
+      // try {
+      //   geocodes = checkGeoCode(geocode, "Bird Geocode");
+      //   geocodes = extractKV_objArr(
+      //     geocode,
+      //     ["latitude", "longitude", "country", "countryCode", "city"],
+      //     { ifFilterUndefined: false }
+      //   );
+      // } catch (error) {
+      //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      //   //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+      //   //return res.status(500).send("Internal Server Error:", error);
+      // }
+
+      // if (!geocodes) {
+      //   return res.status(400).render("bird_submission", {
+      //     errors: ["no location found based on given country and city"],
+      //   });
+      // }
+      // if (geocodes.length > 1) {
+      //   return res.status(400).render("bird_submission", {
+      //     errors: [
+      //       "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
+      //     ],
+      //   });
+      // }
 });
 
 
