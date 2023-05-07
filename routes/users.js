@@ -85,8 +85,6 @@ router
     try {
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      //return res.status(500).send("Internal Server Error:", error);
-      //return res.status(500).render("signup",{title: "Sign Up", error: error})
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
@@ -94,7 +92,7 @@ router
     //user = await getUserByUserName(username);
     try {
       user = await getUserByUserName(username);
-      if (user){
+      if (Object.keys(user).length !== 0){
         return res.status(400).render("signup", {
           title: "Sign Up",
           error: "Username already exists!",
@@ -102,31 +100,19 @@ router
       }
         
     } catch (error) {
-        if(!error.includes("not found")) {
-          //return res.status(500).send("Internal Server Error:", error);
-          //return res.status(500).render("signup",{title: "Sign Up", error: error})
-          return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-        }
-        
+        // if(!error.includes("not found")) {
+        //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        // }
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
-    // if (user)
-    //   return res.status(400).render("signup", {
-    //     title: "Sign Up",
-    //     error: "Username already exists!",
-    //   });
     try {
       const newUser = await createUser(username, password);
       req.session.user = { _id: newUser._id, username: newUser.username };
       return res.redirect('/login');
     } catch (error) {
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-      //return res.status(500).render("signup",{title: "Sign Up", error: error})
     }
-    // const newUser = await createUser(username, password);
-    // req.session.user = { _id: newUser._id, username: newUser.username };
-  
-    //return res.redirect('/login');
   });
 
 router
@@ -153,21 +139,18 @@ router
     let user;
     try {
       user = await getUserByUserName(username);
-      if(Object.keys(user).length===0) {
-        return res.status(404).render("login", {
-          title: "Login",
-          error: "Could not find the username",
-        })
-      }
-    } catch (error) {
-
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-      
-      
-      //return res.status(500).render("login",{title: "Login", error: error})
-      // return res.status(500).send("Internal Server Error:", error);
+      // if(Object.keys(user).length===0) {
+      //   return res.status(404).render("login", {
+      //     title: "Login",
+      //     error: "Could not find the username",
+      //   })
+      // }
+    } 
+    catch (error) {
+      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
-    if (!user) {
+
+    if (Object.keys(user).length===0) {
       return res.status(400).render("login", {
         title: "Login",
         error: "Either username or password is incorrect!",
