@@ -89,8 +89,6 @@ router
     try {
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      //return res.status(500).send("Internal Server Error:", error);
-      //return res.status(500).render("signup",{title: "Sign Up", error: error})
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
     }
 
@@ -107,30 +105,18 @@ router
         
     } catch (error) {
         if(!error.includes("not found")) {
-          //return res.status(500).send("Internal Server Error:", error);
-          //return res.status(500).render("signup",{title: "Sign Up", error: error})
           return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         }
         
     }
 
-    // if (user)
-    //   return res.status(400).render("signup", {
-    //     title: "Sign Up",
-    //     error: "Username already exists!",
-    //   });
     try {
       const newUser = await createUser(username, password);
       req.session.user = { _id: newUser._id, username: newUser.username };
       return res.redirect('/login');
     } catch (error) {
       return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-      //return res.status(500).render("signup",{title: "Sign Up", error: error})
     }
-    // const newUser = await createUser(username, password);
-    // req.session.user = { _id: newUser._id, username: newUser.username };
-  
-    //return res.redirect('/login');
   });
 
 router
