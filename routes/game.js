@@ -151,6 +151,8 @@ router.
           delete req.session['index'];
           delete req.session['score'];
           delete req.session['timer'];
+          delete req.session['point_inc'];
+          delete req.session['point_dec'];
           res.render('game_end',{score});
       }
       else{
@@ -159,6 +161,8 @@ router.
           delete req.session['index'];
           delete req.session['score'];
           delete req.session['timer'];
+          delete req.session['point_inc'];
+          delete req.session['point_dec'];
           res.render('game_end',{score});
       }
     }catch(error){
