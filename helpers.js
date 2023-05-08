@@ -106,7 +106,7 @@ function checkCity(city, cityName) {
 
 function checkZipCode(zipCode, zipCodeName) {
   zipCode = checkStr(zipCode, zipCodeName);
-  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  //if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
   if (zipCode.match(/\d{5}/g)[0] !== zipCode)
     throw `${zipCodeName} must contain only digits`;
   return xss(zipCode); // trimmed

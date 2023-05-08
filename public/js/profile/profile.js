@@ -69,6 +69,14 @@ function checkImgUrl(url, imgName) {
     return url; // trimmed and replaced spaces with %20
 }
 
+function checkZipCode(zipCode, zipCodeName) {
+  zipCode = checkStr(zipCode, zipCodeName);
+  //if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  if (zipCode.match(/\d{5}/g)[0] !== zipCode)
+    throw `${zipCodeName} must contain only digits`;
+  return zipCode; // trimmed
+}
+
 const profileForm = document.getElementById("profile-form");
 
 if(profileForm){
@@ -137,13 +145,25 @@ if(profileForm){
 
         if(icon.value){
             try {
-                checkImgUrl(icon.value)
+                checkImgUrl(icon.value, "User Icon")
             } catch (e) {
                 error.innerHTML= "Icon is invalid!";
                 error.hidden= false;
                 event.preventDefault();
                 return false;    
             }   
+        }
+
+        if(zipcode.value) {
+          try{
+            checkZipCode(zipcode.value,"User Zipcode")
+          }
+          catch(e){
+            error.innerHTML= "Zipcode is invalid!";
+            error.hidden= false;
+            event.preventDefault();
+            return false; 
+          }
         }
 
         // if((country.value || city.value || zipcode.value) && !(country.value && city.value && zipcode.value)){
