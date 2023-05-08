@@ -648,6 +648,10 @@ router
         bird_names = bird_names.split(",");
         bird_names = checkStrArr(bird_names, "Bird Names");
         bird_img = checkImgUrl(bird_img, "Bird Image");
+
+        if(bird_countryCode === "invalid"){
+          throw "You must select a country for the bird image."
+        }
         bird_countryCode = checkCountryCode(
           bird_countryCode,
           "Bird Country Code"
@@ -686,21 +690,22 @@ router
           { ifFilterUndefined: false }
         );
       } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        //return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
+        return res.status(400).render("bird_submission",{title: "Bird Image Submission Form", errors: ["Location data is invalid!"]})
       }
   
       if (!geocodes) {
         return res.status(400).render("bird_submission", {title: "Bird Image Submission Form",
-          errors: ["no location found based on given country and city"],
+          errors: ["No location found based on given country and city"],
         });
       }
       if (geocodes.length > 1) {
         return res.status(400).render("bird_submission", {
           title: "Bird Image Submission Form",
           errors: [
-            "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
+            "Multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
           ],
         });
       }
@@ -715,7 +720,7 @@ router
           difficulty: bird_difficulty,
         });
       } catch (error) {
-        return res.status(500).render('error',{title: "Bird Image Submission Form",
+        return res.status(500).render('error',{title: "Error",
         error: `Internal Server Error: ${error}`})
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
