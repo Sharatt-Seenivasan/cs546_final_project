@@ -660,7 +660,9 @@ router
           "Bird Difficulty"
         );
       } catch (error) {
-        return res.status(400).render("bird_submission", { errors: [error] });
+        return res.status(400).render("bird_submission", { title: "Bird Image Submission Form",
+        user: user,
+        errors: [error] });
       }
   
       let geocodes;
