@@ -180,8 +180,8 @@ const updateBirdById = async (
 
 const hasBirdWithImageUrl = async (imageUrl) => {
   const birdsCollection = await birds();
-  const bird  = await birdsCollection.findOne({ url: imageUrl });
-  if(!bird){
+  const bird = await birdsCollection.findOne({ url: imageUrl });
+  if(!bird || Object.keys(bird).length===0){
     return false;
   }
   return true;
