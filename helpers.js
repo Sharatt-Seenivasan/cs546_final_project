@@ -116,7 +116,9 @@ function checkGeoCode(geocode, geocodeName) {
   if (!geocode){
     throw "No geocode provided";
   }
-  if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
+  if (typeof geocode !== "object"){ 
+    throw `${geocodeName} is not an object`;
+  }
 
   const { latitude, longitude, country, countryCode, city } = geocode;
 
