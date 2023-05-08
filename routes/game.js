@@ -18,9 +18,10 @@ router.
       })
   .post(async(req,res)=>{
     if(req.session.user){
-        req.session.questions = await getGlobalQuestions4User(req.session.user['_id'],{
+        req.session.questions = await getQuestions4User(req.session.user['_id'],{
             numberOfOptions : 4,
             numberOfQuestions : 50,
+            ifGlobal: true
         });
 
         // req.session.questions = await getQuestions4User(req.session.user['_id'],{
@@ -104,10 +105,13 @@ router.
           let n_score=Number(score);
           //let l_score=Number(user['lifetime_score'])+n_score;
           let l_score=n_score;
+          let totalLScore = Number(user['lifetime_score'])+n_score;
+          let currentHighScore = user['high_score'];
           if(n_score>user['high_score']){
             await updatePlayerInfoById(user['_id'],{
                 $incScores : {high_score:n_score,lifetime_score:l_score},
             });
+            currentHighScore = n_score
           }else{
             await updatePlayerInfoById(user['_id'],{
                 $incScores : {lifetime_score:l_score}
@@ -117,7 +121,7 @@ router.
           delete req.session['index'];
           delete req.session['score'];
           delete req.session['timer'];
-          res.render('game_end',{score});
+          res.render('game_end',{score, high_score:currentHighScore, lifetime_score:totalLScore});
       }
       else{
           let score = req.session.score;
