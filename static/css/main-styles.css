@@ -95,6 +95,10 @@ body {
     margin-left: 60%;
 } */
 
+#leaderboard_buttons_container{
+    margin-top: -45px;
+    text-align: right;
+}
 
 .leaderboard-user-icon {
     height: 25px;
