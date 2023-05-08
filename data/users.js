@@ -12,7 +12,7 @@ import {
   objectId2str_docs_arr,
   objsEqual,
 } from "../helpers.js";
-import async from "hbs/lib/async.js";
+//import async from "hbs/lib/async.js";
 
 const createUser = async (username, hashed_password) => {
   const __name = createUser.name;
