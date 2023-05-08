@@ -250,7 +250,7 @@ router
   .route("/user/profile")
   .get(async (req, res) => {
     const hasUserId = req.session.user && req.session.user._id;
-    if (!hasUserId) return res.redirect("/login");
+    if (!hasUserId) return res.redirect("/users/login");
     
     let user;
     try {
@@ -513,7 +513,7 @@ router
     .route("/user/post")
     .get(async (req, res) => {
       const userId = req.session.user && req.session.user._id;
-      if (!userId) return res.redirect("/login");
+      if (!userId) return res.redirect("/users/login");
   
       let user;
       try {
