@@ -137,17 +137,22 @@ router.
               }
           }
           let n_score=Number(score);
+          let currentHighScore;
+          let totalLScore;
           if(n_score !== 0) {
             if(n_score>user['high_score']){
+                const high_inc=n_score-Number(user['high_score']);
                 await updatePlayerInfoById(user['_id'],{
-                    $incScores : {high_score:n_score,lifetime_score:l_score},
+                    $incScores : {high_score:high_inc,lifetime_score:n_score},
                 });
-                currentHighScore = n_score
+                currentHighScore = n_score;
+                
             }else{
                 await updatePlayerInfoById(user['_id'],{
-                    $incScores : {lifetime_score:l_score}
+                    $incScores : {lifetime_score:n_score}
                 });
             }
+            totalLScore = Number(user['lifetime_score'])+n_score;
           } 
           delete req.session['questions'];
           delete req.session['index'];
