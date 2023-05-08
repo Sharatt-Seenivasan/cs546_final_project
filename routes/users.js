@@ -22,7 +22,7 @@ import { geocoderConfig } from "../config/settings.js";
 import NodeGeocoder from "node-geocoder";
 import xss from "xss";
 import {createUser} from "../data/users.js"
-import { createBird } from "../data/birds.js";
+import { createBird,hasBirdWithImageUrl} from "../data/birds.js";
 const saltRounds = 16;
 const router = Router();
 const geocoder = NodeGeocoder(geocoderConfig);
@@ -246,7 +246,7 @@ router
   .route("/user/profile")
   .get(async (req, res) => {
     const hasUserId = req.session.user && req.session.user._id;
-    if (!hasUserId) return res.redirect("/login");
+    if (!hasUserId) return res.redirect("/users/login");
     
     let user;
     try {
@@ -382,7 +382,7 @@ router
   .post(async (req, res) => {
     // reserved for AJAX
     const hasUserId = req.session.user && req.session.user._id;
-    if (!hasUserId) return res.redirect("/login");
+    if (!hasUserId) return res.redirect("/users/login");
 
     let user;
     try {
@@ -412,8 +412,20 @@ router
           throw "Username is the same as before!";
         fields2Update["username"] = newUserName;
       } catch (error) {
-        //return res.status(400).render("user_profile",{error:error})
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
     if (newPassword) {
@@ -426,22 +438,47 @@ router
           throw "Password is the same as before!";
         fields2Update["hashed_password"] = newPassword;
       } catch (error) {
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
     if (newIcon) {
       try {
-        //console.log(newIcon)
         newIcon = checkImgUrl(newIcon, "Icon");
         if ((newIcon === user.icon)) throw "Icon is the same as before!";
 
         fields2Update["icon"] = newIcon;
       } catch (error) {
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
 
-    if (newCountryCode || newCity || newZipCode) {
+    if (newCountryCode !== "invalid" || newCity || newZipCode) {
       try {
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
@@ -450,10 +487,24 @@ router
           newCountryCode === user.geocode.countryCode &&
           newCity === user.geocode.city &&
           newZipCode === user.geocode.zipCode
-        )
+        ) {
           throw "country code, city and zip code are the same as before!";
+        }
       } catch (error) {
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
     
@@ -465,7 +516,46 @@ router
       //   city: newCity,
       //   zipcode: newZipCode,
       // });
-      geocodes = await geocoder.geocode(`${newCity}, ${newCountryCode}, ${newZipCode}`)
+      if(newCity && newCountryCode && newZipCode) {
+        geocodes = await geocoder.geocode(`${newCity}, ${newCountryCode}, ${newZipCode}`)
+
+        if (!geocodes || geocodes.length === 0) {
+          return res.status(400).render("user_profile", {
+            title: "User Profile",
+            username: user.username,
+            icon: user.icon,
+            country: user.geocode.country,
+            countryCode: user.geocode.countryCode,
+            city: user.geocode.city,
+            zipCode: user.geocode.zipcode,
+            lifetime_score: user.lifetime_score,
+            high_score: user.high_score,
+            num_submissions: user.submission.length,
+            submission: user.submission,
+            last_questions: user.last_questions,
+            errors: ["No such location found based on the input!"],
+          });
+        }
+        if (geocodes.length > 1) {
+          return res.status(400).render("user_profile", {
+            title: "User Profile",
+            username: user.username,
+            icon: user.icon,
+            country: user.geocode.country,
+            countryCode: user.geocode.countryCode,
+            city: user.geocode.city,
+            zipCode: user.geocode.zipcode,
+            lifetime_score: user.lifetime_score,
+            high_score: user.high_score,
+            num_submissions: user.submission.length,
+            submission: user.submission,
+            last_questions: user.last_questions,
+            errors: ["More than one location found based on the input!"],
+          });
+        }
+    
+        fields2Update["geocode"] = geocodes[0];
+      }
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
@@ -473,25 +563,36 @@ router
     }
 
 
-    if (!geocodes || geocodes.length === 0) {
-      return res.status(400).render("user_profile", {
-        errors: ["no such location found based on the input!"],
-      });
-    }
-    if (geocodes.length > 1) {
-      return res.status(400).render("user_profile", {
-        errors: ["more than one location found based on the input!"],
-      });
-    }
-
-    fields2Update["geocode"] = geocodes[0];
 
     if (Object.keys(fields2Update).length === 0) {
-      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
+      return res.render("user_profile", { title: "User Profile", 
+      username: user.username,
+      icon: user.icon,
+      country: user.geocode.country,
+      countryCode: user.geocode.countryCode,
+      city: user.geocode.city,
+      zipCode: user.geocode.zipcode,
+      lifetime_score: user.lifetime_score,
+      high_score: user.high_score,
+      num_submissions: user.submission.length,
+      submission: user.submission,
+      last_questions: user.last_questions,
+      errors:["No fields to update!"]});
     }
     if (errors.length > 0) {
       return res.status(400).render("user_profile", {
         title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
         errors,
       });
     }
@@ -509,7 +610,7 @@ router
     .route("/user/post")
     .get(async (req, res) => {
       const userId = req.session.user && req.session.user._id;
-      if (!userId) return res.redirect("/login");
+      if (!userId) return res.redirect("/users/login");
   
       let user;
       try {
@@ -543,6 +644,14 @@ router
         bird_names = bird_names.split(",");
         bird_names = checkStrArr(bird_names, "Bird Names");
         bird_img = checkImgUrl(bird_img, "Bird Image");
+
+        if(hasBirdWithImageUrl(bird_img)){
+          throw "A bird with this image url already exists in the database!"
+        }
+
+        if(bird_countryCode === "invalid"){
+          throw "You must select a country for the bird image."
+        }
         bird_countryCode = checkCountryCode(
           bird_countryCode,
           "Bird Country Code"
@@ -555,7 +664,8 @@ router
           "Bird Difficulty"
         );
       } catch (error) {
-        return res.status(400).render("bird_submission", { errors: [error] });
+        return res.status(400).render("bird_submission", { title: "Bird Image Submission Form",
+        errors: [error] });
       }
   
       let geocodes;
@@ -580,20 +690,22 @@ router
           { ifFilterUndefined: false }
         );
       } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        //return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
+        return res.status(400).render("bird_submission",{title: "Bird Image Submission Form", errors: ["Location data is invalid!"]})
       }
   
       if (!geocodes) {
-        return res.status(400).render("bird_submission", {
-          errors: ["no location found based on given country and city"],
+        return res.status(400).render("bird_submission", {title: "Bird Image Submission Form",
+          errors: ["No location found based on given country and city"],
         });
       }
       if (geocodes.length > 1) {
         return res.status(400).render("bird_submission", {
+          title: "Bird Image Submission Form",
           errors: [
-            "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
+            "Multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
           ],
         });
       }
@@ -608,7 +720,8 @@ router
           difficulty: bird_difficulty,
         });
       } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        return res.status(500).render('error',{title: "Error",
+        error: `Internal Server Error: ${error}`})
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }

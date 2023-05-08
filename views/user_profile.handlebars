@@ -1,7 +1,7 @@
 <main class="profile-page">
     <h1>Your Profile</h1>
     <div id = "user_info">
-        <h3>User Statistics</h3>
+        <h2>User Statistics</h2>
         <ul>
             <li>Username: {{username}}</li>
             <li>Lifetime Score: {{lifetime_score}}</li>
@@ -9,7 +9,6 @@
             <li>Bird Submissions: {{num_submissions}}</li>
         </ul>
     </div>
-    <br>
     <br>
     <div id="profile-div">
         <h3>Edit User Information</h3>
@@ -32,7 +31,7 @@
             <br>
             <label for="newCountryCode">Country:</label>
             <select id="newCountryCode" name="newCountryCode" form = "profile-form">
-                <option value={{countryCode}}>{{{country}}}</option>
+                <option value="invalid">Select a country</option>
                 <option value="AF">Afghanistan</option>
                 <option value="AX">Aland Islands</option>
                 <option value="AL">Albania</option>
@@ -304,9 +303,12 @@
         <p>Want to contribute to Who's That Bird? Click the link below to submit a bird image!<p>
         <a href="/users/user/post" id = "bird_form_link_profile">Submit a bird image!</a>
     </div>
-    <br>
     <a href="/game/gamestart" id="user_profile_gamestart">Play Who's That Bird?</a>
+    <div class="container" id = "profile_buttons_container">
+        <a class="btn btn-dark btn-lg" href="/" role="button" id ="profile_homepage_button">Homepage</a>
+        <a class="btn btn-dark btn-lg" href="/users/logout" role="button" id ="profile_logout_button">Log Out</a>
+    </div>
     <br>
-    <a href="/users/logout" id = "user_profile_logout">Logout</a>
+    <br>
 </main>
 <script src='/public/js/profile/profile.js'></script>
