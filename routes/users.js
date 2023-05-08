@@ -43,7 +43,7 @@ router
     try {
       user = await getUserById(userId);
     } catch (error) {
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     return res.render("user", {
@@ -89,7 +89,7 @@ router
     try {
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     let user;
@@ -107,7 +107,7 @@ router
         // if(!error.includes("not found")) {
         //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
         // }
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     try {
@@ -115,7 +115,7 @@ router
       req.session.user = { _id: newUser._id, username: newUser.username };
       return res.redirect('/login');
     } catch (error) {
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
   });
 
@@ -151,7 +151,7 @@ router
       // }
     } 
     catch (error) {
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     if (Object.keys(user).length===0) {
@@ -258,7 +258,7 @@ router
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: error})
       //return res.status(500).send("Internal Server Error:", error);
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     return res.render("user_profile", {
@@ -394,7 +394,7 @@ router
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     let {
@@ -604,7 +604,7 @@ router
     try {
       const updatedUser = await updatePersonalInfoById(req.session.user._id, fields2Update);
     } catch (error) {
-      return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
     
     return res.redirect("/users/user/profile")
@@ -621,7 +621,7 @@ router
         user = await getUserById(userId);
       } catch (error) {
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
         //res.status(500).send("Internal Server Error");
       }
   

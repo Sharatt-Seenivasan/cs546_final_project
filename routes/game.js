@@ -121,7 +121,7 @@ router.
           delete req.session['index'];
           delete req.session['score'];
           delete req.session['timer'];
-          res.render('game_end',{score, high_score:currentHighScore, lifetime_score:totalLScore});
+          res.render('game_end',{title: 'Quiz Results',score, high_score:currentHighScore, lifetime_score:totalLScore});
       }
       else{
           let score = req.session.score;
@@ -129,7 +129,7 @@ router.
           delete req.session['index'];
           delete req.session['score'];
           delete req.session['timer'];
-          res.render('game_end',{score});
+          res.render('game_end',{title: 'Quiz Results',score});
       }
 });
 export default router;
