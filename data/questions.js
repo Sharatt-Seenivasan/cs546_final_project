@@ -47,7 +47,7 @@ const getQuestions4User = async (
   const qSubmitted = theUser.submission;
   let allBirdsForNames = await getAllBirds();
   let allBirds, unseenBirds;
-  if (ifGlobal || (!countryCode && !city && !theUser.geocode.countryCode && !theUser.geocode.city) ) {
+  if (ifGlobal || (!countryCode && !city && !theUser.geocode.longitude && !theUser.geocode.latitude) ) {
     allBirds = await getAllBirds();
   } else if (!countryCode && !city) {
     allBirds = await getLocalBirdsLatLong(

@@ -24,11 +24,15 @@ router.
         try{
             if(req.session.user){
                 if(quizType=='local'){
-                    let user=await getUserById(req.session.user['_id']);
-                    req.session.questions = await getQuestions4User(req.session.user['_id'],{
-                        numberOfOptions : 4,
-                        numberOfQuestions : 50,
-                    });
+                    try{
+                        let user=await getUserById(req.session.user['_id']);
+                        req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                            numberOfOptions : 4,
+                            numberOfQuestions : 50,
+                        });
+                    }catch{
+                        res.render('There arent enough birds in your location.You can Help us By Uploading Some!');
+                    }
                     req.session.point_inc = 1;
                     req.session.point_dec = 2;
                 }
@@ -137,7 +141,7 @@ router.
               }
           }
           let n_score=Number(score);
-          let currentHighScore;
+          let currentHighScore=Number(user['high_score']);
           let totalLScore;
           if(n_score !== 0) {
             if(n_score>user['high_score']){

@@ -186,7 +186,6 @@ const resetLastQuestionsById = async(userId,{last_questions}={})=>{
   userId = checkId(userId, `user id at ${__name}`);
 
   const userCollection = await users();
-  console.log(userId);
   let ifExists = await userCollection.findOne({ _id: new ObjectId(userId) });
   if (!ifExists) throw `No such user with id ${userId}`;
 
