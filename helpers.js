@@ -2,17 +2,6 @@ import { ObjectId } from "mongodb";
 import xss from "xss";
 
 function checkStr(str, strName) {
-  // if(strName.includes("updatePersonalInfoById"))
-  // {
-  //   console.log("#")
-  //   console.log(strName)
-  //   console.log(str)
-  //   console.log(typeof str)
-  // }
-  // console.log("#")
-  // console.log(strName)
-  // console.log(str)
-  // console.log(typeof str)
   if (!str) throw `No string provided for ${strName}`;
   if (typeof str !== "string") throw `${strName} is not a string`;
   str = str.trim();
@@ -22,10 +11,12 @@ function checkStr(str, strName) {
 
 function checkUserName(username) {
   username = checkStr(username, "username"); // trimmed
-  if (username.length < 3) throw "Username must be at least 3 characters long";
-  if (username.match(/\s/g)) throw "Username cannot contain spaces";
+  if (username.length < 3)
+    throw `Username must be at least 3 characters long. Provided ${username}`;
+  if (username.match(/\s/g))
+    throw `Username cannot contain spaces. Provided ${username}`;
   if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Username cannot contain special characters except underscore and dash";
+    throw `Username cannot contain special characters except underscore and dash. Provided ${username}`;
 
   return xss(username); // trimmed
 }
@@ -33,31 +24,29 @@ function checkUserName(username) {
 function checkPassword(password) {
   password = checkStr(password, "password"); // trimmed
   if (password.length === 0) throw "Password cannot be empty";
-  if (password.length < 8) throw "Password must be at least 8 characters long";
-  if (password.match(/\s/g)) throw "Password cannot contain spaces";
+  if (password.length < 8)
+    throw `Password must be at least 8 characters long. `;
+  if (password.match(/\s/g)) throw `Password cannot contain spaces. `;
   if (!password.match(/[a-z]/g))
-    throw "Password must contain at least one lowercase letter";
+    throw `Password must contain at least one lowercase letter. `;
   if (!password.match(/[A-Z]/g))
-    throw "Password must contain at least one uppercase letter";
+    throw `Password must contain at least one uppercase letter. `;
   if (!password.match(/[0-9]/g))
-    throw "Password must contain at least one number";
+    throw `Password must contain at least one number. `;
   if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Password must contain at least one special character";
+    throw `Password must contain at least one special character. `;
 
   return xss(password);
 }
 
 function checkId(id, idName) {
   id = checkStr(id, idName); // trimmed
-  if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
+  if (!ObjectId.isValid(id))
+    throw `${idName} is not a valid ObjectId. Provided ${id}`;
   return xss(id); // trimmed
 }
 
 function checkUrl(url, urlName, minimumLength = 0) {
-  // if(urlName.includes("updatePersonalInfoById")){
-  //   console.log("check url 2")
-  //   console.log(url)
-  // }
   url = checkStr(url, urlName); // trimmed
   url = url.replace(/\s/, "%20");
 
@@ -66,18 +55,14 @@ function checkUrl(url, urlName, minimumLength = 0) {
   if (!supportedProtocols.some((p) => url.startsWith(p)))
     throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
       " "
-    )}, you provided ${url}`;
+    )}. Provided ${url}`;
   if (url.split("//")[1].length < minimumLength)
-    throw `${urlName} is too short`;
+    throw `${urlName} is too short. Provided ${url}`;
 
   return xss(url); // trimmed and replaced spaces with %20
 }
 
 function checkImgUrl(url, imgName) {
-  // if (imgName.includes("icon")){
-  //   console.log("check url 1")
-  //   console.log(url)
-  // }
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
   const supportedExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
@@ -86,9 +71,9 @@ function checkImgUrl(url, imgName) {
       (ext) => url.endsWith(ext) || url.endsWith(ext.toUpperCase())
     )
   ) {
-    throw `Provided ${url}. ${imgName} must have supported formats: ${supportedExtensions.join(
+    throw `${imgName} must have supported formats: ${supportedExtensions.join(
       ", "
-    )}`;
+    )}. Provided ${url}`;
   }
 
   return xss(url); // trimmed and replaced spaces with %20
@@ -106,14 +91,14 @@ function checkCity(city, cityName) {
 
 function checkZipCode(zipCode, zipCodeName) {
   zipCode = checkStr(zipCode, zipCodeName);
-  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long. Provided ${zipCode}`;
   if (zipCode.match(/\d{5}/g)[0] !== zipCode)
-    throw `${zipCodeName} must contain only digits`;
+    throw `${zipCodeName} must contain only digits. Provided ${zipCode}`;
   return xss(zipCode); // trimmed
 }
 
 function checkGeoCode(geocode, geocodeName) {
-  if (!geocode){
+  if (!geocode) {
     throw "No geocode provided";
   }
   if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
@@ -123,18 +108,17 @@ function checkGeoCode(geocode, geocodeName) {
   if (!latitude) throw `${geocodeName} is missing latitude`;
   if (!longitude) throw `${geocodeName} is missing longitude`;
   if (typeof latitude !== "number")
-    throw `${geocodeName} latitude is not a number`;
+    throw `${geocodeName} latitude is not a number. Provided ${latitude}`;
   if (typeof longitude !== "number")
-    throw `${geocodeName} longitude is not a number`;
+    throw `${geocodeName} longitude is not a number. Provided ${longitude}`;
   if (!country) throw `${geocodeName} country is missing`;
   if (!countryCode) throw `${geocodeName} country code is missing`;
   if (!city) throw `${geocode} city is missing`;
 
   geocode.country = xss(checkStr(geocode.country, `${geocodeName} country`));
-  geocode.countryCode = xss(checkCountryCode(
-    geocode.countryCode,
-    `${geocodeName} countryCode`
-  ));
+  geocode.countryCode = xss(
+    checkCountryCode(geocode.countryCode, `${geocodeName} countryCode`)
+  );
   geocode.city = xss(checkCity(geocode.city, `${geocodeName} city`));
 
   return geocode; // have country, countryCode, city trimmed
@@ -142,15 +126,15 @@ function checkGeoCode(geocode, geocodeName) {
 
 function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
   if (!num) throw `No ${numFor} provided`;
-  if (typeof num !== "number") throw `${numFor} is not a number`;
+  if (typeof num !== "number") throw `${numFor} is not a number. Provided ${num}`;
   if (!inclusiveMin && !inclusiveMax) return num;
   if (inclusiveMin || inclusiveMin === 0) {
     inclusiveMin = checkNumber(num, `${numFor} min`);
-    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}`;
+    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}. Provided ${num}`;
   }
   if (inclusiveMax || inclusiveMax === 0) {
     inclusiveMax = checkNumber(num, `${numFor} max`);
-    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}`;
+    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}. Provided ${num}`;
   }
 
   return num; // nothing changed
@@ -161,7 +145,7 @@ function checkDifficulty(difficulty, difficultyName) {
     inclusiveMin: 1,
     inclusiveMax: 5,
   });
-  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer`;
+  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer. Provided ${difficulty}`;
   return difficulty; // nothing changed, required to be an integer
 }
 
@@ -316,5 +300,5 @@ export {
   randomizeArray,
   checkPassword,
   checkUserName,
-  checkZipCode
+  checkZipCode,
 };

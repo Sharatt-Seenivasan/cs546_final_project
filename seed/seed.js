@@ -4,10 +4,12 @@ import {
   birdsDataFn as birdsData,
 } from "../data/index.js";
 import fs from "fs/promises";
-import crypto from "crypto";
 import path from "path";
+import bcrypt from "bcrypt";
 import { geocoderConfig } from "../config/settings.js";
 import GeoCoder from "node-geocoder";
+import { brotliCompressSync } from "zlib";
+const saltRounds = 16;
 
 const displayUserIds = process.argv.includes("-uid");
 const displayBirdIds = process.argv.includes("-bid");
@@ -103,19 +105,23 @@ const Hoboken_user_icons = [
   "https://static.wikia.nocookie.net/metalslug/images/e/e6/021445.gif",
 ];
 
+const global_user = [];
 for (let idx = 0; idx < usernames.length; idx++) {
   const user = {};
   const username = usernames[idx];
   user["username"] = username;
-  user["hashed_password"] = crypto
-    .createHash("sha256")
-    .update(username)
-    .digest("hex");
+  user["hashed_password"] = await bcrypt.hash(
+    `${username[0]};global`,
+    saltRounds
+  );
   user["icon"] = user_icons[idx];
   user["geocode"] = Object.values(nation_geocodes)[idx];
   users.push(user);
+  global_user.push(user);
 }
+fs.appendFile("./static/global_users.json", JSON.stringify(global_user))
 
+const Hoboken_user = [];
 let charCode = "A".charCodeAt(0);
 const Hoboken_geocode = {
   latitude: 40.7439905,
@@ -126,18 +132,20 @@ const Hoboken_geocode = {
 };
 for (const Hoboken_user_icon of Hoboken_user_icons) {
   const user = {};
-  const username = String.fromCharCode(charCode++) + "-Hoboken";
+  const username = String.fromCharCode(charCode++) + "-hoboken";
   const icon = Hoboken_user_icon;
-  const hashed_password = crypto
-    .createHash("sha256")
-    .update(icon)
-    .digest("hex");
+  const hashed_password = await bcrypt.hash(
+    `${username[0]};hoboken`,
+    saltRounds
+  );
   user["username"] = username;
   user["hashed_password"] = hashed_password;
   user["icon"] = icon;
   user["geocode"] = Hoboken_geocode;
   users.push(user);
+  Hoboken_user.push(user);
 }
+fs.appendFile("./static/hoboken_users.json", JSON.stringify(Hoboken_user))
 
 const userIds = [];
 for (const user of users) {
@@ -150,6 +158,7 @@ for (const user of users) {
     icon: user.icon,
   });
   userIds.push(newUser._id);
+  fs.writeFile('../static/users_password', newUser);
 }
 console.log(VERBOSE || displayUserIds ? userIds : "");
 console.log("Seed Users Done!");
