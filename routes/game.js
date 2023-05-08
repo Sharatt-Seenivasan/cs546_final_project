@@ -102,7 +102,8 @@ router.
               }
           }
           let n_score=Number(score);
-          let l_score=Number(user['lifetime_score'])+n_score;
+          //let l_score=Number(user['lifetime_score'])+n_score;
+          let l_score=n_score;
           if(n_score>user['high_score']){
             await updatePlayerInfoById(user['_id'],{
                 $incScores : {high_score:n_score,lifetime_score:l_score},
