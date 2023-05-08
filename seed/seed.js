@@ -37,7 +37,7 @@ for (const [nation, nation_birds] of Object.entries(national2Birds)) {
   for (const nation_bird of nation_birds) {
     const aBird = {};
     aBird.url = nation_bird.pic;
-    aBird.names = [nation_bird.name, nation_bird.name_sci];
+    aBird.names = [nation_bird.name];
     aBird.geocode = nation_geocodes[nation];
     aBird.difficulty = Math.floor(Math.random() * 5) + 1;
     birds.push(aBird);
