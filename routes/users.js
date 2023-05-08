@@ -1,9 +1,6 @@
 import { Router } from "express";
 import bcrypt, { compareSync } from "bcrypt";
 import {
-  topNthGlobalUsersByHighScore,
-  topNthLocalUsersByHighScore,
-  updatePlayerInfoById,
   getUserByUserName,
   getUserById,
   updatePersonalInfoById
@@ -22,7 +19,6 @@ import {
   extractKV_objArr,
 } from "../helpers.js";
 import { geocoderConfig } from "../config/settings.js";
-import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
 import NodeGeocoder from "node-geocoder";
 import xss from "xss";
 import {createUser} from "../data/users.js"

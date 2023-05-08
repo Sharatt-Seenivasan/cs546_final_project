@@ -6,7 +6,6 @@ import {
 
 
 import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
-import { use } from "bcrypt/promises.js";
 
 const router = Router();
 
@@ -14,21 +13,63 @@ const router = Router();
 router.
   route('/gamestart')
   .get(async (req,res)=>{
-      res.render('game_start',{title: 'Quiz'});
+      let flag=false;
+      if(req.session.user){
+        flag=true;
+      }
+      res.render('game_start',{title: 'Quiz',flag});
       })
   .post(async(req,res)=>{
-    if(req.session.user){
-
-        req.session.questions = await getQuestions4User(req.session.user['_id'],{
-            numberOfOptions : 4,
-            numberOfQuestions : 50,
-        });
-    }else{
-        req.session.questions =await getQuestions4Guest({
-            numberOfOptions : 4,
-            numberOfQuestions : 50,
-        } );
+    const {quizType} = req.body;
+    try{
+        if(req.session.user){
+            if(quizType=='local'){
+                let user=await getUserById(req.session.user['_id']);
+                req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                    numberOfOptions : 4,
+                    numberOfQuestions : 50,
+                });
+                req.session.point_inc = 1;
+                req.session.point_dec = 3;
+            }else if(quizType=='country'){
+                let user=await getUserById(req.session.user['_id']);
+                req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                    numberOfOptions : 4,
+                    numberOfQuestions : 50,
+                    city : "all",
+                    countryCode : user.geocode.countryCode,
+                });
+                req.session.point_inc = 2;
+                req.session.point_dec = 2;
+            }
+            else{
+                req.session.questions = await getQuestions4User(req.session.user['_id'],{
+                    numberOfOptions : 4,
+                    numberOfQuestions : 50,
+                    ifGlobal : true,
+                });
+                req.session.point_inc = 3;
+                req.session.point_dec = 1;
+        
+            }
+        }else{
+            req.session.questions =await getQuestions4Guest({
+                numberOfOptions : 4,
+                numberOfQuestions : 50,
+            } );
+            req.session.point_inc = 3;
+            req.session.point_dec = 1;
+        }
+    }catch(error){
+        let flag =false;
+        if(req.session.user){
+            flag=true;
+        }
+        return res
+        .status(400)
+        .render("game_start", { title: "Quiz", error: error,flag});
     }
+
     req.session.index = 0;
     req.session.score = 0;
     req.session.timer = 60;
@@ -49,7 +90,7 @@ router.
         }
         if(questions.length<=index){
             if(req.session.timer>0){
-                req.session.score = (req.session.score)*(60/(60-req.session.timer));
+                req.session.score = Math.floor((req.session.score)*(60/(60-req.session.timer)));
             }
             res.redirect('/game/gameresult');
         }
@@ -65,7 +106,10 @@ router.
           if(options){
               let correct = questions[index]['answer'];
               if(questions[index]['options'][options] == correct){
-                  req.session.score = req.session.score + questions[index]['difficulty'];
+                req.session.score = req.session.score + questions[index]['difficulty']+req.session.point_inc;
+              }
+              else{
+                req.session.score = req.session.score - req.session.point_dec;
               }
               req.session.timer = timer;
           }
@@ -73,7 +117,10 @@ router.
       }else{
           let correct = questions[index]['answer'];
           if(questions[index]['options'][options] == correct){
-              req.session.score = req.session.score + questions[index]['difficulty'];
+            req.session.score = req.session.score + questions[index]['difficulty']+req.session.point_inc;
+          }
+          else{
+            req.session.score = req.session.score - req.session.point_dec;
           }
           req.session.index = index + 1;
           req.session.timer = timer;
@@ -98,14 +145,14 @@ router.
               }
           }
           let n_score=Number(score);
-          let l_score=Number(user['lifetime_score'])+n_score;
-          if(n_score>user['high_score']){
+          if(n_score>Number(user['high_score'])){
+            const high_inc = n_score-Number(user['high_score']);
             await updatePlayerInfoById(user['_id'],{
-                $incScores : {high_score:n_score,lifetime_score:l_score},
+                $incScores : {high_score:high_inc,lifetime_score:n_score},
             });
           }else{
             await updatePlayerInfoById(user['_id'],{
-                $incScores : {lifetime_score:l_score}
+                $incScores : {lifetime_score:n_score}
             });
           }
           delete req.session['questions'];
