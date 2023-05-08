@@ -87,6 +87,8 @@ const getQuestions4User = async (
         continue;
       }
       const birdNames = theBird.names[Math.floor(Math.random() * theBird.names.length)];
+      if(options.includes(birdNames))
+        continue
       options.push(birdNames);
       birdholder.push(theBird._id);
       }
@@ -156,6 +158,7 @@ const getQuestions4Guest = async ({
       rdmBirdIdx = Math.floor(Math.random() * allBirds.length);
       const theBird = allBirds[rdmBirdIdx];
       const birdNames = theBird.names[0]; // take 1st name by default
+      if(options.includes(theBird.names[0])) continue;
       options.push(birdNames);
       if (options.length === rdmAnswerIdx + 1) {
         q["answer"] = birdNames;
