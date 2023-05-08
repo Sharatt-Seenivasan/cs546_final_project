@@ -1,4 +1,3 @@
-//import {  checkPassword, checkUserName, checkImgUrl} from "../helpers.js";
 
 function checkStr(str, strName) {
     if (!str) throw `No string provided for ${strName}`;
@@ -69,82 +68,90 @@ function checkImgUrl(url, imgName) {
     return url; // trimmed and replaced spaces with %20
 }
 
-const profileForm = document.getElementById("profile-form");
+function checkZipCode(zipCode, zipCodeName) {
+    zipCode = checkStr(zipCode, zipCodeName);
+    if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+    if (zipCode.match(/\d{5}/g)[0] !== zipCode)
+      throw `${zipCodeName} must contain only digits`;
+    return zipCode; // trimmed
+  }
 
-if(profileForm){
-    profileForm.addEventListener('submit', (event) => {
-        const username= document.getElementById("newUserName");
-        const passwordInput = document.getElementById("newPassword");
-        const confirmPasswordInput = document.getElementById("newConfirmPassword");
-        const icon= document.getElementById("newIcon");
-        const country= document.getElementById("newCountryCode");
-        const city= document.getElementById("newCity");
-        const zipcode= document.getElementById("newZipCode");
+const submissionForm = document.getElementById("image-submission-form");
+
+if(submissionForm){
+    submissionForm.addEventListener('submit', (event) => {
+        const bird_img=document.getElementById("bird_img")
+        const bird_names=document.getElementById("bird_names")
+        const bird_countryCode=document.getElementById("bird_countryCode")
+        const bird_city=document.getElementById("bird_city")
+        const bird_zipCode=document.getElementById("bird_zipCode")
+        const bird_difficulty=document.getElementById("bird_difficulty")
         const error= document.getElementById("error");
 
         error.innerHTML = '';
         error.hidden = true;
 
-        if(!username.value && !passwordInput.value && !confirmPasswordInput.value && !icon.value && !country.value && !city.value && !zipcode.value){
-            error.innerHTML= "All of the fields are empty!";
+        if(!bird_img.value){
+            error.innerHTML= "Please provide a valid link to the image.";
             error.hidden= false;
             event.preventDefault();
             return false; 
         }
-
-        if(username.value){
+        else {
             try {
-              checkUserName(username.value)
+                checkImgUrl(bird_img.value,"Bird Image")
             } catch (e) {
-              error.innerHTML= "Username is invalid!";
-              error.hidden= false;
-              event.preventDefault();
-              return false;        
+                error.innerHTML= "Please provide a valid link to the image.";
+                error.hidden= false;
+                event.preventDefault();
+                return false; 
             }
         }
 
-        if(passwordInput.value){
+
+        if(!bird_names.value){
+            error.innerHTML= "Please provide the common names of the bird in the image!";
+            error.hidden= false;
+            event.preventDefault();
+            return false;   
+        }
+        else {
             try {
-                checkPassword(passwordInput.value)
+                checkStr(bird_names.value,"Bird Names")
             } catch (e) {
-                error.innerHTML= "Password is invalid!";
+                error.innerHTML= "Please provide the common names of the bird in the image!";
                 error.hidden= false;
                 event.preventDefault();
-                return false;     
+                return false; 
             }
         }
 
-        if(!passwordInput.value && confirmPasswordInput.value){
-            error.innerHTML= "You have not entered a new password.";
+        if(bird_countryCode.value ==="invalid"){
+            error.innerHTML= "Please select a country.";
             error.hidden= false;
             event.preventDefault();
-            return false; 
+            return false;   
         }
 
-        if(passwordInput.value && !confirmPasswordInput.value){
-            error.innerHTML= "Please confirm your new password.";
+        if(!bird_city.value){
+            error.innerHTML= "Please enter a city.";
             error.hidden= false;
             event.preventDefault();
-            return false; 
+            return false;   
         }
 
-        if(passwordInput.value && passwordInput.value !== confirmPasswordInput.value){
-            error.innerHTML= "Passwords do not match!";
-            error.hidden= false;
-            event.preventDefault();
-            return false; 
-        }
-
-        if(icon.value){
+        if(bird_zipCode.value){
             try {
-                checkImgUrl(icon.value)
+                checkZipCode(bird_zipCode.value,"Bird Zipcode")
             } catch (e) {
-                error.innerHTML= "Icon is invalid!";
+                error.innerHTML= "Zipcode is invalid.";
                 error.hidden= false;
                 event.preventDefault();
-                return false;    
-            }   
+                return false;
+            }
         }
+
+        
 
         // if((country.value || city.value || zipcode.value) && !(country.value && city.value && zipcode.value)){
         //     error.innerHTML= "When updating location information, please fill out all the location fields!";

@@ -159,6 +159,15 @@ const updateBirdById = async (
   return objectId2str_doc(updateInfo.value);
 };
 
+const hasBirdWithImageUrl = async (imageUrl) => {
+  const birdsCollection = await birds();
+  const bird  = await birdsCollection.findOne({ url: imageUrl });
+  if(!bird){
+    return false;
+  }
+  return true;
+};
+
 export {
   createBird,
   getBirdById,
@@ -167,4 +176,5 @@ export {
   removeBirdById,
   updateBirdById,
   getAllBirdsNames,
+  hasBirdWithImageUrl
 };
