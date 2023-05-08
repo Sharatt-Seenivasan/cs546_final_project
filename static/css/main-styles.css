@@ -12,6 +12,10 @@ body {
     color: red;
 }
 
+#error {
+    color: red;
+}
+
 
 /*Use this section for styles that apply to the homepage*/
 #profile_container{
@@ -21,11 +25,17 @@ body {
 #user_icon_button{
     height: 50px;
     width: 50px;
+    margin-right: 100px;
+}
+
+#homepage_logout_button{
+    margin-top: 20px;
+    margin-right: -100px;
 }
 
 .homepage_user_icon{
-    height: 100px;
-    width: 100px;
+    height: 75px;
+    width: 75px;
 } 
 
 #homepage_login_button{
@@ -85,6 +95,10 @@ body {
     margin-left: 60%;
 } */
 
+#leaderboard_buttons_container{
+    margin-top: -45px;
+    text-align: right;
+}
 
 .leaderboard-user-icon {
     height: 25px;
@@ -100,7 +114,31 @@ body {
 }
 
 /*Use this section for styles that apply to the user profile*/
+#profile-form{
+    width:200px;
+    padding:20px;
+}
 
+#bird_form_link_profile{
+    font-size: 20px
+}
+
+#user_profile_logout{
+    font-size: 30px
+}
+
+#user_profile_gamestart{
+    margin-top: -10px;
+    font-size: 30px
+}
+
+#profile_buttons_container{
+    margin-left: -20px;
+}
+
+#bird_submission_buttons_container{
+    margin-left: -20px;
+}
 
 /*Use this section for styles that apply to the signup page*/
 .sign-up-page{
@@ -170,7 +208,7 @@ body {
     width: 115px;
     height: 50px;
     text-decoration: none;
-    background: #4E9CAF;
+    background: black;
     padding: 10px;
     text-align: center;
     border-radius: 5px;

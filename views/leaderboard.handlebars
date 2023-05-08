@@ -1,7 +1,10 @@
 <div class="container">
   <h1 class="leaderboard-heading">{{title}}</h1>
-  <a class="btn btn-dark btn-lg" href="/users/leaderboard/local" role="button" id ="local_leaderboard_button">Local</a>
-  <a class="btn btn-dark btn-lg" href="/users/leaderboard/global" role="button" id ="global_leaderboard_button">Global</a>
+  <div class="container" id = "leaderboard_buttons_container">
+    <a class="btn btn-dark btn-lg" href="/" role="button" id ="leaderboard_homepage_button">Homepage</a>
+  </div>
+  <a class="btn btn-info btn-lg" href="/leaderboard/local" role="button" id ="local_leaderboard_button">Local</a>
+  <a class="btn btn-info btn-lg" href="/leaderboard/global" role="button" id ="global_leaderboard_button">Global</a>
   <br>
   <br>
   {{#if type}}
@@ -264,13 +267,13 @@
       </select> 
       <br>
       <label for="citySearchBar">Search for city:</label>
-      <input type="text" id="citySearchBar" name="citySearchBar">
+      <input type="text" id="citySearchBar" name="citySearchBar" value = {{city}}>
       <br>
       <input class="search_button" type="submit" value="Search">
     </form>
   {{/if}}
   <br>
-  <div id="error" class="error" hidden>{{error}}</div>
+  <div id="error" class="error">{{error}}</div>
   <br>
 
   <table class="table leaderboard-table">

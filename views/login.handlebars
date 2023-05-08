@@ -1,6 +1,6 @@
 <main class = "log-in-page">
     <h1>Log-In</h1>
-    <p class="login_blurb">Enter your usename and password.</p>
+    <p class="login_blurb">Enter your username and password.</p>
     <form method="POST" action="/users/login" id = "login-form">
         <label for="username">Username:</label>
         <br>
@@ -12,7 +12,7 @@
         <br>
         <input class="login-button" type="submit" value="Log In">
     </form>
-    <div id="error" class="error" hidden></div>
+    <div id="error" class="error">{{error}}</div>
     <br>
     <a class = "registerLink" href="/users/signup">Don't have an account? Click here to sign-up!</a>
 </main>

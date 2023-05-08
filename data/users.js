@@ -30,7 +30,7 @@ const createUser = async (username, hashed_password) => {
     last_questions: [],
   };
 
-  const ifExistedInfo = await userCollection.findOne({ username: username });
+  const ifExistedInfo = await userCollection.findOne({ username: username});
   if (ifExistedInfo) throw `User ${username} already existed`;
 
   const insertInfo = await userCollection.insertOne(userFields);
@@ -57,8 +57,10 @@ const getUserByUserName = async (username) => {
   const __name = getUserByUserName.name;
   username = checkUserName(username, `username at ${__name}`);
   const userCollection = await users();
-  const theUser = await userCollection.findOne({ username });
-  if (!theUser) throw `User ${username} not found`;
+
+  // const patern=new RegExp(`^${username}$`);
+  const theUser = await userCollection.findOne({ username: { $regex: `${username}`, $options: "i" } });
+  if (!theUser) return {};
   return objectId2str_doc(theUser);
 };
 
@@ -155,7 +157,6 @@ const updatePlayerInfoById = async (userId, operation) => {
     throw `Provided ${operation}. Operation should be an object`;
   if (Object.keys(operation).length !== 1)
     throw "Exactly one operation should be provided to update player info";
-
   let updateInfo;
   const {
     $incScores,
@@ -173,7 +174,6 @@ const updatePlayerInfoById = async (userId, operation) => {
     updateInfo = await pullSubmissionByBirdId($pullSubmission);
   if ($pullLastQuestions)
     updateInfo = await pullLastQuestionsByIds($pullLastQuestions);
-
   return updateInfo;
 };
 
@@ -184,7 +184,6 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   const userCollection = await users();
   const ifExists = await userCollection.findOne({ _id: new ObjectId(id) });
   if (!ifExists) throw `No such user with id ${id}`;
-
   if (!high_score && !lifetime_score) throw "No score provided to increment";
   let high_score_inc = 0,
     lifetime_score_inc = 0;
@@ -202,7 +201,6 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   if (high_score_inc < 0) throw "high score increment cannot be negative";
   if (ifExists.lifetime_score + lifetime_score_inc < 0)
     throw "lifetime score cannot be negative after increment";
-
   const updateInfo = await userCollection.findOneAndUpdate(
     { _id: new ObjectId(id) },
     {
