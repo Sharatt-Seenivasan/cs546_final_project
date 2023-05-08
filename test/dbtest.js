@@ -192,7 +192,7 @@ try {
   const getUserQuestions1 = await questionData.getQuestions4User(
     allUsers[0]["_id"]
   );
-  console.log("Expected", getUserQuestion1);
+  console.log("Expected", getUserQuestions1);
 } catch (error) {
   console.log("Unexpected : ", error);
 }

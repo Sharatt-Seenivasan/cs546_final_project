@@ -106,8 +106,8 @@ function checkCity(city, cityName) {
 
 function checkZipCode(zipCode, zipCodeName) {
   zipCode = checkStr(zipCode, zipCodeName);
-  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
-  if (zipCode.match(/\d{5}/g)[0] !== zipCode)
+  //if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  if (zipCode.match(/^\d+$/g)[0] !== zipCode)
     throw `${zipCodeName} must contain only digits`;
   return xss(zipCode); // trimmed
 }
@@ -116,7 +116,9 @@ function checkGeoCode(geocode, geocodeName) {
   if (!geocode){
     throw "No geocode provided";
   }
-  if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
+  if (typeof geocode !== "object"){ 
+    throw `${geocodeName} is not an object`;
+  }
 
   const { latitude, longitude, country, countryCode, city } = geocode;
 
