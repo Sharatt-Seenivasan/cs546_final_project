@@ -416,8 +416,20 @@ router
           throw "Username is the same as before!";
         fields2Update["username"] = newUserName;
       } catch (error) {
-        //return res.status(400).render("user_profile",{error:error})
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
     if (newPassword) {
@@ -430,7 +442,20 @@ router
           throw "Password is the same as before!";
         fields2Update["hashed_password"] = newPassword;
       } catch (error) {
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
     if (newIcon) {
@@ -440,7 +465,20 @@ router
 
         fields2Update["icon"] = newIcon;
       } catch (error) {
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
 
@@ -457,7 +495,20 @@ router
           throw "country code, city and zip code are the same as before!";
         }
       } catch (error) {
-        errors.push(error);
+        return res.status(400).render("user_profile",{title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
+        errors:error})
+        //errors.push(error);
       }
     }
     
@@ -503,7 +554,7 @@ router
           num_submissions: user.submission.length,
           submission: user.submission,
           last_questions: user.last_questions,
-          errors: ["more than one location found based on the input!"],
+          errors: ["More than one location found based on the input!"],
         });
       }
   
