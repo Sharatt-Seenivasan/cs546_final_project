@@ -484,6 +484,17 @@ router
     }
     if (geocodes.length > 1) {
       return res.status(400).render("user_profile", {
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
         errors: ["more than one location found based on the input!"],
       });
     }
@@ -491,11 +502,34 @@ router
     fields2Update["geocode"] = geocodes[0];
 
     if (Object.keys(fields2Update).length === 0) {
-      return res.render("user_profile", { title: "User Profile", errors:["No fields to update!"]});
+      return res.render("user_profile", { title: "User Profile", 
+      username: user.username,
+      icon: user.icon,
+      country: user.geocode.country,
+      countryCode: user.geocode.countryCode,
+      city: user.geocode.city,
+      zipCode: user.geocode.zipcode,
+      lifetime_score: user.lifetime_score,
+      high_score: user.high_score,
+      num_submissions: user.submission.length,
+      submission: user.submission,
+      last_questions: user.last_questions,
+      errors:["No fields to update!"]});
     }
     if (errors.length > 0) {
       return res.status(400).render("user_profile", {
         title: "User Profile",
+        username: user.username,
+        icon: user.icon,
+        country: user.geocode.country,
+        countryCode: user.geocode.countryCode,
+        city: user.geocode.city,
+        zipCode: user.geocode.zipcode,
+        lifetime_score: user.lifetime_score,
+        high_score: user.high_score,
+        num_submissions: user.submission.length,
+        submission: user.submission,
+        last_questions: user.last_questions,
         errors,
       });
     }
