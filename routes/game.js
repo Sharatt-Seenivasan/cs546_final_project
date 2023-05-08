@@ -107,16 +107,18 @@ router.
           let l_score=n_score;
           let totalLScore = Number(user['lifetime_score'])+n_score;
           let currentHighScore = user['high_score'];
-          if(n_score>user['high_score']){
-            await updatePlayerInfoById(user['_id'],{
-                $incScores : {high_score:n_score,lifetime_score:l_score},
-            });
-            currentHighScore = n_score
-          }else{
-            await updatePlayerInfoById(user['_id'],{
-                $incScores : {lifetime_score:l_score}
-            });
-          }
+          if(n_score !== 0) {
+            if(n_score>user['high_score']){
+                await updatePlayerInfoById(user['_id'],{
+                    $incScores : {high_score:n_score,lifetime_score:l_score},
+                });
+                currentHighScore = n_score
+            }else{
+                await updatePlayerInfoById(user['_id'],{
+                    $incScores : {lifetime_score:l_score}
+                });
+            }
+          } 
           delete req.session['questions'];
           delete req.session['index'];
           delete req.session['score'];
