@@ -386,7 +386,7 @@ router
   .post(async (req, res) => {
     // reserved for AJAX
     const hasUserId = req.session.user && req.session.user._id;
-    if (!hasUserId) return res.redirect("/login");
+    if (!hasUserId) return res.redirect("/users/login");
 
     let user;
     try {

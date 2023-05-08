@@ -35,6 +35,23 @@ function checkUserName(username) {
     return (username); // trimmed
 }
 
+function checkUrl(url, urlName, minimumLength = 0) {
+    url = checkStr(url, urlName); // trimmed
+    url = url.replace(/\s/, "%20");
+  
+    const supportedProtocols = ["http://", "https://"];
+  
+    if (!supportedProtocols.some((p) => url.startsWith(p)))
+      throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
+        " "
+      )}, you provided ${url}`;
+    if (url.split("//")[1].length < minimumLength)
+      throw `${urlName} is too short`;
+  
+    return url; // trimmed and replaced spaces with %20
+}
+
+
 function checkImgUrl(url, imgName) {
     url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
   
@@ -52,72 +69,82 @@ function checkImgUrl(url, imgName) {
     return url; // trimmed and replaced spaces with %20
 }
 
-function checkUrl(url, urlName, minimumLength = 0) {
-    url = checkStr(url, urlName); // trimmed
-    url = url.replace(/\s/, "%20");
-  
-    const supportedProtocols = ["http://", "https://"];
-  
-    if (!supportedProtocols.some((p) => url.startsWith(p)))
-      throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
-        " "
-      )}, you provided ${url}`;
-    if (url.split("//")[1].length < minimumLength)
-      throw `${urlName} is too short`;
-  
-    return url; // trimmed and replaced spaces with %20
-}
-
 const profileForm = document.getElementById("profile-form");
 
 if(profileForm){
     profileForm.addEventListener('submit', (event) => {
-        console.log("check")
-        const username= document.getElementById("username");
-        const passwordInput = document.getElementById("password");
-        const confirmPasswordInput = document.getElementById("confirm-password");
-        const icon= document.getElementById("icon");
-        const country= document.getElementById("country-select");
-        const city= document.getElementById("userCity");
+        const username= document.getElementById("newUserName");
+        const passwordInput = document.getElementById("newPassword");
+        const confirmPasswordInput = document.getElementById("newConfirmPassword");
+        const icon= document.getElementById("newIcon");
+        const country= document.getElementById("newCountryCode");
+        const city= document.getElementById("newCity");
+        const zipcode= document.getElementById("newZipCode");
         const error= document.getElementById("error");
 
         error.innerHTML = '';
         error.hidden = true;
 
-        if(username && !checkUserName(username)){
-            error.innerHTML= "Username is invalid!";
+        if(!username.value && !passwordInput.value && !confirmPasswordInput.value && !icon.value && !country.value && !city.value && !zipcode.value){
+            error.innerHTML= "All of the fields are empty!";
             error.hidden= false;
             event.preventDefault();
+            return false; 
         }
 
-        if(passwordInput && !checkPassword(passwordInput)){
-            error.innerHTML= "Password is invalid!";
+        if(username.value){
+            try {
+              checkUserName(username.value)
+            } catch (e) {
+              error.innerHTML= "Username is invalid!";
+              error.hidden= false;
+              event.preventDefault();
+              return false;        
+            }
+        }
+
+        if(passwordInput.value){
+            try {
+                checkPassword(passwordInput.value)
+            } catch (e) {
+                error.innerHTML= "Password is invalid!";
+                error.hidden= false;
+                event.preventDefault();
+                return false;     
+            }
+        }
+
+        if(!passwordInput.value && confirmPasswordInput.value){
+            error.innerHTML= "You have not entered a new password.";
             error.hidden= false;
             event.preventDefault();
+            return false; 
         }
 
-        if(passwordInput.value !== confirmPasswordInput.value){
+        if(passwordInput.value && !confirmPasswordInput.value){
+            error.innerHTML= "Please confirm your new password.";
+            error.hidden= false;
+            event.preventDefault();
+            return false; 
+        }
+
+        if(passwordInput.value && passwordInput.value !== confirmPasswordInput.value){
             error.innerHTML= "Passwords do not match!";
             error.hidden= false;
             event.preventDefault();
+            return false; 
         }
 
-        if(icon && !checkImgUrl(icon)){
-            error.innerHTML= "Icon is invalid!";
-            error.hidden= false;
-            event.preventDefault();
+        if(icon.value){
+            try {
+                checkImgUrl(icon.value)
+            } catch (e) {
+                error.innerHTML= "Icon is invalid!";
+                error.hidden= false;
+                event.preventDefault();
+                return false;    
+            }   
         }
 
-        // if(country.value === "Select Country"){
-        //     error.innerHTML= "Country is invalid!";
-        //     error.hidden= false;
-        //     event.preventDefault();
-        // }
-
-        // if(!city.value || city.value === undefined){
-        //     error.innerHTML= "City is invalid!";
-        //     error.hidden= false;
-        //     event.preventDefault();
-        // }
     });
 }
