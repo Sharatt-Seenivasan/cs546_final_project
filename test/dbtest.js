@@ -1,4 +1,5 @@
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
+import { getLocalBirdsLatLong } from "../data/birds.js";
 import {
   usersDataFn as usersData,
   birdsDataFn as birdsData,
@@ -190,7 +191,7 @@ try {
   const getUserQuestions1 = await questionData.getQuestions4User(
     allUsers[0]["_id"]
   );
-  console.log("Expected", getUserQuestion1);
+  console.log("Expected", getUserQuestions1);
 } catch (error) {
   console.log("Unexpected : ", error);
 }
@@ -200,7 +201,13 @@ try {
 } catch (error) {
   console.log("Unexpected : ", error);
 }
-
+try{
+  //await getLocalBirdsLatLong(40.7439905,-74.0323626);
+  console.log("yes")
+  console.log("Birds",await getLocalBirdsLatLong(37.1563958,-95.7786735));
+}catch(error){
+  console.log("Unexpected : ", error);
+}
 // ------------------ done ---------------------
 console.log("------------------------ DONE ---------------------------");
 await closeConnection();

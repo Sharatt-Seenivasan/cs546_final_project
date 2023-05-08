@@ -1,5 +1,5 @@
 import { birdsCollection as birds } from "../config/mongoCollections.js";
-import { ObjectId } from "mongodb";
+import { Long, ObjectId } from "mongodb";
 import { updatePlayerInfoById } from "./users.js";
 import {
   checkImgUrl,
@@ -14,6 +14,7 @@ import {
   objectId2str_docs_arr,
   arrsEqual,
   objsEqual,
+  isInVicinity,
 } from "../helpers.js";
 
 const createBird = async ({ userId, url, names, geocode, difficulty } = {}) => {
@@ -80,6 +81,24 @@ const getLocalBirds = async (countryCode, city) => {
 
   return objectId2str_docs_arr(localBirds);
 };
+const getLocalBirdsLatLong= async (latitude_x,longitude_x)=>{
+  if(typeof latitude_x!=="number" || typeof longitude_x!=="number") throw 'Latitude and Longitude are expected to be numbers';
+  const birdsCollection = await birds();
+  let localBirds=[];
+  /*localBirds = await birdsCollection
+      .find({ "$where": function() { return isInVicinity(latitude_x,longitude_x,this.geocode.latitude,this.geocode.longitude,60); }  })
+      .toArray();
+  if (localBirds.length === 0)
+    throw `No birds found in ${city}, ${countryCode}`;*/
+  let allBirds = await getAllBirds();
+  for(let i=0;i<allBirds.length;i++){
+    let bird = allBirds[i];
+    if(isInVicinity(latitude_x,longitude_x,bird.geocode.latitude,bird.geocode.longitude,60)){
+      localBirds.push(bird);
+    }
+  }
+  return objectId2str_docs_arr(localBirds);
+}
 
 const getAllBirds = async () => {
   const birdsCollection = await birds();
@@ -176,5 +195,6 @@ export {
   removeBirdById,
   updateBirdById,
   getAllBirdsNames,
-  hasBirdWithImageUrl
+  hasBirdWithImageUrl,
+  getLocalBirdsLatLong
 };

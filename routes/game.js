@@ -6,7 +6,6 @@ import {
 
 
 import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
-import { use } from "bcrypt/promises.js";
 
 const router = Router();
 
@@ -30,8 +29,8 @@ router.
                     numberOfOptions : 4,
                     numberOfQuestions : 50,
                 });
-                req.session.point_inc = 0;
-                req.session.point_dec = 1.5;
+                req.session.point_inc = 1;
+                req.session.point_dec = 3;
             }else if(quizType=='country'){
                 let user=await getUserById(req.session.user['_id']);
                 req.session.questions = await getQuestions4User(req.session.user['_id'],{
@@ -40,8 +39,8 @@ router.
                     city : "all",
                     countryCode : user.geocode.countryCode,
                 });
-                req.session.point_inc = 0.5;
-                req.session.point_dec = 1;
+                req.session.point_inc = 2;
+                req.session.point_dec = 2;
             }
             else{
                 req.session.questions = await getQuestions4User(req.session.user['_id'],{
@@ -49,8 +48,8 @@ router.
                     numberOfQuestions : 50,
                     ifGlobal : true,
                 });
-                req.session.point_inc = 1;
-                req.session.point_dec = 0.5;
+                req.session.point_inc = 3;
+                req.session.point_dec = 1;
         
             }
         }else{
@@ -58,8 +57,8 @@ router.
                 numberOfOptions : 4,
                 numberOfQuestions : 50,
             } );
-            req.session.point_inc = 1;
-            req.session.point_dec = 0.5;
+            req.session.point_inc = 3;
+            req.session.point_dec = 1;
         }
     }catch(error){
         let flag =false;
@@ -91,7 +90,7 @@ router.
         }
         if(questions.length<=index){
             if(req.session.timer>0){
-                req.session.score = (req.session.score)*(60/(60-req.session.timer));
+                req.session.score = Math.floor((req.session.score)*(60/(60-req.session.timer)));
             }
             res.redirect('/game/gameresult');
         }

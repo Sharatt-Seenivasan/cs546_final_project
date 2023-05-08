@@ -1,5 +1,5 @@
 import { getUserById } from "./users.js";
-import { getLocalBirds, getAllBirds } from "./birds.js";
+import { getLocalBirds, getAllBirds, getLocalBirdsLatLong } from "./birds.js";
 import {
   checkId,
   checkNumber,
@@ -50,9 +50,9 @@ const getQuestions4User = async (
   if (ifGlobal || (!countryCode && !city && !theUser.geocode.countryCode && !theUser.geocode.city) ) {
     allBirds = await getAllBirds();
   } else if (!countryCode && !city) {
-    allBirds = await getLocalBirds(
-      theUser.geocode.countryCode,
-      theUser.geocode.city
+    allBirds = await getLocalBirdsLatLong(
+      theUser.geocode.latitude,
+      theUser.geocode.longitude
     );
   } else {
     allBirds = await getLocalBirds(countryCode, city);
