@@ -5,6 +5,7 @@ import {
   questionsFn as questionData,
 } from "../data/index.js";
 import { ObjectId } from "mongodb";
+import { updatePlayerInfoById } from "../data/users.js";
 const generalUser = {
   username: "Zoe",
   hashed_password: "1234",
@@ -199,6 +200,12 @@ try {
   console.log("Expected", getGuestQuestions2);
 } catch (error) {
   console.log("Unexpected : ", error);
+}
+try{
+  console.log("reset questions")
+  console.log(await updatePlayerInfoById("6459610636aad6541428b7b7",{$resetLastSeenQuestions:[]}));
+}catch(error){
+  console.log(error)
 }
 
 // ------------------ done ---------------------
