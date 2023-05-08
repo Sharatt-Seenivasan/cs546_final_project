@@ -26,7 +26,7 @@ import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
 import NodeGeocoder from "node-geocoder";
 import xss from "xss";
 import {createUser} from "../data/users.js"
-import { createBird } from "../data/birds.js";
+import { createBird,hasBirdWithImageUrl} from "../data/birds.js";
 const saltRounds = 16;
 const router = Router();
 const geocoder = NodeGeocoder(geocoderConfig);
@@ -648,6 +648,10 @@ router
         bird_names = bird_names.split(",");
         bird_names = checkStrArr(bird_names, "Bird Names");
         bird_img = checkImgUrl(bird_img, "Bird Image");
+
+        if(hasBirdWithImageUrl(bird_img)){
+          throw "A bird with this image url already exists in the database!"
+        }
 
         if(bird_countryCode === "invalid"){
           throw "You must select a country for the bird image."
