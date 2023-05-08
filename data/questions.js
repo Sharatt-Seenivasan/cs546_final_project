@@ -95,6 +95,80 @@ const getQuestions4User = async (
   return questions;
 };
 
+const getGlobalQuestions4User = async (
+  userId,
+  {
+    numberOfOptions = 4,
+    numberOfQuestions = 5,
+    countryCode,
+    city,
+    ifGlobal = false,
+  } = {}
+) => {
+  const __name = getGlobalQuestions4User.name;
+  userId = checkId(userId, "user id");
+  if (numberOfQuestions || numberOfQuestions === 0) {
+    numberOfQuestions = checkNumber(
+      numberOfQuestions,
+      `questions number at ${__name}`,
+      {
+        inclusiveMin: 1,
+      }
+    );
+  }
+  if (numberOfOptions || numberOfOptions === 0) {
+    numberOfOptions = checkNumber(
+      numberOfOptions,
+      `options number at ${__name}`,
+      {
+        inclusiveMin: 2,
+      }
+    );
+  }
+  
+  const theUser = await getUserById(userId);
+  const qAnswered = theUser.last_questions;
+  const qSubmitted = theUser.submission;
+
+  let allBirds, unseenBirds;
+  allBirds = await getAllBirds();
+  unseenBirds = allBirds.filter(
+    (bird) => !qAnswered.includes(bird._id) && !qSubmitted.includes(bird._id)
+  );
+
+  let questions = [];
+  let rdmUnseenBirdIdx, rdmAnswerIdx;
+  while (questions.length < numberOfQuestions && unseenBirds.length > 0) {
+    let q = {},
+      options = [];
+    rdmAnswerIdx = Math.floor(Math.random() * numberOfOptions);
+    while (options.length < numberOfOptions && unseenBirds.length > 0) {
+      rdmUnseenBirdIdx = Math.floor(Math.random() * unseenBirds.length);
+      const theBird = unseenBirds[rdmUnseenBirdIdx];
+      const birdNames = theBird.names[0]; // take 1st name by default
+      options.push(birdNames);
+      if (options.length === rdmAnswerIdx + 1) {
+        q["answer"] = birdNames;
+        q["image"] = theBird.url;
+        q['difficulty'] = theBird.difficulty;
+        q['birdid'] = theBird._id;
+        unseenBirds.splice(rdmUnseenBirdIdx, 1);
+      }
+    }
+    q["options"] = options;
+    questions.push(q);
+  }
+
+  if (
+    questions.length < numberOfQuestions ||
+    questions.some((question) => question.options.length < numberOfOptions)
+  ) {
+    throw `Not enough birds in database to create a quiz with ${numberOfOptions} options`;
+  }
+
+  return questions;
+};
+
 const getQuestions4Guest = async ({
   numberOfOptions = 4,
   numberOfQuestions = 5,
@@ -170,4 +244,4 @@ const getQuestions4Guest = async ({
   return questions;
 };
 
-export { getQuestions4User, getQuestions4Guest };
+export { getQuestions4User, getQuestions4Guest, getGlobalQuestions4User };

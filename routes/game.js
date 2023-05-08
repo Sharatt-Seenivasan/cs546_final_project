@@ -5,7 +5,7 @@ import {
 } from "../data/users.js";
 
 
-import { getQuestions4Guest,getQuestions4User } from "../data/questions.js";
+import { getQuestions4Guest,getQuestions4User,getGlobalQuestions4User } from "../data/questions.js";
 import { use } from "bcrypt/promises.js";
 
 const router = Router();
@@ -18,11 +18,15 @@ router.
       })
   .post(async(req,res)=>{
     if(req.session.user){
-
-        req.session.questions = await getQuestions4User(req.session.user['_id'],{
+        req.session.questions = await getGlobalQuestions4User(req.session.user['_id'],{
             numberOfOptions : 4,
             numberOfQuestions : 50,
         });
+
+        // req.session.questions = await getQuestions4User(req.session.user['_id'],{
+        //     numberOfOptions : 4,
+        //     numberOfQuestions : 50,
+        // });
     }else{
         req.session.questions =await getQuestions4Guest({
             numberOfOptions : 4,
