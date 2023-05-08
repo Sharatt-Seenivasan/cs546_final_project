@@ -146,12 +146,12 @@ if(profileForm){
             }   
         }
 
-        if((country.value || city.value || zipcode.value) && !(country.value && city.value && zipcode.value)){
-            error.innerHTML= "When updating location information, please fill out all the location fields!";
-            error.hidden= false;
-            event.preventDefault();
-            return false; 
-        }
+        // if((country.value || city.value || zipcode.value) && !(country.value && city.value && zipcode.value)){
+        //     error.innerHTML= "When updating location information, please fill out all the location fields!";
+        //     error.hidden= false;
+        //     event.preventDefault();
+        //     return false; 
+        // }
 
     });
 }

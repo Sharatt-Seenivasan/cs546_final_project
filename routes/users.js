@@ -482,7 +482,7 @@ router
       }
     }
 
-    if (newCountryCode || newCity || newZipCode) {
+    if (newCountryCode !== "invalid" || newCity || newZipCode) {
       try {
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
