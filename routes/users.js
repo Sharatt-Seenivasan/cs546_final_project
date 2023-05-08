@@ -661,7 +661,6 @@ router
         );
       } catch (error) {
         return res.status(400).render("bird_submission", { title: "Bird Image Submission Form",
-        user: user,
         errors: [error] });
       }
   
@@ -693,12 +692,13 @@ router
       }
   
       if (!geocodes) {
-        return res.status(400).render("bird_submission", {
+        return res.status(400).render("bird_submission", {title: "Bird Image Submission Form",
           errors: ["no location found based on given country and city"],
         });
       }
       if (geocodes.length > 1) {
         return res.status(400).render("bird_submission", {
+          title: "Bird Image Submission Form",
           errors: [
             "multiple locations found based on given country and city, please provide a zipcode to help us locate more accurately",
           ],
@@ -715,7 +715,8 @@ router
           difficulty: bird_difficulty,
         });
       } catch (error) {
-        return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        return res.status(500).render('error',{title: "Bird Image Submission Form",
+        error: `Internal Server Error: ${error}`})
         //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
         //return res.status(500).send("Internal Server Error:", error);
       }
