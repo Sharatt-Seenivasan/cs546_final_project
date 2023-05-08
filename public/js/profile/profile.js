@@ -84,13 +84,13 @@ if(profileForm){
         error.innerHTML = '';
         error.hidden = true;
 
-        if(!checkUserName(username)){
+        if(username && !checkUserName(username)){
             error.innerHTML= "Username is invalid!";
             error.hidden= false;
             event.preventDefault();
         }
 
-        if(!checkPassword(passwordInput)){
+        if(passwordInput && !checkPassword(passwordInput)){
             error.innerHTML= "Password is invalid!";
             error.hidden= false;
             event.preventDefault();
@@ -102,24 +102,22 @@ if(profileForm){
             event.preventDefault();
         }
 
-        if(!checkImgUrl(icon)){
+        if(icon && !checkImgUrl(icon)){
             error.innerHTML= "Icon is invalid!";
             error.hidden= false;
             event.preventDefault();
         }
 
-        if(country.value === "Select Country"){
-            error.innerHTML= "Country is invalid!";
-            error.hidden= false;
-            event.preventDefault();
-        }
+        // if(country.value === "Select Country"){
+        //     error.innerHTML= "Country is invalid!";
+        //     error.hidden= false;
+        //     event.preventDefault();
+        // }
 
-        if(!city.value || city.value === undefined){
-            error.innerHTML= "City is invalid!";
-            error.hidden= false;
-            event.preventDefault();
-        }
-
-        
+        // if(!city.value || city.value === undefined){
+        //     error.innerHTML= "City is invalid!";
+        //     error.hidden= false;
+        //     event.preventDefault();
+        // }
     });
 }
