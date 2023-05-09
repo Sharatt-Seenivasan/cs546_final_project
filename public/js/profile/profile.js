@@ -42,7 +42,7 @@ function checkUrl(url, urlName, minimumLength = 0) {
     const supportedProtocols = ["http://", "https://"];
   
     if (!supportedProtocols.some((p) => url.startsWith(p)))
-      throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
+      throw ` Must provide supported protocols for ${urlName}: ${supportedProtocols.join(
         " "
       )}, you provided ${url}`;
     if (url.split("//")[1].length < minimumLength)
@@ -77,6 +77,14 @@ function checkZipCode(zipCode, zipCodeName) {
   return zipCode; // trimmed
 }
 
+function checkCity(city, cityName) {
+  city = checkStr(city, cityName);
+  if(/\d/.test(city)) {
+      throw "City name contains a numerical digit!"
+  }
+  return city.toLowerCase(); // trimmed and lowercased
+}
+
 const profileForm = document.getElementById("profile-form");
 
 if(profileForm){
@@ -93,7 +101,7 @@ if(profileForm){
         error.innerHTML = '';
         error.hidden = true;
 
-        if(!username.value && !passwordInput.value && !confirmPasswordInput.value && !icon.value && !country.value && !city.value && !zipcode.value){
+        if(!username.value && !passwordInput.value && !confirmPasswordInput.value && !icon.value && country.value === "invalid" && !city.value && !zipcode.value){
             error.innerHTML= "All of the fields are empty!";
             error.hidden= false;
             event.preventDefault();
@@ -104,7 +112,7 @@ if(profileForm){
             try {
               checkUserName(username.value)
             } catch (e) {
-              error.innerHTML= "Username is invalid!";
+              error.innerHTML= e;
               error.hidden= false;
               event.preventDefault();
               return false;        
@@ -115,7 +123,7 @@ if(profileForm){
             try {
                 checkPassword(passwordInput.value)
             } catch (e) {
-                error.innerHTML= "Password is invalid!";
+                error.innerHTML= e;
                 error.hidden= false;
                 event.preventDefault();
                 return false;     
@@ -147,11 +155,22 @@ if(profileForm){
             try {
                 checkImgUrl(icon.value, "User Icon")
             } catch (e) {
-                error.innerHTML= "Icon is invalid!";
+                error.innerHTML= e;
                 error.hidden= false;
                 event.preventDefault();
                 return false;    
             }   
+        }
+
+        if(city.value){
+          try {
+            checkCity(city.value, "User City")
+          } catch (e) {
+            error.innerHTML= "Please enter a valid city name.";
+            error.hidden= false;
+            event.preventDefault();
+            return false; 
+          }
         }
 
         if(zipcode.value) {
@@ -159,7 +178,7 @@ if(profileForm){
             checkZipCode(zipcode.value,"User Zipcode")
           }
           catch(e){
-            error.innerHTML= "Zipcode is invalid!";
+            error.innerHTML= "Please enter a valid zipcode.";
             error.hidden= false;
             event.preventDefault();
             return false; 
