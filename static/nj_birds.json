@@ -1,154 +1,152 @@
-{"United States":
-    [
-        {
-            "name": "American goldfinch",
-            "name_sci": "Spinus tristis",
-            "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Male_American_Goldfinch_in_Lodi_CA.JPG/440px-Male_American_Goldfinch_in_Lodi_CA.JPG"
-        },
-        {
-            "name":"House finch",
-            "name_sci":"Haemorhous mexicanus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Carpodacus_mexicanus_-Madison%2C_Wisconsin%2C_USA-8.jpg/440px-Carpodacus_mexicanus_-Madison%2C_Wisconsin%2C_USA-8.jpg"
-        },
-        {
-            "name":"Brant",
-            "name_sci":"Branta bernicla",
-            "pic":"https://www.allaboutbirds.org/guide/assets/photo/295428261-480px.jpg"
-        },
-        {
-            "name":"American black duck",
-            "name_sci":"Anas rubripes",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Blackduck.jpg/440px-Blackduck.jpg"
-        },
-        {
-            "name":"Northern bobwhite",
-            "name_sci":"Colinus virginianus",
-            "pic":"https://www.allaboutbirds.org/guide/assets/photo/296736411-480px.jpg"
-        },
-        {
-            "name":"Wild turkey",
-            "name_sci":"Meleagris gallopavo",
-            "pic":"https://wildlifehelp.org/sites/default/files/images/species/wild%20turkey%20Jacob%20Dingel1.jpg"
-        },
-        {
-            "name":"Pied-billed grebe",
-            "name_sci":"Podilymbus podiceps",
-            "pic":"https://www.allaboutbirds.org/guide/assets/photo/304522011-480px.jpg"
-        },
-        {
-            "name":"Ruby-throated hummingbird,",
-            "name_sci":"Archilochus colubris",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/8/87/Rubythroathummer65.jpg"
-        },
-        {
-            "name":"King rail",
-            "name_sci":"Rallus elegans",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/KingRail23.jpg/440px-KingRail23.jpg"
-        },
-        {
-            "name":"American avocet",
-            "name_sci":"Recurvirostra americana",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Recurvirostra_americana_1.jpg/440px-Recurvirostra_americana_1.jpg"
-        },
-        {
-            "name":"American oystercatcher",
-            "name_sci":"Haematopus palliatus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/American_Oystercatcher.jpg/440px-American_Oystercatcher.jpg"
-        },
-        {
-            "name":"Piping plover",
-            "name_sci":"Charadrius melodus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Charadrius-melodus-004.jpg/440px-Charadrius-melodus-004.jpg"
-        },
-        {
-            "name":"Parasitic jaeger",
-            "name_sci":"Stercorarius parasiticus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/1/16/Arcticskua2.jpg"
-        },
-        {
-            "name":"Cackling goose",
-            "name_sci":"Branta hutchinsii",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/b/b4/AleutianCanadaGoose2.jpg"
-        },
-        {
-            "name":"Wood duck",
-            "name_sci":"Aix sponsa",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Wood_Duck_%28Aix_sponsa%29%2C_Parc_du_Rouge-Clo%C3%AEtre%2C_Brussels.jpg/440px-Wood_Duck_%28Aix_sponsa%29%2C_Parc_du_Rouge-Clo%C3%AEtre%2C_Brussels.jpg"
-        },
-        {
-            "name":"Greater prairie-chicken",
-            "name_sci":"Tympanuchus cupido",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Tympanuchus_cupido_-Illinois%2C_USA_-male_displaying-8_%281%29.jpg/640px-Tympanuchus_cupido_-Illinois%2C_USA_-male_displaying-8_%281%29.jpg"
-        },
-        {
-            "name":"Horned grebe",
-            "name_sci":"Podiceps auritus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Horned_grebe_%282%29_-_%28Podiceps_auritus%29.JPG/640px-Horned_grebe_%282%29_-_%28Podiceps_auritus%29.JPG"
-        },
-        {
-            "name":"Groove-billed ani",
-            "name_sci":"Crotophaga sulcirostris ",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Groove-billed_ani_%28Crotophaga_sulcirostris%29_Cayo.jpg/426px-Groove-billed_ani_%28Crotophaga_sulcirostris%29_Cayo.jpg"
-        },
-        {
-            "name":"Yellow-billed cuckoo",
-            "name_sci":"Coccyzus americanus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Coccyzus-americanus-001.jpg/640px-Coccyzus-americanus-001.jpg"
-        },
-        {
-            "name":"Chimney swift",
-            "name_sci":"Chaetura pelagica",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Chimney_swift_overhead.jpg/640px-Chimney_swift_overhead.jpg"
-        },
-        {
-            "name":"Mexican violetear",
-            "name_sci":"Colibri thalassinus ",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/GreenVioletear.jpg/640px-GreenVioletear.jpg"
-        },
-        {
-            "name":"Black-chinned hummingbird",
-            "name_sci":"Archilochus alexandri ",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Archilochus-alexandri-003.jpg/640px-Archilochus-alexandri-003.jpg"
-        },
-        {
-            "name":"Virginia rail",
-            "name_sci":"Rallus limicola",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Rallus_limicola_-Cloisters_Park%2C_Morro_Bay%2C_California%2C_USA-8_%281%29.jpg/640px-Rallus_limicola_-Cloisters_Park%2C_Morro_Bay%2C_California%2C_USA-8_%281%29.jpg"
-        },
-        {
-            "name":"Northern lapwing",
-            "name_sci":"Vanellus vanellus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Northern-Lapwing-Vanellus-vanellus.jpg/640px-Northern-Lapwing-Vanellus-vanellus.jpg"
-        },
-        {
-            "name":"Black-bellied plover",
-            "name_sci":"Pluvialis squatarola",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Pluvialis_squatarola_%28summer_plumage%29.jpg/640px-Pluvialis_squatarola_%28summer_plumage%29.jpg"
-        },
-        {
-            "name":"Sanderling",
-            "name_sci":"Calidris alba",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Calidris-alba-001.jpg/440px-Calidris-alba-001.jpg"
-        },
-        {
-            "name":"Purple sandpiper",
-            "name_sci":"Calidris maritima",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/4/44/Purple_Sandpiper_winter.jpg"
-        },
-        {
-            "name":"Great black-backed gull",
-            "name_sci":"Larus marinus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Havstrut_aka_Larus_marinus_aka_Great_black-backed_gull.jpg/440px-Havstrut_aka_Larus_marinus_aka_Great_black-backed_gull.jpg"
-        },
-        {
-            "name":"Leach's storm-petrel",
-            "name_sci":"Hydrobates leucorhous",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Lesp1.jpg/440px-Lesp1.jpg"
-        },
-        {
-            "name":"Northern gannet",
-            "name_sci":"Morus bassanus",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Northern_Gannet_2006_2.jpg/440px-Northern_Gannet_2006_2.jpg"
-        }
-    ]
-}
+[
+  {
+    "name": "American goldfinch",
+    "name_sci": "Spinus tristis",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Male_American_Goldfinch_in_Lodi_CA.JPG/440px-Male_American_Goldfinch_in_Lodi_CA.JPG"
+  },
+  {
+    "name": "House finch",
+    "name_sci": "Haemorhous mexicanus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Carpodacus_mexicanus_-Madison%2C_Wisconsin%2C_USA-8.jpg/440px-Carpodacus_mexicanus_-Madison%2C_Wisconsin%2C_USA-8.jpg"
+  },
+  {
+    "name": "Brant",
+    "name_sci": "Branta bernicla",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Branta_bernicla2.jpg"
+  },
+  {
+    "name": "American black duck",
+    "name_sci": "Anas rubripes",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Blackduck.jpg/440px-Blackduck.jpg"
+  },
+  {
+    "name": "Northern bobwhite",
+    "name_sci": "Colinus virginianus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Virginiawachtel_2007-06-16_065.jpg"
+  },
+  {
+    "name": "Wild turkey",
+    "name_sci": "Meleagris gallopavo",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Wild_turkey_eastern_us.jpg"
+  },
+  {
+    "name": "Pied-billed grebe",
+    "name_sci": "Podilymbus podiceps",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Podilymbus-podiceps-001.jpg"
+  },
+  {
+    "name": "Ruby-throated hummingbird,",
+    "name_sci": "Archilochus colubris",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/8/87/Rubythroathummer65.jpg"
+  },
+  {
+    "name": "King rail",
+    "name_sci": "Rallus elegans",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/KingRail23.jpg/440px-KingRail23.jpg"
+  },
+  {
+    "name": "American avocet",
+    "name_sci": "Recurvirostra americana",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Recurvirostra_americana_1.jpg/440px-Recurvirostra_americana_1.jpg"
+  },
+  {
+    "name": "American oystercatcher",
+    "name_sci": "Haematopus palliatus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/American_Oystercatcher.jpg/440px-American_Oystercatcher.jpg"
+  },
+  {
+    "name": "Piping plover",
+    "name_sci": "Charadrius melodus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Charadrius-melodus-004.jpg/440px-Charadrius-melodus-004.jpg"
+  },
+  {
+    "name": "Parasitic jaeger",
+    "name_sci": "Stercorarius parasiticus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/1/16/Arcticskua2.jpg"
+  },
+  {
+    "name": "Cackling goose",
+    "name_sci": "Branta hutchinsii",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/b/b4/AleutianCanadaGoose2.jpg"
+  },
+  {
+    "name": "Wood duck",
+    "name_sci": "Aix sponsa",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Wood_Duck_%28Aix_sponsa%29%2C_Parc_du_Rouge-Clo%C3%AEtre%2C_Brussels.jpg/440px-Wood_Duck_%28Aix_sponsa%29%2C_Parc_du_Rouge-Clo%C3%AEtre%2C_Brussels.jpg"
+  },
+  {
+    "name": "Greater prairie-chicken",
+    "name_sci": "Tympanuchus cupido",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Tympanuchus_cupido_-Illinois%2C_USA_-male_displaying-8_%281%29.jpg/640px-Tympanuchus_cupido_-Illinois%2C_USA_-male_displaying-8_%281%29.jpg"
+  },
+  {
+    "name": "Horned grebe",
+    "name_sci": "Podiceps auritus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Horned_grebe_%282%29_-_%28Podiceps_auritus%29.JPG/640px-Horned_grebe_%282%29_-_%28Podiceps_auritus%29.JPG"
+  },
+  {
+    "name": "Groove-billed ani",
+    "name_sci": "Crotophaga sulcirostris ",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Groove-billed_ani_%28Crotophaga_sulcirostris%29_Cayo.jpg/426px-Groove-billed_ani_%28Crotophaga_sulcirostris%29_Cayo.jpg"
+  },
+  {
+    "name": "Yellow-billed cuckoo",
+    "name_sci": "Coccyzus americanus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Coccyzus-americanus-001.jpg/640px-Coccyzus-americanus-001.jpg"
+  },
+  {
+    "name": "Chimney swift",
+    "name_sci": "Chaetura pelagica",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Chimney_swift_overhead.jpg/640px-Chimney_swift_overhead.jpg"
+  },
+  {
+    "name": "Mexican violetear",
+    "name_sci": "Colibri thalassinus ",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/GreenVioletear.jpg/640px-GreenVioletear.jpg"
+  },
+  {
+    "name": "Black-chinned hummingbird",
+    "name_sci": "Archilochus alexandri ",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Archilochus-alexandri-003.jpg/640px-Archilochus-alexandri-003.jpg"
+  },
+  {
+    "name": "Virginia rail",
+    "name_sci": "Rallus limicola",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Rallus_limicola_-Cloisters_Park%2C_Morro_Bay%2C_California%2C_USA-8_%281%29.jpg/640px-Rallus_limicola_-Cloisters_Park%2C_Morro_Bay%2C_California%2C_USA-8_%281%29.jpg"
+  },
+  {
+    "name": "Northern lapwing",
+    "name_sci": "Vanellus vanellus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Northern-Lapwing-Vanellus-vanellus.jpg/640px-Northern-Lapwing-Vanellus-vanellus.jpg"
+  },
+  {
+    "name": "Black-bellied plover",
+    "name_sci": "Pluvialis squatarola",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Pluvialis_squatarola_%28summer_plumage%29.jpg/640px-Pluvialis_squatarola_%28summer_plumage%29.jpg"
+  },
+  {
+    "name": "Sanderling",
+    "name_sci": "Calidris alba",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Calidris-alba-001.jpg/440px-Calidris-alba-001.jpg"
+  },
+  {
+    "name": "Purple sandpiper",
+    "name_sci": "Calidris maritima",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/4/44/Purple_Sandpiper_winter.jpg"
+  },
+  {
+    "name": "Great black-backed gull",
+    "name_sci": "Larus marinus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Havstrut_aka_Larus_marinus_aka_Great_black-backed_gull.jpg/440px-Havstrut_aka_Larus_marinus_aka_Great_black-backed_gull.jpg"
+  },
+  {
+    "name": "Leach's storm-petrel",
+    "name_sci": "Hydrobates leucorhous",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Lesp1.jpg/440px-Lesp1.jpg"
+  },
+  {
+    "name": "Northern gannet",
+    "name_sci": "Morus bassanus",
+    "pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Northern_Gannet_2006_2.jpg/440px-Northern_Gannet_2006_2.jpg"
+  }
+]

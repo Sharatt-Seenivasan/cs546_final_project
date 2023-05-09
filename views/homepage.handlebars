@@ -1,16 +1,16 @@
 <main>
     <div class="container" id = "profile_container">
         {{#if user}} 
-            <a href="/users/user/profile" class="btn btn-link" id = "user_icon_button">
+            <a href="/user/profile" class="btn btn-link" id = "user_icon_button">
                 {{#if icon}}
                     <img src={{icon}} alt="User icon" class="homepage_user_icon">
                 {{else}}
                     <img src="/static/images/default_bird_icon.jpg" alt="User Icon" class="homepage_user_icon">
                 {{/if}}
             </a>
-            <a class="btn btn-dark btn-lg" href="/users/logout" role="button" id ="homepage_logout_button">Log Out</a>
+            <a class="btn btn-dark btn-lg" href="/user/logout" role="button" id ="homepage_logout_button">Log Out</a>
         {{else}}
-            <a class="btn btn-dark btn-lg" href="/users/login" role="button" id ="homepage_login_button">Log In</a>
+            <a class="btn btn-dark btn-lg" href="/user/login" role="button" id ="homepage_login_button">Log In</a>
         {{/if}}
     </div>
     <div class="container" id = "title_graphic_container">

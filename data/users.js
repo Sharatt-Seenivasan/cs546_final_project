@@ -24,14 +24,14 @@ const createUser = async (username, hashed_password) => {
     username,
     hashed_password,
     icon: "",
-    geocode:{},
+    geocode: {},
     lifetime_score: 0,
     high_score: 0,
     submission: [],
     last_questions: [],
   };
 
-  const ifExistedInfo = await userCollection.findOne({ username: username});
+  const ifExistedInfo = await userCollection.findOne({ username: username });
   if (ifExistedInfo) throw `User ${username} already existed`;
 
   const insertInfo = await userCollection.insertOne(userFields);
@@ -60,7 +60,9 @@ const getUserByUserName = async (username) => {
   const userCollection = await users();
 
   // const patern=new RegExp(`^${username}$`);
-  const theUser = await userCollection.findOne({ username: { $regex: `${username}`, $options: "i" } });
+  const theUser = await userCollection.findOne({
+    username: { $regex: `${username}`, $options: "i" },
+  });
   if (!theUser) return {};
   return objectId2str_doc(theUser);
 };
@@ -176,12 +178,11 @@ const updatePlayerInfoById = async (userId, operation) => {
     updateInfo = await pullSubmissionByBirdId($pullSubmission);
   if ($pullLastQuestions)
     updateInfo = await pullLastQuestionsByIds($pullLastQuestions);
-  if($resetLastSeenQuestions)
-    updateInfo = await resetLastQuestionsById(userId,$resetLastSeenQuestions);
+  if ($resetLastSeenQuestions)
+    updateInfo = await resetLastQuestionsById(userId, $resetLastSeenQuestions);
   return updateInfo;
 };
-const resetLastQuestionsById = async(userId,{last_questions}={})=>{
-  
+const resetLastQuestionsById = async (userId, { last_questions } = {}) => {
   const __name = resetLastQuestionsById.name;
   userId = checkId(userId, `user id at ${__name}`);
 
@@ -195,11 +196,10 @@ const resetLastQuestionsById = async(userId,{last_questions}={})=>{
     { returnDocument: "after" }
   );
 
-  if (updateInfo.lastErrorObject.n === 0)
-    throw "Could not reset";
+  if (updateInfo.lastErrorObject.n === 0) throw "Could not reset";
 
   return objectId2str_doc(updateInfo.value);
-}
+};
 const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   const __name = incrementScoresById.name;
   id = checkId(id, `user id at ${__name}`);
@@ -385,7 +385,10 @@ const topNthLocalUsersByHighScore = async (n, countryCode, city) => {
     //if (topUsers.length === 0) throw `No users in ${countryCode}`;
   } else {
     topUsers = await userCollection
-      .find({ "geocode.countryCode": countryCode, "geocode.city": city })
+      .find({
+        "geocode.countryCode": countryCode,
+        "geocode.city": { $regex: `${city}`, $options: "i" },
+      })
       .sort({ high_score: -1 })
       .limit(n)
       .toArray();

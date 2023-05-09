@@ -1,0 +1,147 @@
+[
+  {
+    "username": "Alice",
+    "hashed_password": "$2b$16$fU6iCAH8mUX1ISwkftycUOLqJ3uj2GK9FiKEI5irbm9P2SAJ9/Dw2",
+    "icon": "https://developer.mozilla.org/static/media/theme-os-default.b14255eadab403fa2e8a.svg",
+    "geocode": {
+      "latitude": 41.153332,
+      "longitude": 20.168331,
+      "country": "Albania",
+      "countryCode": "AL",
+      "city": "somewhere in Albania"
+    }
+  },
+  {
+    "username": "Bob",
+    "hashed_password": "$2b$16$Fz4/QNrJh.8YvLMoxNy4FebN6m37gSqMGRtYIhfBT1QyFm5ty.Hde",
+    "icon": "https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",
+    "geocode": {
+      "latitude": -11.202692,
+      "longitude": 17.873887,
+      "country": "Angola",
+      "countryCode": "AO",
+      "city": "somewhere in Angola"
+    }
+  },
+  {
+    "username": "Charlie",
+    "hashed_password": "$2b$16$.VmGQBNYCx0cIy3PdealD.S5n68veZtMsq/MGdaX0/0z5.czGnLlO",
+    "icon": "https://developer.mozilla.org/static/media/edge.40018f6a959bc3e5c537.svg",
+    "geocode": {
+      "latitude": 18.220554,
+      "longitude": -63.06861499999999,
+      "country": "Anguilla",
+      "countryCode": "AI",
+      "city": "somewhere in Anguilla"
+    }
+  },
+  {
+    "username": "David",
+    "hashed_password": "$2b$16$lsl704SQuWVPDqdifb6h9uX0r1IkTMe0AymGJBuTFTFtwZs3ZI4Ka",
+    "icon": "https://developer.mozilla.org/static/media/simple-firefox.9b9181d8c30c3de88edf.svg",
+    "geocode": {
+      "latitude": 17.060816,
+      "longitude": -61.796428,
+      "country": "Antigua and Barbuda",
+      "countryCode": "AG",
+      "city": "somewhere in Antigua and Barbuda"
+    }
+  },
+  {
+    "username": "Eve",
+    "hashed_password": "$2b$16$eX7QmEH2UgtNdwPKblQxWOGlMrBRDmm0IfUtmp03.Ep9H0ie2KW62",
+    "icon": "https://developer.mozilla.org/static/media/opera.a0ab0c5004c00e618a00.svg",
+    "geocode": {
+      "latitude": -38.416097,
+      "longitude": -63.61667199999999,
+      "country": "Argentina",
+      "countryCode": "AR",
+      "city": "somewhere in Argentina"
+    }
+  },
+  {
+    "username": "Frank",
+    "hashed_password": "$2b$16$HQesx0.LkegI7DDyEC8lKOf1sUkEvMVfDMiIFmForvjnqzM13dxBW",
+    "icon": "https://developer.mozilla.org/static/media/safari.3679eb31121b46323304.svg",
+    "geocode": {
+      "latitude": 12.52111,
+      "longitude": -69.968338,
+      "country": "Aruba",
+      "countryCode": "AW",
+      "city": "somewhere in Aruba"
+    }
+  },
+  {
+    "username": "Grace",
+    "hashed_password": "$2b$16$9tHJc9KX/NPtmZlK.qWnwuOBhdih.a97/8vc0eimKybcaVt0Us9zq",
+    "icon": "https://developer.mozilla.org/static/media/samsunginternet.55e41ddfc05627ecc331.svg",
+    "geocode": {
+      "latitude": -25.274398,
+      "longitude": 133.775136,
+      "country": "Australia",
+      "countryCode": "AU",
+      "city": "somewhere in Australia"
+    }
+  },
+  {
+    "username": "Hannah",
+    "hashed_password": "$2b$16$nOPMfggb.Ek./evH0Wz3aOYSMvJ4Hwpaxh.7WXzH/ox/sLQT.NZ7S",
+    "icon": "https://developer.mozilla.org/static/media/webview.7d9bf32041e0c57240b5.svg",
+    "geocode": {
+      "latitude": 47.516231,
+      "longitude": 14.550072,
+      "country": "Austria",
+      "countryCode": "AT",
+      "city": "somewhere in Austria"
+    }
+  },
+  {
+    "username": "Ivan",
+    "hashed_password": "$2b$16$vezQ/e3k23fPb09i9ebhPu/S9q.iuBQjXH/qgIIB1b6rCh9yyXmpe",
+    "icon": "https://developer.mozilla.org/static/media/deno.a791d0899729b3089500.svg",
+    "geocode": {
+      "latitude": 25.03428,
+      "longitude": -77.39627999999999,
+      "country": "The Bahamas",
+      "countryCode": "BS",
+      "city": "somewhere in Bahamas"
+    }
+  },
+  {
+    "username": "Judy",
+    "hashed_password": "$2b$16$aEJeYwehItBFv/5gqYuDfOoMyEZ8zhHjgSehLCoqMqM8SdAThE9hq",
+    "icon": "https://developer.mozilla.org/static/media/nodejs.bb93afa7923c2473034b.svg",
+    "geocode": {
+      "latitude": 26.0667,
+      "longitude": 50.5577,
+      "country": "Bahrain",
+      "countryCode": "BH",
+      "city": "somewhere in Bahrain"
+    }
+  },
+  {
+    "username": "Karl",
+    "hashed_password": "$2b$16$W/ei7sdh8mE5vVZrww3E5eqk.57g4/Dar5KxOm73iiMkm4JE2T8xC",
+    "icon": "https://developer.mozilla.org/static/media/twitter.cc5b37feab537ddbf701.svg",
+    "geocode": {
+      "latitude": 23.684994,
+      "longitude": 90.356331,
+      "country": "Bangladesh",
+      "countryCode": "BD",
+      "city": "somewhere in Bangladesh"
+    }
+  },
+  {
+    "username": "Linda",
+    "hashed_password": "$2b$16$bRczvVqJaFkZkqz1VtAcHegY0EFznYWGHfoQqNmerRvim60Ij2EOW",
+    "icon": "https://developer.mozilla.org/static/media/github-mark-small.348586b8904b950b8ea8.svg",
+    "geocode": {
+      "latitude": 53.709807,
+      "longitude": 27.953389,
+      "country": "Belarus",
+      "countryCode": "BY",
+      "city": "somewhere in Belarus"
+    }
+  }
+]
+[{"username":"Alice","hashed_password":"$2b$16$y24PKdzCfcuJGmQwupmTgutzd/VKwZxKUv.lRvJ7iVrv.LsI1FLme","icon":"https://developer.mozilla.org/static/media/theme-os-default.b14255eadab403fa2e8a.svg","geocode":{"latitude":41.153332,"longitude":20.168331,"country":"Albania","countryCode":"AL","city":"somewhere in Albania"}},{"username":"Bob","hashed_password":"$2b$16$w0cgLw1saVom6l4sWfV79Oa3z0syIM.zW5tOxcf0vpMMTfF7vjbMG","icon":"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg","geocode":{"latitude":-11.202692,"longitude":17.873887,"country":"Angola","countryCode":"AO","city":"somewhere in Angola"}},{"username":"Charlie","hashed_password":"$2b$16$Ht6bWIuTa/rCM/q97SArc.V49rhdPyzj6inVoIRz1YvLuf1fhBu2C","icon":"https://developer.mozilla.org/static/media/edge.40018f6a959bc3e5c537.svg","geocode":{"latitude":18.220554,"longitude":-63.06861499999999,"country":"Anguilla","countryCode":"AI","city":"somewhere in Anguilla"}},{"username":"David","hashed_password":"$2b$16$CPrHUSZFnS8WIgU/DG3.xuufNWpq8oxnAmP37rpUfESkcqEhZdIku","icon":"https://developer.mozilla.org/static/media/simple-firefox.9b9181d8c30c3de88edf.svg","geocode":{"latitude":17.060816,"longitude":-61.796428,"country":"Antigua and Barbuda","countryCode":"AG","city":"somewhere in Antigua and Barbuda"}},{"username":"Eve","hashed_password":"$2b$16$mvXA2Sm6kRtazV7.6K7ukuA2aLKv1AFsMfjxex1ezxhSFPLmUlira","icon":"https://developer.mozilla.org/static/media/opera.a0ab0c5004c00e618a00.svg","geocode":{"latitude":-38.416097,"longitude":-63.61667199999999,"country":"Argentina","countryCode":"AR","city":"somewhere in Argentina"}},{"username":"Frank","hashed_password":"$2b$16$/Wk39DOWa2anVN3iCcSllunvUGAzAJ562EkkFSnemTKGg3JGL0hw6","icon":"https://developer.mozilla.org/static/media/safari.3679eb31121b46323304.svg","geocode":{"latitude":12.52111,"longitude":-69.968338,"country":"Aruba","countryCode":"AW","city":"somewhere in Aruba"}},{"username":"Grace","hashed_password":"$2b$16$VHFRZ86KLjdjdirW9NyfnOg/bzwSQ9eGj1SS4QCml5pYwD2LOhenO","icon":"https://developer.mozilla.org/static/media/samsunginternet.55e41ddfc05627ecc331.svg","geocode":{"latitude":-25.274398,"longitude":133.775136,"country":"Australia","countryCode":"AU","city":"somewhere in Australia"}},{"username":"Hannah","hashed_password":"$2b$16$k.CwiVL2p0VhFPcFf7RNQu7i5ewoKOk.khuQ8YxlJUvMBTgAm5Ocy","icon":"https://developer.mozilla.org/static/media/webview.7d9bf32041e0c57240b5.svg","geocode":{"latitude":47.516231,"longitude":14.550072,"country":"Austria","countryCode":"AT","city":"somewhere in Austria"}},{"username":"Ivan","hashed_password":"$2b$16$W7bNBezdvnh4XOWzy2XPoO7giVHArqAsJSPkYv.iItYwtN/rHoshq","icon":"https://developer.mozilla.org/static/media/deno.a791d0899729b3089500.svg","geocode":{"latitude":25.03428,"longitude":-77.39627999999999,"country":"The Bahamas","countryCode":"BS","city":"somewhere in Bahamas"}},{"username":"Judy","hashed_password":"$2b$16$Yn0YVVbhasT5hirWfMc8Y.7s3bFOYk6aB0wXawg44fmtkS7Ja8AMa","icon":"https://developer.mozilla.org/static/media/nodejs.bb93afa7923c2473034b.svg","geocode":{"latitude":26.0667,"longitude":50.5577,"country":"Bahrain","countryCode":"BH","city":"somewhere in Bahrain"}},{"username":"Karl","hashed_password":"$2b$16$y/Ylfv9DLvCAnJgajXos3OsiMBxgRIVkL5D.A12PsES5QAIAlI8QC","icon":"https://developer.mozilla.org/static/media/twitter.cc5b37feab537ddbf701.svg","geocode":{"latitude":23.684994,"longitude":90.356331,"country":"Bangladesh","countryCode":"BD","city":"somewhere in Bangladesh"}},{"username":"Linda","hashed_password":"$2b$16$2TkgMhm8RIUB8rfszwyN4eN6It2z8l45RU3ye1NT3YgblTuuuga0W","icon":"https://developer.mozilla.org/static/media/github-mark-small.348586b8904b950b8ea8.svg","geocode":{"latitude":53.709807,"longitude":27.953389,"country":"Belarus","countryCode":"BY","city":"somewhere in Belarus"}}][{"username":"Alice","hashed_password":"$2b$16$2ZraqPoErVXvgUvbN.lTYeWkR3EI5iyyGxUP12uzEEJT5f2NWu4lC","icon":"https://developer.mozilla.org/static/media/theme-os-default.b14255eadab403fa2e8a.svg","geocode":{"latitude":41.153332,"longitude":20.168331,"country":"Albania","countryCode":"AL","city":"somewhere in Albania"}},{"username":"Bob","hashed_password":"$2b$16$cC50764Myxrdu3Xa/dlYRe0fQS8iYIGHPqHIXXGtKUiV0WZSwfzZG","icon":"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg","geocode":{"latitude":-11.202692,"longitude":17.873887,"country":"Angola","countryCode":"AO","city":"somewhere in Angola"}},{"username":"Charlie","hashed_password":"$2b$16$2trix.IwD3nSn0h43h5GjuPvfPMYiFCxkmnD92l82PlEdrlE1JLVC","icon":"https://developer.mozilla.org/static/media/edge.40018f6a959bc3e5c537.svg","geocode":{"latitude":18.220554,"longitude":-63.06861499999999,"country":"Anguilla","countryCode":"AI","city":"somewhere in Anguilla"}},{"username":"David","hashed_password":"$2b$16$dDABdTUuUEgvSeYswbcVvuXm9NrgfvlW3umHzPhGIpOsfscDnMzMG","icon":"https://developer.mozilla.org/static/media/simple-firefox.9b9181d8c30c3de88edf.svg","geocode":{"latitude":17.060816,"longitude":-61.796428,"country":"Antigua and Barbuda","countryCode":"AG","city":"somewhere in Antigua and Barbuda"}},{"username":"Eve","hashed_password":"$2b$16$306zN2KkruBmX9E/2dzZ9OYzESolVlEDo.9bpOkD7c.nrUNqXD6.y","icon":"https://developer.mozilla.org/static/media/opera.a0ab0c5004c00e618a00.svg","geocode":{"latitude":-38.416097,"longitude":-63.61667199999999,"country":"Argentina","countryCode":"AR","city":"somewhere in Argentina"}},{"username":"Frank","hashed_password":"$2b$16$aJtpd5ec1haLcoI5fEXEaO3FG/dxTCsqcsMGbZoQeLIYIk6ynxT/i","icon":"https://developer.mozilla.org/static/media/safari.3679eb31121b46323304.svg","geocode":{"latitude":12.52111,"longitude":-69.968338,"country":"Aruba","countryCode":"AW","city":"somewhere in Aruba"}},{"username":"Grace","hashed_password":"$2b$16$xu8IT0BpElaerp8kOMSqUetiQa7cDek2XHD4qSEtbUhKoOzeJJrKW","icon":"https://developer.mozilla.org/static/media/samsunginternet.55e41ddfc05627ecc331.svg","geocode":{"latitude":-25.274398,"longitude":133.775136,"country":"Australia","countryCode":"AU","city":"somewhere in Australia"}},{"username":"Hannah","hashed_password":"$2b$16$4eHV4hZZK20sfBxJouQ.R.zruf.xwiD2XtivvJQLrl6NltGK/t7.W","icon":"https://developer.mozilla.org/static/media/webview.7d9bf32041e0c57240b5.svg","geocode":{"latitude":47.516231,"longitude":14.550072,"country":"Austria","countryCode":"AT","city":"somewhere in Austria"}},{"username":"Ivan","hashed_password":"$2b$16$AE6yVoWvr53VEocZx5dId.FxVVkHiljrWelbvsHvLdePAq3M0AiGO","icon":"https://developer.mozilla.org/static/media/deno.a791d0899729b3089500.svg","geocode":{"latitude":25.03428,"longitude":-77.39627999999999,"country":"The Bahamas","countryCode":"BS","city":"somewhere in Bahamas"}},{"username":"Judy","hashed_password":"$2b$16$2EBo1s0N/RKwryA6qBVMY.cl/goEN31oeqKqp92hDC7UXPhU5G0N6","icon":"https://developer.mozilla.org/static/media/nodejs.bb93afa7923c2473034b.svg","geocode":{"latitude":26.0667,"longitude":50.5577,"country":"Bahrain","countryCode":"BH","city":"somewhere in Bahrain"}},{"username":"Karl","hashed_password":"$2b$16$N17Wkczqaw.6ZLsLjhTgw.0gDGB0nU951RMua58j9yXYxEeRM.KDK","icon":"https://developer.mozilla.org/static/media/twitter.cc5b37feab537ddbf701.svg","geocode":{"latitude":23.684994,"longitude":90.356331,"country":"Bangladesh","countryCode":"BD","city":"somewhere in Bangladesh"}},{"username":"Linda","hashed_password":"$2b$16$JETRIQaT4YyREw7HfWrZQumTizCeZrH93vBTcyjWzNzl5ri6dMeXm","icon":"https://developer.mozilla.org/static/media/github-mark-small.348586b8904b950b8ea8.svg","geocode":{"latitude":53.709807,"longitude":27.953389,"country":"Belarus","countryCode":"BY","city":"somewhere in Belarus"}}][{"username":"Alice","plaintext_password":"A;0global","hashed_password":"$2b$16$WApHKhRIaE3y0.SSLzXW2eqJNCS.3led4cajXaaP62LlO9J2PksSu","icon":"https://developer.mozilla.org/static/media/theme-os-default.b14255eadab403fa2e8a.svg","geocode":{"latitude":41.153332,"longitude":20.168331,"country":"Albania","countryCode":"AL","city":"somewhere in Albania"}},{"username":"Bob","plaintext_password":"B;0global","hashed_password":"$2b$16$GBRP/yj7R8HDP2za.Erxaekj9wNW6i3F5XptBGd1lU/jeEbvzBZia","icon":"https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg","geocode":{"latitude":-11.202692,"longitude":17.873887,"country":"Angola","countryCode":"AO","city":"somewhere in Angola"}},{"username":"Charlie","plaintext_password":"C;0global","hashed_password":"$2b$16$xibdyXKAtztiM/hCa7sde.N04dJ7o.HiLfKMskO3UgYhxEdARiMOi","icon":"https://developer.mozilla.org/static/media/edge.40018f6a959bc3e5c537.svg","geocode":{"latitude":18.220554,"longitude":-63.06861499999999,"country":"Anguilla","countryCode":"AI","city":"somewhere in Anguilla"}},{"username":"David","plaintext_password":"D;0global","hashed_password":"$2b$16$fd2hHB4r4bJG9iGXUamp1Ok0GlnZyKkApPGRpdPeR5e3gToG.BlKS","icon":"https://developer.mozilla.org/static/media/simple-firefox.9b9181d8c30c3de88edf.svg","geocode":{"latitude":17.060816,"longitude":-61.796428,"country":"Antigua and Barbuda","countryCode":"AG","city":"somewhere in Antigua and Barbuda"}},{"username":"Eve","plaintext_password":"E;0global","hashed_password":"$2b$16$rMyVd7lsOgJdiJQZw6Wt4einbWhOP5XdA0aaxhuId5WRE4NqOiCUi","icon":"https://developer.mozilla.org/static/media/opera.a0ab0c5004c00e618a00.svg","geocode":{"latitude":-38.416097,"longitude":-63.61667199999999,"country":"Argentina","countryCode":"AR","city":"somewhere in Argentina"}},{"username":"Frank","plaintext_password":"F;0global","hashed_password":"$2b$16$wmeU7.Q.lKWisE4CeRHIWeITVdvErJGOiyPQN2z98Won06sCN8CIW","icon":"https://developer.mozilla.org/static/media/safari.3679eb31121b46323304.svg","geocode":{"latitude":12.52111,"longitude":-69.968338,"country":"Aruba","countryCode":"AW","city":"somewhere in Aruba"}},{"username":"Grace","plaintext_password":"G;0global","hashed_password":"$2b$16$miUUUxP5Yn1T7sONUpN5Vu7GR8OYbnDW9/AYhBhOZ9HFqe3xRpWne","icon":"https://developer.mozilla.org/static/media/samsunginternet.55e41ddfc05627ecc331.svg","geocode":{"latitude":-25.274398,"longitude":133.775136,"country":"Australia","countryCode":"AU","city":"somewhere in Australia"}},{"username":"Hannah","plaintext_password":"H;0global","hashed_password":"$2b$16$sntd5hwhJExdcub565qB.ucWt4Zaz.rp7j/7BeP2Lrd6tmhMQocTi","icon":"https://developer.mozilla.org/static/media/webview.7d9bf32041e0c57240b5.svg","geocode":{"latitude":47.516231,"longitude":14.550072,"country":"Austria","countryCode":"AT","city":"somewhere in Austria"}},{"username":"Ivan","plaintext_password":"I;0global","hashed_password":"$2b$16$elHiMogwO6Ov4Pm8MPSHU.NXTifnQhQbm//eCgF5gWmVM1kKDp5E6","icon":"https://developer.mozilla.org/static/media/deno.a791d0899729b3089500.svg","geocode":{"latitude":25.03428,"longitude":-77.39627999999999,"country":"The Bahamas","countryCode":"BS","city":"somewhere in Bahamas"}},{"username":"Judy","plaintext_password":"J;0global","hashed_password":"$2b$16$RCGWeEEfZV9bqNg12IQmxuPwkIw5Nfpb2/mDU2lArXYWPYT0uhOZ.","icon":"https://developer.mozilla.org/static/media/nodejs.bb93afa7923c2473034b.svg","geocode":{"latitude":26.0667,"longitude":50.5577,"country":"Bahrain","countryCode":"BH","city":"somewhere in Bahrain"}},{"username":"Karl","plaintext_password":"K;0global","hashed_password":"$2b$16$Qw0qprlNIIUb/sbM6o0v6eMT8bM/ZOLtJ01oR8vVSqtss.ehCXB4e","icon":"https://developer.mozilla.org/static/media/twitter.cc5b37feab537ddbf701.svg","geocode":{"latitude":23.684994,"longitude":90.356331,"country":"Bangladesh","countryCode":"BD","city":"somewhere in Bangladesh"}},{"username":"Linda","plaintext_password":"L;0global","hashed_password":"$2b$16$r9RgUCtpIpmDbhGa2vlXVeyZq7RkCDmjUE8q3rT251527HHqg/Nta","icon":"https://developer.mozilla.org/static/media/github-mark-small.348586b8904b950b8ea8.svg","geocode":{"latitude":53.709807,"longitude":27.953389,"country":"Belarus","countryCode":"BY","city":"somewhere in Belarus"}}]
