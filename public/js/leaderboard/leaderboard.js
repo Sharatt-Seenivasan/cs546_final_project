@@ -3,12 +3,16 @@ function checkStr(str, strName) {
     if (!str) throw `No string provided for ${strName}`;
     if (typeof str !== "string") throw `${strName} is not a string`;
     str = str.trim();
+    console.log(str.length)
     if (str.length === 0) throw `${strName} is empty`;
     return str; // trimmed
   }
 
 function checkCity(city, cityName) {
     city = checkStr(city, cityName);
+    if(/\d/.test(city)) {
+        throw "City name contains a numerical digit!"
+    }
     return city.toLowerCase(); // trimmed and lowercased
 }
 
@@ -37,15 +41,21 @@ $(document).on('submit', '#location-search-form',function(event) {
         var errorDiv = $('#error')
         errorDiv.hide();
     
-        if(citySearchBar && citySearchBar !== undefined && countryInput !== 'invalid' && checkCity(citySearchBar,citySearchBar)) {
-            $.ajax({
-                type: "POST",
-                url: '/leaderboard/local/',
-                data: {countryInput:countryInput ,citySearchBar: checkCity(citySearchBar,citySearchBar)}
-            }).then(function (response) {
-                //console.log(response)
-                fillLeaderboardTable(response)
-            });
+        if(citySearchBar && citySearchBar !== undefined && countryInput !== 'invalid') {
+            try {
+                checkCity(citySearchBar,citySearchBar)
+                $.ajax({
+                    type: "POST",
+                    url: '/leaderboard/local/',
+                    data: {countryInput:countryInput ,citySearchBar: checkCity(citySearchBar,citySearchBar)}
+                }).then(function (response) {
+                    //console.log(response)
+                    fillLeaderboardTable(response)
+                });
+            } catch (e) {
+                errorDiv.html("Please select and enter a valid country and city.")
+                errorDiv.show();
+            }
         }
         else {
             errorDiv.html("Please select and enter a valid country and city.")

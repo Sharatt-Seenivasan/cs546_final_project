@@ -76,6 +76,14 @@ function checkZipCode(zipCode, zipCodeName) {
     return zipCode; // trimmed
 }
 
+function checkCity(city, cityName) {
+  city = checkStr(city, cityName);
+  if(/\d/.test(city)) {
+      throw "City name contains a numerical digit!"
+  }
+  return city.toLowerCase(); // trimmed and lowercased
+}
+
 const submissionForm = document.getElementById("image-submission-form");
 
 if(submissionForm){
@@ -138,6 +146,17 @@ if(submissionForm){
             error.hidden= false;
             event.preventDefault();
             return false;   
+        }
+
+        if(bird_city.value){
+          try {
+            checkCity(bird_city.value, "Bird City")
+          } catch (e) {
+            error.innerHTML= "Please enter a valid city name.";
+            error.hidden= false;
+            event.preventDefault();
+            return false;   
+          }
         }
 
         if(bird_zipCode.value){

@@ -77,6 +77,14 @@ function checkZipCode(zipCode, zipCodeName) {
   return zipCode; // trimmed
 }
 
+function checkCity(city, cityName) {
+  city = checkStr(city, cityName);
+  if(/\d/.test(city)) {
+      throw "City name contains a numerical digit!"
+  }
+  return city.toLowerCase(); // trimmed and lowercased
+}
+
 const profileForm = document.getElementById("profile-form");
 
 if(profileForm){
@@ -152,6 +160,17 @@ if(profileForm){
                 event.preventDefault();
                 return false;    
             }   
+        }
+
+        if(city.value){
+          try {
+            checkCity(city.value, "User City")
+          } catch (e) {
+            error.innerHTML= "Please enter a valid city name.";
+            error.hidden= false;
+            event.preventDefault();
+            return false; 
+          }
         }
 
         if(zipcode.value) {
