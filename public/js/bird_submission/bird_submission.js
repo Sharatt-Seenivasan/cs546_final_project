@@ -74,6 +74,14 @@ function checkZipCode(zipCode, zipCodeName) {
   return zipCode; // trimmed
 }
 
+function checkCity(city, cityName) {
+  city = checkStr(city, cityName);
+  if(/\d/.test(city)) {
+      throw "City name contains a numerical digit!"
+  }
+  return city.toLowerCase(); // trimmed and lowercased
+}
+
 const submissionForm = document.getElementById("image-submission-form");
 
 if (submissionForm) {
@@ -147,12 +155,36 @@ if (submissionForm) {
         return false;
       }
     }
+        if(bird_city.value){
+          try {
+            checkCity(bird_city.value, "Bird City")
+          } catch (e) {
+            error.innerHTML= "Please enter a valid city name.";
+            error.hidden= false;
+            event.preventDefault();
+            return false;   
+          }
+        }
 
-    // if((country.value || city.value || zipcode.value) && !(country.value && city.value && zipcode.value)){
-    //     error.innerHTML= "When updating location information, please fill out all the location fields!";
-    //     error.hidden= false;
-    //     event.preventDefault();
-    //     return false;
-    // }
-  });
+        if(bird_zipCode.value){
+            try {
+                checkZipCode(bird_zipCode.value,"Bird Zipcode")
+            } catch (e) {
+                error.innerHTML= "Zipcode is invalid.";
+                error.hidden= false;
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        
+
+        // if((country.value || city.value || zipcode.value) && !(country.value && city.value && zipcode.value)){
+        //     error.innerHTML= "When updating location information, please fill out all the location fields!";
+        //     error.hidden= false;
+        //     event.preventDefault();
+        //     return false; 
+        // }
+
+    });
 }

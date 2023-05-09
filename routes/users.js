@@ -507,12 +507,13 @@ router
         newCountryCode = checkCountryCode(newCountryCode, `new country code`);
         newCity = checkCity(newCity, `new city`);
         newZipCode = checkZipCode(newZipCode, `new zip code`);
+
         if (
           newCountryCode === user.geocode.countryCode &&
           newCity === user.geocode.city &&
-          newZipCode === user.geocode.zipCode
+          newZipCode === user.geocode.zipcode
         ) {
-          throw "country code, city and zip code are the same as before!";
+          throw "Country code, city and zip code are the same as before!";
         }
       } catch (error) {
         return res.status(400).render("user_profile", {
@@ -818,7 +819,7 @@ router.route("/logout").get((req, res) => {
   const userId = req.session.user && req.session.user._id;
   const username = req.session.user && req.session.user.username;
   req.session.destroy();
-  res.render("logout", { username });
+  res.render("logout", {title:"Logout", username });
 });
 
 export default router;

@@ -76,6 +76,14 @@ function checkZipCode(zipCode, zipCodeName) {
   return zipCode; // trimmed
 }
 
+function checkCity(city, cityName) {
+  city = checkStr(city, cityName);
+  if(/\d/.test(city)) {
+      throw "City name contains a numerical digit!"
+  }
+  return city.toLowerCase(); // trimmed and lowercased
+}
+
 const profileForm = document.getElementById("profile-form");
 
 if (profileForm) {
