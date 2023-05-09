@@ -25,19 +25,33 @@ const national2Birds_raw = await fs.readFile(
   path.resolve("static/wiki_national_birds.json"),
   "utf-8"
 );
+const nj_birds_raw = await fs.readFile(
+  path.resolve("static/nj_birds.json"),
+  "utf-8"
+)
 const nation_geocodes_raw = await fs.readFile(
   path.resolve("static/nation_geocodes.json"),
   "utf-8"
 );
 const national2Birds = JSON.parse(national2Birds_raw);
 const nation_geocodes = JSON.parse(nation_geocodes_raw);
-
+const nj_birds = JSON.parse(nj_birds_raw);
 const birds = [];
 for (const [nation, nation_birds] of Object.entries(national2Birds)) {
   for (const nation_bird of nation_birds) {
     const aBird = {};
     aBird.url = nation_bird.pic;
-    aBird.names = [nation_bird.name, nation_bird.name_sci];
+    aBird.names = [nation_bird.name];
+    aBird.geocode = nation_geocodes[nation];
+    aBird.difficulty = Math.floor(Math.random() * 5) + 1;
+    birds.push(aBird);
+  }
+}
+for (const [nation, nation_birds] of Object.entries(nj_birds)) {
+  for (const nation_bird of nation_birds) {
+    const aBird = {};
+    aBird.url = nation_bird.pic;
+    aBird.names = [nation_bird.name];
     aBird.geocode = nation_geocodes[nation];
     aBird.difficulty = Math.floor(Math.random() * 5) + 1;
     birds.push(aBird);

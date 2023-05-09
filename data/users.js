@@ -12,6 +12,7 @@ import {
   objectId2str_docs_arr,
   objsEqual,
 } from "../helpers.js";
+//import async from "hbs/lib/async.js";
 
 const createUser = async (username, hashed_password) => {
   const __name = createUser.name;
@@ -164,6 +165,7 @@ const updatePlayerInfoById = async (userId, operation) => {
     $pushLastQuestions,
     $pullSubmission,
     $pullLastQuestions,
+    $resetLastSeenQuestions,
   } = operation;
   if ($incScores) updateInfo = await incrementScoresById(userId, $incScores);
   if ($pushSubmission)
@@ -174,9 +176,30 @@ const updatePlayerInfoById = async (userId, operation) => {
     updateInfo = await pullSubmissionByBirdId($pullSubmission);
   if ($pullLastQuestions)
     updateInfo = await pullLastQuestionsByIds($pullLastQuestions);
+  if($resetLastSeenQuestions)
+    updateInfo = await resetLastQuestionsById(userId,$resetLastSeenQuestions);
   return updateInfo;
 };
+const resetLastQuestionsById = async(userId,{last_questions}={})=>{
+  
+  const __name = resetLastQuestionsById.name;
+  userId = checkId(userId, `user id at ${__name}`);
 
+  const userCollection = await users();
+  let ifExists = await userCollection.findOne({ _id: new ObjectId(userId) });
+  if (!ifExists) throw `No such user with id ${userId}`;
+
+  const updateInfo = await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(userId) },
+    { $set: { last_questions: [] } },
+    { returnDocument: "after" }
+  );
+
+  if (updateInfo.lastErrorObject.n === 0)
+    throw "Could not reset";
+
+  return objectId2str_doc(updateInfo.value);
+}
 const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
   const __name = incrementScoresById.name;
   id = checkId(id, `user id at ${__name}`);
@@ -198,9 +221,6 @@ const incrementScoresById = async (id, { high_score, lifetime_score } = {}) => {
       `lifetime score increment at ${__name}`
     );
 
-  if (high_score_inc < 0) throw "high score increment cannot be negative";
-  if (ifExists.lifetime_score + lifetime_score_inc < 0)
-    throw "lifetime score cannot be negative after increment";
   const updateInfo = await userCollection.findOneAndUpdate(
     { _id: new ObjectId(id) },
     {
