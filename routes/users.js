@@ -777,7 +777,7 @@ router.route("/logout").get((req, res) => {
   const userId = req.session.user && req.session.user._id;
   const username = req.session.user && req.session.user.username;
   req.session.destroy();
-  res.render("logout", { username });
+  res.render("logout", {title:"Logout", username });
 });
 
 export default router;
