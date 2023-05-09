@@ -1,0 +1,496 @@
+[
+  {
+    "username": "Alice",
+    "plaintext_password": "A;0global",
+    "hashed_password": "$2b$16$WApHKhRIaE3y0.SSLzXW2eqJNCS.3led4cajXaaP62LlO9J2PksSu",
+    "icon": "https://developer.mozilla.org/static/media/theme-os-default.b14255eadab403fa2e8a.svg",
+    "geocode": {
+      "latitude": 41.153332,
+      "longitude": 20.168331,
+      "country": "Albania",
+      "countryCode": "AL",
+      "city": "somewhere in Albania"
+    }
+  },
+  {
+    "username": "Bob",
+    "plaintext_password": "B;0global",
+    "hashed_password": "$2b$16$GBRP/yj7R8HDP2za.Erxaekj9wNW6i3F5XptBGd1lU/jeEbvzBZia",
+    "icon": "https://developer.mozilla.org/static/media/chrome.4c57086589fd964c05f5.svg",
+    "geocode": {
+      "latitude": -11.202692,
+      "longitude": 17.873887,
+      "country": "Angola",
+      "countryCode": "AO",
+      "city": "somewhere in Angola"
+    }
+  },
+  {
+    "username": "Charlie",
+    "plaintext_password": "C;0global",
+    "hashed_password": "$2b$16$xibdyXKAtztiM/hCa7sde.N04dJ7o.HiLfKMskO3UgYhxEdARiMOi",
+    "icon": "https://developer.mozilla.org/static/media/edge.40018f6a959bc3e5c537.svg",
+    "geocode": {
+      "latitude": 18.220554,
+      "longitude": -63.06861499999999,
+      "country": "Anguilla",
+      "countryCode": "AI",
+      "city": "somewhere in Anguilla"
+    }
+  },
+  {
+    "username": "David",
+    "plaintext_password": "D;0global",
+    "hashed_password": "$2b$16$fd2hHB4r4bJG9iGXUamp1Ok0GlnZyKkApPGRpdPeR5e3gToG.BlKS",
+    "icon": "https://developer.mozilla.org/static/media/simple-firefox.9b9181d8c30c3de88edf.svg",
+    "geocode": {
+      "latitude": 17.060816,
+      "longitude": -61.796428,
+      "country": "Antigua and Barbuda",
+      "countryCode": "AG",
+      "city": "somewhere in Antigua and Barbuda"
+    }
+  },
+  {
+    "username": "Eve",
+    "plaintext_password": "E;0global",
+    "hashed_password": "$2b$16$rMyVd7lsOgJdiJQZw6Wt4einbWhOP5XdA0aaxhuId5WRE4NqOiCUi",
+    "icon": "https://developer.mozilla.org/static/media/opera.a0ab0c5004c00e618a00.svg",
+    "geocode": {
+      "latitude": -38.416097,
+      "longitude": -63.61667199999999,
+      "country": "Argentina",
+      "countryCode": "AR",
+      "city": "somewhere in Argentina"
+    }
+  },
+  {
+    "username": "Frank",
+    "plaintext_password": "F;0global",
+    "hashed_password": "$2b$16$wmeU7.Q.lKWisE4CeRHIWeITVdvErJGOiyPQN2z98Won06sCN8CIW",
+    "icon": "https://developer.mozilla.org/static/media/safari.3679eb31121b46323304.svg",
+    "geocode": {
+      "latitude": 12.52111,
+      "longitude": -69.968338,
+      "country": "Aruba",
+      "countryCode": "AW",
+      "city": "somewhere in Aruba"
+    }
+  },
+  {
+    "username": "Grace",
+    "plaintext_password": "G;0global",
+    "hashed_password": "$2b$16$miUUUxP5Yn1T7sONUpN5Vu7GR8OYbnDW9/AYhBhOZ9HFqe3xRpWne",
+    "icon": "https://developer.mozilla.org/static/media/samsunginternet.55e41ddfc05627ecc331.svg",
+    "geocode": {
+      "latitude": -25.274398,
+      "longitude": 133.775136,
+      "country": "Australia",
+      "countryCode": "AU",
+      "city": "somewhere in Australia"
+    }
+  },
+  {
+    "username": "Hannah",
+    "plaintext_password": "H;0global",
+    "hashed_password": "$2b$16$sntd5hwhJExdcub565qB.ucWt4Zaz.rp7j/7BeP2Lrd6tmhMQocTi",
+    "icon": "https://developer.mozilla.org/static/media/webview.7d9bf32041e0c57240b5.svg",
+    "geocode": {
+      "latitude": 47.516231,
+      "longitude": 14.550072,
+      "country": "Austria",
+      "countryCode": "AT",
+      "city": "somewhere in Austria"
+    }
+  },
+  {
+    "username": "Ivan",
+    "plaintext_password": "I;0global",
+    "hashed_password": "$2b$16$elHiMogwO6Ov4Pm8MPSHU.NXTifnQhQbm//eCgF5gWmVM1kKDp5E6",
+    "icon": "https://developer.mozilla.org/static/media/deno.a791d0899729b3089500.svg",
+    "geocode": {
+      "latitude": 25.03428,
+      "longitude": -77.39627999999999,
+      "country": "The Bahamas",
+      "countryCode": "BS",
+      "city": "somewhere in Bahamas"
+    }
+  },
+  {
+    "username": "Judy",
+    "plaintext_password": "J;0global",
+    "hashed_password": "$2b$16$RCGWeEEfZV9bqNg12IQmxuPwkIw5Nfpb2/mDU2lArXYWPYT0uhOZ.",
+    "icon": "https://developer.mozilla.org/static/media/nodejs.bb93afa7923c2473034b.svg",
+    "geocode": {
+      "latitude": 26.0667,
+      "longitude": 50.5577,
+      "country": "Bahrain",
+      "countryCode": "BH",
+      "city": "somewhere in Bahrain"
+    }
+  },
+  {
+    "username": "Karl",
+    "plaintext_password": "K;0global",
+    "hashed_password": "$2b$16$Qw0qprlNIIUb/sbM6o0v6eMT8bM/ZOLtJ01oR8vVSqtss.ehCXB4e",
+    "icon": "https://developer.mozilla.org/static/media/twitter.cc5b37feab537ddbf701.svg",
+    "geocode": {
+      "latitude": 23.684994,
+      "longitude": 90.356331,
+      "country": "Bangladesh",
+      "countryCode": "BD",
+      "city": "somewhere in Bangladesh"
+    }
+  },
+  {
+    "username": "Linda",
+    "plaintext_password": "L;0global",
+    "hashed_password": "$2b$16$r9RgUCtpIpmDbhGa2vlXVeyZq7RkCDmjUE8q3rT251527HHqg/Nta",
+    "icon": "https://developer.mozilla.org/static/media/github-mark-small.348586b8904b950b8ea8.svg",
+    "geocode": {
+      "latitude": 53.709807,
+      "longitude": 27.953389,
+      "country": "Belarus",
+      "countryCode": "BY",
+      "city": "somewhere in Belarus"
+    }
+  },
+  {
+    "username": "A-hoboken",
+    "plaintext_password": "A;0global",
+    "hashed_password": "$2b$16$GtkIYTDNvGNLC0IYIQ3W1uCg8qkGpXZzra459n6aQ8DScThpBCmPi",
+    "icon": "https://cdn-icons-png.flaticon.com/128/45/45823.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "B-hoboken",
+    "plaintext_password": "B;0global",
+    "hashed_password": "$2b$16$iZENeRJa6pkjbfsHtBRM1OAEqu5bNrCNDe46axNoh.3rSwYYXHSdu",
+    "icon": "https://cdn-icons-png.flaticon.com/128/5968/5968260.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "C-hoboken",
+    "plaintext_password": "C;0global",
+    "hashed_password": "$2b$16$.id8cTDgm4r/x8e6S/aN7O/LCIuFerIYvQDfS6nuLKZFI0KCIqWUa",
+    "icon": "https://cdn-icons-png.flaticon.com/128/6132/6132222.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "D-hoboken",
+    "plaintext_password": "D;0global",
+    "hashed_password": "$2b$16$4Ug5dOIDL7NtSs7aMXhomu9kFTUz5yiwK87RpDrg9UWZ.bXuEkCcG",
+    "icon": "https://cdn-icons-png.flaticon.com/128/9768/9768082.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "E-hoboken",
+    "plaintext_password": "E;0global",
+    "hashed_password": "$2b$16$cWi9VYT.o3qh8/hF4eKQCeHs3AWq.qNl5YzywQqAS4pSO2UB5oxea",
+    "icon": "https://cdn-icons-png.flaticon.com/128/8361/8361190.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "F-hoboken",
+    "plaintext_password": "F;0global",
+    "hashed_password": "$2b$16$AZAUqhx/HQoQs9Q.I3lBTu8jpqovUUyasJja0jdrpJG69ZqTwcLpi",
+    "icon": "https://cdn-icons-png.flaticon.com/128/26/26726.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "G-hoboken",
+    "plaintext_password": "G;0global",
+    "hashed_password": "$2b$16$eLouvcZH3bCId3jrx/lY1uQ3cfJ2REifQ.RpwlN0/47v2UAL6ABkq",
+    "icon": "https://cdn-icons-png.flaticon.com/128/281/281764.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "H-hoboken",
+    "plaintext_password": "H;0global",
+    "hashed_password": "$2b$16$hfXjw0EioBCMEx2/maR87ewRf1nFC90vE/QrVT9x2xxkCK4zaH2RK",
+    "icon": "https://cdn-icons-png.flaticon.com/128/1647/1647851.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "I-hoboken",
+    "plaintext_password": "I;0global",
+    "hashed_password": "$2b$16$XDr0n1u1PQEAFpXqsLMFAu3OheInfJJ3FZ0saa3zpZweB/EWg1rrq",
+    "icon": "https://t3.ftcdn.net/jpg/03/08/01/88/240_F_308018888_dTriP4D0eoXGFCnGEsJt2qaSA69WpAmJ.jpg",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "J-hoboken",
+    "plaintext_password": "J;0global",
+    "hashed_password": "$2b$16$ORQe.Eun9.Ct9K4/2Hz0iew4LW/WyEg0Pqdl.uPfExDSwQ51qwh5.",
+    "icon": "https://cdn-icons-png.flaticon.com/128/3425/3425808.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "K-hoboken",
+    "plaintext_password": "K;0global",
+    "hashed_password": "$2b$16$s/LppQK4mU0Fbbu.OUdxTuBSW8F0M4t6Bkqs3HL.SPdWb39ze4eB2",
+    "icon": "https://cdn-icons-png.flaticon.com/128/10108/10108546.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "L-hoboken",
+    "plaintext_password": "L;0global",
+    "hashed_password": "$2b$16$ocK/SvxcYjd8rrO/g00miumQqm/tk.0Fp896RRvGU7MlUY2bMGkG2",
+    "icon": "https://cdn-icons-png.flaticon.com/128/4019/4019828.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "M-hoboken",
+    "plaintext_password": "M;0global",
+    "hashed_password": "$2b$16$DMMjM/JtR10D3ZetCrgKOuuPdj8734Y2mSRXFKf0wgkZq92A1gX1i",
+    "icon": "https://cdn-icons-png.flaticon.com/128/732/732217.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "N-hoboken",
+    "plaintext_password": "N;0global",
+    "hashed_password": "$2b$16$4tOONjDpZonbI7w5z5vHNOp2qXyMIKlHFTPrumnNLZk9WvMoJjYEG",
+    "icon": "https://cdn-icons-png.flaticon.com/128/732/732228.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "O-hoboken",
+    "plaintext_password": "O;0global",
+    "hashed_password": "$2b$16$srKRLqiAeNZwC83Gy9mvouF6mapKbV7W9vmo7oF2dd3edT4U24sXO",
+    "icon": "https://static.wikia.nocookie.net/yugioh/images/e/e9/OOversoul-LDS3-EN-C-1E.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "P-hoboken",
+    "plaintext_password": "P;0global",
+    "hashed_password": "$2b$16$3HTXkGWfr1OA2KlJ/AP4d.dqhviHfjZM/Nr92JI.rVZSz7HVNADX2",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Pixiv_Icon.svg",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "Q-hoboken",
+    "plaintext_password": "Q;0global",
+    "hashed_password": "$2b$16$p4SRkOm79vYh3IZ7CNYuO.ubfP5fbnzarz7qncoZ5m1jvrt37X8L6",
+    "icon": "https://cdn-icons-png.flaticon.com/128/2839/2839259.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "R-hoboken",
+    "plaintext_password": "R;0global",
+    "hashed_password": "$2b$16$B/Ot3gDyZaXYIFD3VAAOWe9A5QE3Y5NiXXeMwXZlPOPKNHXPqtaEq",
+    "icon": "https://static.wikia.nocookie.net/bindingofisaacre_gamepedia/images/3/32/Collectible_R_Key_icon.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "S-hoboken",
+    "plaintext_password": "S;0global",
+    "hashed_password": "$2b$16$0Eb7I1kdoXZzrawr8uaQn.df0bfjDeGwq8/1aQn5ZR/VIvSednE8i",
+    "icon": "https://img.icons8.com/?size=1x&id=21566&format=png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "T-hoboken",
+    "plaintext_password": "T;0global",
+    "hashed_password": "$2b$16$KYdrAI8D3tk70lw6caKviuv1rNRNDQ4OVs5SELL7x/yKJvn2GGrI6",
+    "icon": "https://cdn-icons-png.flaticon.com/128/5969/5969259.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "U-hoboken",
+    "plaintext_password": "U;0global",
+    "hashed_password": "$2b$16$Gx2shWjNvOWh57Ej574BvOzEx0c86yfq1P4SpXD/ZnmjEVugUeZle",
+    "icon": "https://cdn-icons-png.flaticon.com/128/3989/3989630.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "V-hoboken",
+    "plaintext_password": "V;0global",
+    "hashed_password": "$2b$16$nx1XHkzLEpObwicefAV9puhRVahCckKuLXCykJa8Cl3U29DeIjyye",
+    "icon": "https://cdn-icons-png.flaticon.com/128/190/190411.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "W-hoboken",
+    "plaintext_password": "W;0global",
+    "hashed_password": "$2b$16$oGzmnfKrZAo3CwXHFzFEneDwnwObHsoafwULWADgPS1M93hKZQ2XG",
+    "icon": "https://img01.weeecdn.net/static/www/_next/static/media/weee.877aaea8.svg",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "X-hoboken",
+    "plaintext_password": "X;0global",
+    "hashed_password": "$2b$16$MI65p6Z5jVOQnsUVCnqjNOzTfurzmB5K2QU0hyjloC17upoEa3vFe",
+    "icon": "https://img.icons8.com/?size=1x&id=13903&format=png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "Y-hoboken",
+    "plaintext_password": "Y;0global",
+    "hashed_password": "$2b$16$zyuIMmpQjWTPAU2Csb/0m..Y77cF6tgSlg3hUv3Nv.LQqw6ABffjC",
+    "icon": "https://cdn-icons-png.flaticon.com/128/10527/10527318.png",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  },
+  {
+    "username": "Z-hoboken",
+    "plaintext_password": "Z;0global",
+    "hashed_password": "$2b$16$gPIHMc4NvwmifHWhdKLyt.qgGRrEPhfUuqqvLsQpFEDNeRq1QRk1m",
+    "icon": "https://static.wikia.nocookie.net/metalslug/images/e/e6/021445.gif",
+    "geocode": {
+      "latitude": 40.7439905,
+      "longitude": -74.0323626,
+      "country": "United States",
+      "countryCode": "US",
+      "city": "Hoboken"
+    }
+  }
+]

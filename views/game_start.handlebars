@@ -1,8 +1,10 @@
-<a href="/" id="homepageBtn" name="anchorBtn">Homepage</a>
+<div class="container" id = "game_start_buttons_container">
+    <a class="btn btn-dark btn-lg" href="/" role="button" id ="game_start_homepage_button">Homepage</a>
+</div>
 <div id="formContainer">
     <form  id="gamestartForm" action="/game/gamestart" method="POST">
     <input type="hidden" id="quizType" name="quizType" value="global">
-    <p id='quizTypeLabel' name='quizTypeLabel' >Quiz Type</p>
+    <p id='quizTypeLabel'>Quiz Type</p>
     <div class = "global_button">
             <a href="#" class="btn btn-link" id = "global_play_button" onclick="globalFunction()">
                 <img src="/static/images/global_text.png" alt="Play Button" class="global_button_image">

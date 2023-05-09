@@ -1,31 +1,17 @@
 import { ObjectId } from "mongodb";
 import xss from "xss";
+import NodeGeoCoder from "node-geocoder";
+import { geocoderConfig } from "./config/settings.js";
 
-function checkStr(str, strName) {
-  // if(strName.includes("updatePersonalInfoById"))
-  // {
-  //   console.log("#")
-  //   console.log(strName)
-  //   console.log(str)
-  //   console.log(typeof str)
-  // }
-  // console.log("#")
-  // console.log(strName)
-  // console.log(str)
-  // console.log(typeof str)
-  if (!str) throw `No string provided for ${strName}`;
-  if (typeof str !== "string") throw `${strName} is not a string`;
-  str = str.trim();
-  if (str.length === 0) throw `${strName} is empty`;
-  return xss(str); // trimmed
-}
-
+// ------------------ helpers with fixed variable name --------------------
 function checkUserName(username) {
   username = checkStr(username, "username"); // trimmed
-  if (username.length < 3) throw "Username must be at least 3 characters long";
-  if (username.match(/\s/g)) throw "Username cannot contain spaces";
+  if (username.length < 3)
+    throw `Username must be at least 3 characters long. Provided ${username}`;
+  if (username.match(/\s/g))
+    throw `Username cannot contain spaces. Provided ${username}`;
   if (username.match(/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Username cannot contain special characters except underscore and dash";
+    throw `Username cannot contain special characters except underscore and dash. Provided ${username}`;
 
   return xss(username); // trimmed
 }
@@ -33,31 +19,38 @@ function checkUserName(username) {
 function checkPassword(password) {
   password = checkStr(password, "password"); // trimmed
   if (password.length === 0) throw "Password cannot be empty";
-  if (password.length < 8) throw "Password must be at least 8 characters long";
-  if (password.match(/\s/g)) throw "Password cannot contain spaces";
+  if (password.length < 8)
+    throw `Password must be at least 8 characters long. `;
+  if (password.match(/\s/g)) throw `Password cannot contain spaces. `;
   if (!password.match(/[a-z]/g))
-    throw "Password must contain at least one lowercase letter";
+    throw `Password must contain at least one lowercase letter. `;
   if (!password.match(/[A-Z]/g))
-    throw "Password must contain at least one uppercase letter";
+    throw `Password must contain at least one uppercase letter. `;
   if (!password.match(/[0-9]/g))
-    throw "Password must contain at least one number";
+    throw `Password must contain at least one number. `;
   if (!password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g))
-    throw "Password must contain at least one special character";
+    throw `Password must contain at least one special character. `;
 
   return xss(password);
 }
 
+// ------------------ helpers with dynamic variable name --------------------
+function checkStr(str, strName) {
+  if (!str) throw `No string provided for ${strName}`;
+  if (typeof str !== "string") throw `${strName} is not a string`;
+  str = str.trim();
+  if (str.length === 0) throw `${strName} is empty`;
+  return xss(str); // trimmed
+}
+
 function checkId(id, idName) {
   id = checkStr(id, idName); // trimmed
-  if (!ObjectId.isValid(id)) throw `${idName} is not a valid ObjectId`;
+  if (!ObjectId.isValid(id))
+    throw `${idName} is not a valid ObjectId. Provided ${id}`;
   return xss(id); // trimmed
 }
 
 function checkUrl(url, urlName, minimumLength = 0) {
-  // if(urlName.includes("updatePersonalInfoById")){
-  //   console.log("check url 2")
-  //   console.log(url)
-  // }
   url = checkStr(url, urlName); // trimmed
   url = url.replace(/\s/, "%20");
 
@@ -66,18 +59,14 @@ function checkUrl(url, urlName, minimumLength = 0) {
   if (!supportedProtocols.some((p) => url.startsWith(p)))
     throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
       " "
-    )}, you provided ${url}`;
+    )}. Provided ${url}`;
   if (url.split("//")[1].length < minimumLength)
-    throw `${urlName} is too short`;
+    throw `${urlName} is too short. Provided ${url}`;
 
   return xss(url); // trimmed and replaced spaces with %20
 }
 
 function checkImgUrl(url, imgName) {
-  // if (imgName.includes("icon")){
-  //   console.log("check url 1")
-  //   console.log(url)
-  // }
   url = checkUrl(url, `${imgName} link`); // trimmed and replaced spaces with %20
 
   const supportedExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
@@ -86,9 +75,9 @@ function checkImgUrl(url, imgName) {
       (ext) => url.endsWith(ext) || url.endsWith(ext.toUpperCase())
     )
   ) {
-    throw `Provided ${url}. ${imgName} must have supported formats: ${supportedExtensions.join(
+    throw `${imgName} must have supported formats: ${supportedExtensions.join(
       ", "
-    )}`;
+    )}. Provided ${url}`;
   }
 
   return xss(url); // trimmed and replaced spaces with %20
@@ -101,7 +90,8 @@ function checkCountryCode(countryCode, countryCodeName) {
 
 function checkCity(city, cityName) {
   city = checkStr(city, cityName);
-  return xss(city.toLowerCase()); // trimmed and lowercased
+  city = toTitleCase(city);
+  return xss(city); // trimmed and lowercased
 }
 
 function checkZipCode(zipCode, zipCodeName) {
@@ -113,10 +103,10 @@ function checkZipCode(zipCode, zipCodeName) {
 }
 
 function checkGeoCode(geocode, geocodeName) {
-  if (!geocode){
+  if (!geocode) {
     throw "No geocode provided";
   }
-  if (typeof geocode !== "object"){ 
+  if (typeof geocode !== "object") {
     throw `${geocodeName} is not an object`;
   }
 
@@ -125,18 +115,17 @@ function checkGeoCode(geocode, geocodeName) {
   if (!latitude) throw `${geocodeName} is missing latitude`;
   if (!longitude) throw `${geocodeName} is missing longitude`;
   if (typeof latitude !== "number")
-    throw `${geocodeName} latitude is not a number`;
+    throw `${geocodeName} latitude is not a number. Provided ${latitude}`;
   if (typeof longitude !== "number")
-    throw `${geocodeName} longitude is not a number`;
+    throw `${geocodeName} longitude is not a number. Provided ${longitude}`;
   if (!country) throw `${geocodeName} country is missing`;
   if (!countryCode) throw `${geocodeName} country code is missing`;
   if (!city) throw `${geocode} city is missing`;
 
   geocode.country = xss(checkStr(geocode.country, `${geocodeName} country`));
-  geocode.countryCode = xss(checkCountryCode(
-    geocode.countryCode,
-    `${geocodeName} countryCode`
-  ));
+  geocode.countryCode = xss(
+    checkCountryCode(geocode.countryCode, `${geocodeName} countryCode`)
+  );
   geocode.city = xss(checkCity(geocode.city, `${geocodeName} city`));
 
   return geocode; // have country, countryCode, city trimmed
@@ -144,15 +133,18 @@ function checkGeoCode(geocode, geocodeName) {
 
 function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
   if (!num) throw `No ${numFor} provided`;
-  if (typeof num !== "number") throw `${numFor} is not a number`;
+  if (typeof num !== "number")
+    throw `${numFor} is not a number. Provided ${num}`;
   if (!inclusiveMin && !inclusiveMax) return num;
   if (inclusiveMin || inclusiveMin === 0) {
     inclusiveMin = checkNumber(num, `${numFor} min`);
-    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}`;
+    if (num < inclusiveMin)
+      throw `${numFor} must be at least ${inclusiveMin}. Provided ${num}`;
   }
   if (inclusiveMax || inclusiveMax === 0) {
     inclusiveMax = checkNumber(num, `${numFor} max`);
-    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}`;
+    if (num > inclusiveMax)
+      throw `${numFor} must be at most ${inclusiveMax}. Provided ${num}`;
   }
 
   return num; // nothing changed
@@ -163,16 +155,9 @@ function checkDifficulty(difficulty, difficultyName) {
     inclusiveMin: 1,
     inclusiveMax: 5,
   });
-  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer`;
+  if (difficulty % 1 !== 0)
+    throw `${difficultyName} must be an integer. Provided ${difficulty}`;
   return difficulty; // nothing changed, required to be an integer
-}
-
-function toTitleCase(str) {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.replace(word[0], word[0].toUpperCase()))
-    .join(" ");
 }
 
 function checkStrArr(arr, arrName) {
@@ -183,6 +168,16 @@ function checkStrArr(arr, arrName) {
   arr.map((e) => checkStr(e, `${arrName} element`));
 
   return arr; // trimmed
+}
+
+// ------------------ helpers that do not throw by itself --------------------
+function toTitleCase(str) {
+  if (!str || typeof str !== "string") return str;
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
 }
 
 function arrsEqual(arr1, arr2) {
@@ -250,11 +245,12 @@ function randomizeArray(array) {
 function extractKV(
   toObj,
   fromObj,
-  [...keys],
-  { ifFilterUndefined = false } = {}
+  [...keys] = [],
+  { filterUndefined = false, substituteUndefined = undefined } = {}
 ) {
   if (!fromObj || typeof fromObj !== "object" || Array.isArray(fromObj))
     return fromObj;
+  if (!keys || keys.length === 0) return fromObj;
   keys.map((key) => checkStr(key, "key to extract"));
 
   for (const key of keys) {
@@ -262,13 +258,13 @@ function extractKV(
     const subFromObj = fromObj[firstKey];
 
     if (restKeys.length === 0) {
-      if (!ifFilterUndefined || subFromObj !== undefined) {
-        toObj[firstKey] = subFromObj;
-      }
+      if(subFromObj===undefined && filterUndefined) continue;
+      if(subFromObj===undefined) toObj[firstKey] = substituteUndefined;
+      else toObj[firstKey] = subFromObj;
       continue;
     }
 
-    extractKV(toObj, subFromObj, restKeys, ifFilterUndefined);
+    extractKV(toObj, subFromObj, restKeys, filterUndefined);
   }
 
   return toObj;
@@ -276,8 +272,8 @@ function extractKV(
 
 function extractKV_objArr(
   fromObjArr,
-  [...keys],
-  { ifFilterUndefined = false } = {}
+  [...keys] = [],
+  { filterUndefined = false, substituteUndefined = undefined } = {}
 ) {
   if (
     !fromObjArr ||
@@ -286,42 +282,83 @@ function extractKV_objArr(
   )
     return fromObjArr;
 
+  if (!keys || keys.length === 0) return fromObjArr;
+
   const toObjArr = [];
 
   fromObjArr.map((fromObj) => {
     const toObj = {};
-    extractKV(toObj, fromObj, keys, ifFilterUndefined);
+    extractKV(toObj, fromObj, keys, { filterUndefined, substituteUndefined });
     toObjArr.push(toObj);
   });
 
   return toObjArr;
 }
-function distanceBetweenLongLat(latitude_x,longitude_x,latitude_y,longitude_y){
-  if(typeof longitude_y!=="number" || typeof latitude_y!=='number' || typeof longitude_x!=='number' || typeof latitude_x!=='number'){
-    throw 'Latitudes and longitudes must be numbers'
-  }else if(latitude_x==latitude_y && longitude_x==longitude_y){
+
+async function getGeoCode(
+  [...addresses] = [],
+  [...fields] = [],
+  { filterUndefined = false, substituteUndefined = "" } = {}
+) {
+  if (!addresses) {
+    return [];
+  }
+  const geocoder = NodeGeoCoder(geocoderConfig);
+  const results = [];
+  for (const address of addresses) {
+    const response = await geocoder.geocode(address);
+    const result = extractKV_objArr(response, fields, {
+      filterUndefined,
+      substituteUndefined,
+    });
+    results.push(result);
+  }
+  return results;
+}
+
+function distanceBetweenLongLat(
+  latitude_x,
+  longitude_x,
+  latitude_y,
+  longitude_y
+) {
+  if (
+    typeof longitude_y !== "number" ||
+    typeof latitude_y !== "number" ||
+    typeof longitude_x !== "number" ||
+    typeof latitude_x !== "number"
+  ) {
+    throw "Latitudes and longitudes must be numbers";
+  } else if (latitude_x == latitude_y && longitude_x == longitude_y) {
     return 0;
-  }else{
-    let radian1 = Math.PI * latitude_x/180,radian2 = Math.PI * latitude_y/180;
-		let radian_diff = Math.PI * (longitude_x -longitude_y)/180;
-		let distance = Math.sin(radian1) * Math.sin(radian2) + Math.cos(radian1) * Math.cos(radian2) * Math.cos(radian_diff);
-		if (distance > 1) {
-			distance = 1;
-		}
-		distance = Math.acos(distance);
-		distance *= 180/Math.PI;
-		distance *= (60 * 1.1515);
-		return distance;
+  } else {
+    let radian1 = (Math.PI * latitude_x) / 180,
+      radian2 = (Math.PI * latitude_y) / 180;
+    let radian_diff = (Math.PI * (longitude_x - longitude_y)) / 180;
+    let distance =
+      Math.sin(radian1) * Math.sin(radian2) +
+      Math.cos(radian1) * Math.cos(radian2) * Math.cos(radian_diff);
+    if (distance > 1) {
+      distance = 1;
+    }
+    distance = Math.acos(distance);
+    distance *= 180 / Math.PI;
+    distance *= 60 * 1.1515;
+    return distance;
   }
 }
-function isInVicinity(latitude_x,longitude_x,latitude_y,longitude_y,range){
-  if(distanceBetweenLongLat(latitude_x,longitude_x,latitude_y,longitude_y)<=range){
+
+function isInVicinity(latitude_x, longitude_x, latitude_y, longitude_y, range) {
+  if (
+    distanceBetweenLongLat(latitude_x, longitude_x, latitude_y, longitude_y) <=
+    range
+  ) {
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
+
 export {
   toTitleCase,
   checkStr,
@@ -340,6 +377,7 @@ export {
   objsEqual,
   extractKV,
   extractKV_objArr,
+  getGeoCode,
   randomizeArray,
   checkPassword,
   checkUserName,

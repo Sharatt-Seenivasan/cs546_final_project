@@ -1,55 +1,65 @@
 <div class="header">
-            <h1>Score : <span id="score">{{score}}</span></h1>
-            <h1> Question  <span id="questionNumber">{{index}}</span></h1>
+    <h1>Score : <span id="score">{{score}}</span></h1>
+    <h1> Question <span id="questionNumber">{{index}}</span></h1>
 </div>
-    <form  id="questionform" name="questionform" action="/game/gameplay" method="POST">
+<form id="questionform" name="questionform" action="/game/gameplay" method="POST">
     <div id="tinmerContainer">
-        <label for="timer" id="timerLabel">Time Remaining:</label><input type="text"  id="timer" name="timer" value={{time}} >
+        <label for="timer" id="timerLabel">Time Remaining:</label><input type="text" id="timer" name="timer"
+            value={{time}}>
     </div>
-        <div id="imageContainer">
+    <div id="imageContainer">
         <label for="question">
             <img id="question" name="question" src={{question.image}} alt="Bird image">
         </label>
-        </div>
-        <div id="options-container">
-                <input type="radio" id="optionA" name="options" value=0>
-                <label for="optionA">{{question.options.[0]}}</label>
-                <input type="radio" id="optionB" name="options" value=1>
-                <label for="optionB">{{question.options.[1]}}</label>
-                <input type="radio" id="optionC" name="options" value=2>
-                <label for="optionC">{{question.options.[2]}}</label>
-                <input type="radio" id="optionD" name="options" value=3>
-                <label for="optionD">{{question.options.[3]}}</label>
-        </div>
-        <div id="btnContainer">
+    </div>
+    <div id="options-container">
+        <input type="radio" id="optionA" name="options" value=0>
+        <label for="optionA">{{question.options.[0]}}</label>
+        <input type="radio" id="optionB" name="options" value=1>
+        <label for="optionB">{{question.options.[1]}}</label>
+        <input type="radio" id="optionC" name="options" value=2>
+        <label for="optionC">{{question.options.[2]}}</label>
+        <input type="radio" id="optionD" name="options" value=3>
+        <label for="optionD">{{question.options.[3]}}</label>
+    </div>
+    <div id="btnContainer">
         <button id="next" name="next">Next</button>
-        </div>
-    </form>
+        <button type="submit" name="quit" id="quit">Quit</button>
+    </div>
+</form>
 <script>
-    var secs={{time}};
-    var endDate = new Date(new Date().getTime()+secs*1000);
-    var timer = setInterval(function() {
+    const quit_button = document.getElementById("quit");
+    var secs = {{ time }};
+    var endDate = new Date(new Date().getTime() + secs * 1000);
+    var timer = setInterval(function () {
 
-    let now = new Date().getTime();
-    let t = endDate - now;
-    
-    if (t >= 0) {
-    
-        let days = Math.floor(t / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let mins = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-        let secs = (t/ 1000);
-    
-        document.getElementById("timer").value = secs;
-    
-    } else {
+        let now = new Date().getTime();
+        let t = endDate - now;
 
-        document.getElementById("timer").value = 0;
-        document.questionform.submit();
-    
-    }
-    
-}, 1000);
+        quit_button.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            document.getElementById("timer").value = 0;
+            document.questionform.submit();
+        })
+
+        if (t >= 0) {
+
+            let days = Math.floor(t / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let mins = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+            let secs = (t / 1000);
+
+            document.getElementById("timer").value = secs;
+
+        } else {
+
+            document.getElementById("timer").value = 0;
+            document.questionform.submit();
+
+        }
+
+    }, 1000);
+
 
 </script>
-
+<script src="">

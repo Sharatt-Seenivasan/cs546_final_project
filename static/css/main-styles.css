@@ -9,11 +9,13 @@ body {
 }
 
 .error {
-    color: red;
+    font-size: 20px;
+    color: darkred;
 }
 
 #error {
-    color: red;
+    font-size: 20px;
+    color: darkred;
 }
 
 
