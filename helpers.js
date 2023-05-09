@@ -1,5 +1,7 @@
 import { ObjectId } from "mongodb";
 import xss from "xss";
+import NodeGeoCoder from "node-geocoder";
+import { geocoderConfig } from "./config/settings.js";
 
 // ------------------ helpers with fixed variable name --------------------
 function checkUserName(username) {
@@ -104,7 +106,7 @@ function checkGeoCode(geocode, geocodeName) {
   if (!geocode) {
     throw "No geocode provided";
   }
-  if (typeof geocode !== "object"){ 
+  if (typeof geocode !== "object") {
     throw `${geocodeName} is not an object`;
   }
 
@@ -243,11 +245,12 @@ function randomizeArray(array) {
 function extractKV(
   toObj,
   fromObj,
-  [...keys],
-  { ifFilterUndefined = false } = {}
+  [...keys] = [],
+  { filterUndefined = false, substituteUndefined = undefined } = {}
 ) {
   if (!fromObj || typeof fromObj !== "object" || Array.isArray(fromObj))
     return fromObj;
+  if (!keys || keys.length === 0) return fromObj;
   keys.map((key) => checkStr(key, "key to extract"));
 
   for (const key of keys) {
@@ -255,13 +258,13 @@ function extractKV(
     const subFromObj = fromObj[firstKey];
 
     if (restKeys.length === 0) {
-      if (!ifFilterUndefined || subFromObj !== undefined) {
-        toObj[firstKey] = subFromObj;
-      }
+      if(subFromObj===undefined && filterUndefined) continue;
+      if(subFromObj===undefined) toObj[firstKey] = substituteUndefined;
+      else toObj[firstKey] = subFromObj;
       continue;
     }
 
-    extractKV(toObj, subFromObj, restKeys, ifFilterUndefined);
+    extractKV(toObj, subFromObj, restKeys, filterUndefined);
   }
 
   return toObj;
@@ -269,8 +272,8 @@ function extractKV(
 
 function extractKV_objArr(
   fromObjArr,
-  [...keys],
-  { ifFilterUndefined = false } = {}
+  [...keys] = [],
+  { filterUndefined = false, substituteUndefined = undefined } = {}
 ) {
   if (
     !fromObjArr ||
@@ -279,42 +282,83 @@ function extractKV_objArr(
   )
     return fromObjArr;
 
+  if (!keys || keys.length === 0) return fromObjArr;
+
   const toObjArr = [];
 
   fromObjArr.map((fromObj) => {
     const toObj = {};
-    extractKV(toObj, fromObj, keys, ifFilterUndefined);
+    extractKV(toObj, fromObj, keys, { filterUndefined, substituteUndefined });
     toObjArr.push(toObj);
   });
 
   return toObjArr;
 }
-function distanceBetweenLongLat(latitude_x,longitude_x,latitude_y,longitude_y){
-  if(typeof longitude_y!=="number" || typeof latitude_y!=='number' || typeof longitude_x!=='number' || typeof latitude_x!=='number'){
-    throw 'Latitudes and longitudes must be numbers'
-  }else if(latitude_x==latitude_y && longitude_x==longitude_y){
+
+async function getGeoCode(
+  [...addresses] = [],
+  [...fields] = [],
+  { filterUndefined = false, substituteUndefined = "" } = {}
+) {
+  if (!addresses) {
+    return [];
+  }
+  const geocoder = NodeGeoCoder(geocoderConfig);
+  const results = [];
+  for (const address of addresses) {
+    const response = await geocoder.geocode(address);
+    const result = extractKV_objArr(response, fields, {
+      filterUndefined,
+      substituteUndefined,
+    });
+    results.push(result);
+  }
+  return results;
+}
+
+function distanceBetweenLongLat(
+  latitude_x,
+  longitude_x,
+  latitude_y,
+  longitude_y
+) {
+  if (
+    typeof longitude_y !== "number" ||
+    typeof latitude_y !== "number" ||
+    typeof longitude_x !== "number" ||
+    typeof latitude_x !== "number"
+  ) {
+    throw "Latitudes and longitudes must be numbers";
+  } else if (latitude_x == latitude_y && longitude_x == longitude_y) {
     return 0;
-  }else{
-    let radian1 = Math.PI * latitude_x/180,radian2 = Math.PI * latitude_y/180;
-		let radian_diff = Math.PI * (longitude_x -longitude_y)/180;
-		let distance = Math.sin(radian1) * Math.sin(radian2) + Math.cos(radian1) * Math.cos(radian2) * Math.cos(radian_diff);
-		if (distance > 1) {
-			distance = 1;
-		}
-		distance = Math.acos(distance);
-		distance *= 180/Math.PI;
-		distance *= (60 * 1.1515);
-		return distance;
+  } else {
+    let radian1 = (Math.PI * latitude_x) / 180,
+      radian2 = (Math.PI * latitude_y) / 180;
+    let radian_diff = (Math.PI * (longitude_x - longitude_y)) / 180;
+    let distance =
+      Math.sin(radian1) * Math.sin(radian2) +
+      Math.cos(radian1) * Math.cos(radian2) * Math.cos(radian_diff);
+    if (distance > 1) {
+      distance = 1;
+    }
+    distance = Math.acos(distance);
+    distance *= 180 / Math.PI;
+    distance *= 60 * 1.1515;
+    return distance;
   }
 }
-function isInVicinity(latitude_x,longitude_x,latitude_y,longitude_y,range){
-  if(distanceBetweenLongLat(latitude_x,longitude_x,latitude_y,longitude_y)<=range){
+
+function isInVicinity(latitude_x, longitude_x, latitude_y, longitude_y, range) {
+  if (
+    distanceBetweenLongLat(latitude_x, longitude_x, latitude_y, longitude_y) <=
+    range
+  ) {
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
+
 export {
   toTitleCase,
   checkStr,
@@ -333,6 +377,7 @@ export {
   objsEqual,
   extractKV,
   extractKV_objArr,
+  getGeoCode,
   randomizeArray,
   checkPassword,
   checkUserName,

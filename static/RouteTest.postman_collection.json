@@ -1,46 +1,400 @@
 {
-	"info": {
-		"_postman_id": "29251ada-c644-49bf-99a2-22b725a1b87a",
-		"name": "RouteTest",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "http://localhost:3000/",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('status code is 200', () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"    pm.response.to.have.status(400);\r",
-							"});\r",
-							"pm.test('status code is 200', () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"    pm.response.to.have.status(400);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "29251ada-c644-49bf-99a2-22b725a1b87a",
+    "name": "RouteTest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "/",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": [""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/signup",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/signup",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "signup"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": { "disableBodyPruning": true },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": { "mode": "urlencoded", "urlencoded": [] },
+        "url": {
+          "raw": "http://localhost:3000/user/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/profile",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/profile",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "profile"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/post",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "post"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/logout",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "logout"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/game/gamestart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/game/gamestart",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["game", "gamestart"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/game/gameplay",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/game/gameplay",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["game", "gameplay"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/game/gameresult",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/game/gameresult",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["game", "gameresult"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/leaderboard/local",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/leaderboard/local",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["leaderboard", "local"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/leaderboard/global",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/leaderboard/global",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["leaderboard", "global"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "Alice", "type": "default" },
+            { "key": "password", "value": "A;0global", "type": "default" }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/user/login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code is 200', () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "Alice", "type": "default" },
+            { "key": "password", "value": "A;0global", "type": "default" }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "login"]
+        }
+      },
+      "response": []
+    }
+  ]
 }
