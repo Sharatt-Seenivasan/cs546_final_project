@@ -42,7 +42,7 @@ function checkUrl(url, urlName, minimumLength = 0) {
     const supportedProtocols = ["http://", "https://"];
   
     if (!supportedProtocols.some((p) => url.startsWith(p)))
-      throw ` must provide supported protocols for ${urlName}: ${supportedProtocols.join(
+      throw ` Must provide supported protocols for ${urlName}: ${supportedProtocols.join(
         " "
       )}, you provided ${url}`;
     if (url.split("//")[1].length < minimumLength)
@@ -178,7 +178,7 @@ if(profileForm){
             checkZipCode(zipcode.value,"User Zipcode")
           }
           catch(e){
-            error.innerHTML= e;
+            error.innerHTML= "Please enter a valid zipcode.";
             error.hidden= false;
             event.preventDefault();
             return false; 
