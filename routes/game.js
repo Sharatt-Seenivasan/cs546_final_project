@@ -26,6 +26,11 @@ router.
                 if(quizType=='local'){
                     try{
                         let user=await getUserById(req.session.user['_id']);
+                        if(Object.keys(user.geocode).length===0) {
+                            let flag =true;
+                            return res.status(400).render('game_start',{title: 'Quiz',error: "You have not provided any location data!", flag});
+                        }
+
                         req.session.questions = await getQuestions4User(req.session.user['_id'],{
                             numberOfOptions : 4,
                             numberOfQuestions : 50,
@@ -165,7 +170,7 @@ router.
           delete req.session['timer'];
           delete req.session['point_inc'];
           delete req.session['point_dec'];
-          
+
           res.render('game_end',{title: 'Quiz Results',score, high_score: currentHighScore.toString(), lifetime_score: totalLScore.toString()});
       }
       else{
