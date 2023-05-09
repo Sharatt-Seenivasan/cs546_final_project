@@ -101,7 +101,7 @@ if(profileForm){
         error.innerHTML = '';
         error.hidden = true;
 
-        if(!username.value && !passwordInput.value && !confirmPasswordInput.value && !icon.value && !country.value && !city.value && !zipcode.value){
+        if(!username.value && !passwordInput.value && !confirmPasswordInput.value && !icon.value && country.value === "invalid" && !city.value && !zipcode.value){
             error.innerHTML= "All of the fields are empty!";
             error.hidden= false;
             event.preventDefault();
