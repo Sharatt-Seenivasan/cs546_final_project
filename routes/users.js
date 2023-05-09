@@ -649,7 +649,7 @@ router
         bird_names = checkStrArr(bird_names, "Bird Names");
         bird_img = checkImgUrl(bird_img, "Bird Image");
 
-        if(hasBirdWithImageUrl(bird_img)){
+        if(await hasBirdWithImageUrl(bird_img)){
           throw "A bird with this image url already exists in the database!"
         }
 

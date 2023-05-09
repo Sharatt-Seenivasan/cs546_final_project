@@ -106,8 +106,8 @@ function checkCity(city, cityName) {
 
 function checkZipCode(zipCode, zipCodeName) {
   zipCode = checkStr(zipCode, zipCodeName);
-  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
-  if (zipCode.match(/\d{5}/g)[0] !== zipCode)
+  //if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long`;
+  if (zipCode.match(/^\d+$/g)[0] !== zipCode)
     throw `${zipCodeName} must contain only digits`;
   return xss(zipCode); // trimmed
 }
@@ -116,7 +116,9 @@ function checkGeoCode(geocode, geocodeName) {
   if (!geocode){
     throw "No geocode provided";
   }
-  if (typeof geocode !== "object") throw `${geocodeName} is not an object`;
+  if (typeof geocode !== "object"){ 
+    throw `${geocodeName} is not an object`;
+  }
 
   const { latitude, longitude, country, countryCode, city } = geocode;
 
@@ -294,7 +296,32 @@ function extractKV_objArr(
 
   return toObjArr;
 }
-
+function distanceBetweenLongLat(latitude_x,longitude_x,latitude_y,longitude_y){
+  if(typeof longitude_y!=="number" || typeof latitude_y!=='number' || typeof longitude_x!=='number' || typeof latitude_x!=='number'){
+    throw 'Latitudes and longitudes must be numbers'
+  }else if(latitude_x==latitude_y && longitude_x==longitude_y){
+    return 0;
+  }else{
+    let radian1 = Math.PI * latitude_x/180,radian2 = Math.PI * latitude_y/180;
+		let radian_diff = Math.PI * (longitude_x -longitude_y)/180;
+		let distance = Math.sin(radian1) * Math.sin(radian2) + Math.cos(radian1) * Math.cos(radian2) * Math.cos(radian_diff);
+		if (distance > 1) {
+			distance = 1;
+		}
+		distance = Math.acos(distance);
+		distance *= 180/Math.PI;
+		distance *= (60 * 1.1515);
+		return distance;
+  }
+}
+function isInVicinity(latitude_x,longitude_x,latitude_y,longitude_y,range){
+  if(distanceBetweenLongLat(latitude_x,longitude_x,latitude_y,longitude_y)<=range){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 export {
   toTitleCase,
   checkStr,
@@ -316,5 +343,7 @@ export {
   randomizeArray,
   checkPassword,
   checkUserName,
-  checkZipCode
+  checkZipCode,
+  distanceBetweenLongLat,
+  isInVicinity,
 };
