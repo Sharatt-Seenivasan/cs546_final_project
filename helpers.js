@@ -1,14 +1,7 @@
 import { ObjectId } from "mongodb";
 import xss from "xss";
 
-function checkStr(str, strName) {
-  if (!str) throw `No string provided for ${strName}`;
-  if (typeof str !== "string") throw `${strName} is not a string`;
-  str = str.trim();
-  if (str.length === 0) throw `${strName} is empty`;
-  return xss(str); // trimmed
-}
-
+// ------------------ helpers with fixed variable name --------------------
 function checkUserName(username) {
   username = checkStr(username, "username"); // trimmed
   if (username.length < 3)
@@ -37,6 +30,15 @@ function checkPassword(password) {
     throw `Password must contain at least one special character. `;
 
   return xss(password);
+}
+
+// ------------------ helpers with dynamic variable name --------------------
+function checkStr(str, strName) {
+  if (!str) throw `No string provided for ${strName}`;
+  if (typeof str !== "string") throw `${strName} is not a string`;
+  str = str.trim();
+  if (str.length === 0) throw `${strName} is empty`;
+  return xss(str); // trimmed
 }
 
 function checkId(id, idName) {
@@ -86,12 +88,14 @@ function checkCountryCode(countryCode, countryCodeName) {
 
 function checkCity(city, cityName) {
   city = checkStr(city, cityName);
-  return xss(city.toLowerCase()); // trimmed and lowercased
+  city = toTitleCase(city);
+  return xss(city); // trimmed and lowercased
 }
 
 function checkZipCode(zipCode, zipCodeName) {
   zipCode = checkStr(zipCode, zipCodeName);
-  if (zipCode.length !== 5) throw `${zipCodeName} must be 5 digits long. Provided ${zipCode}`;
+  if (zipCode.length !== 5)
+    throw `${zipCodeName} must be 5 digits long. Provided ${zipCode}`;
   if (zipCode.match(/\d{5}/g)[0] !== zipCode)
     throw `${zipCodeName} must contain only digits. Provided ${zipCode}`;
   return xss(zipCode); // trimmed
@@ -126,15 +130,18 @@ function checkGeoCode(geocode, geocodeName) {
 
 function checkNumber(num, numFor, { inclusiveMin, inclusiveMax } = {}) {
   if (!num) throw `No ${numFor} provided`;
-  if (typeof num !== "number") throw `${numFor} is not a number. Provided ${num}`;
+  if (typeof num !== "number")
+    throw `${numFor} is not a number. Provided ${num}`;
   if (!inclusiveMin && !inclusiveMax) return num;
   if (inclusiveMin || inclusiveMin === 0) {
     inclusiveMin = checkNumber(num, `${numFor} min`);
-    if (num < inclusiveMin) throw `${numFor} must be at least ${inclusiveMin}. Provided ${num}`;
+    if (num < inclusiveMin)
+      throw `${numFor} must be at least ${inclusiveMin}. Provided ${num}`;
   }
   if (inclusiveMax || inclusiveMax === 0) {
     inclusiveMax = checkNumber(num, `${numFor} max`);
-    if (num > inclusiveMax) throw `${numFor} must be at most ${inclusiveMax}. Provided ${num}`;
+    if (num > inclusiveMax)
+      throw `${numFor} must be at most ${inclusiveMax}. Provided ${num}`;
   }
 
   return num; // nothing changed
@@ -145,16 +152,9 @@ function checkDifficulty(difficulty, difficultyName) {
     inclusiveMin: 1,
     inclusiveMax: 5,
   });
-  if (difficulty % 1 !== 0) throw `${difficultyName} must be an integer. Provided ${difficulty}`;
+  if (difficulty % 1 !== 0)
+    throw `${difficultyName} must be an integer. Provided ${difficulty}`;
   return difficulty; // nothing changed, required to be an integer
-}
-
-function toTitleCase(str) {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.replace(word[0], word[0].toUpperCase()))
-    .join(" ");
 }
 
 function checkStrArr(arr, arrName) {
@@ -165,6 +165,16 @@ function checkStrArr(arr, arrName) {
   arr.map((e) => checkStr(e, `${arrName} element`));
 
   return arr; // trimmed
+}
+
+// ------------------ helpers that do not throw by itself --------------------
+function toTitleCase(str) {
+  if (!str || typeof str !== "string") return str;
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
 }
 
 function arrsEqual(arr1, arr2) {
@@ -302,3 +312,4 @@ export {
   checkUserName,
   checkZipCode,
 };
+

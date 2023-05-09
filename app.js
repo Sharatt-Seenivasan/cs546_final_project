@@ -5,7 +5,7 @@ import session from "express-session";
 import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { saveLastPage,loginRedirect,logoutRedirect,registerRedirect,gameResultRedirect,gameplayRedirect } from "./middleware.js";
+import { saveLastPage,loginRedirect,logoutRedirect,registerRedirect,gameResultRedirect,gameplayRedirect ,logging} from "./middleware.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -44,10 +44,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /*redirect middleware start*/
+app.use(logging);
 app.use(saveLastPage)
-app.use('/users/login',loginRedirect)
-app.use('/users/signup',registerRedirect)
-app.use('/users/logout',logoutRedirect)
+app.use('/user/login',loginRedirect)
+app.use('/user/signup',registerRedirect)
+app.use('/user/logout',logoutRedirect)
 app.use('/game/gameplay',gameplayRedirect)
 app.use('/game/gameresult',gameResultRedirect)
 

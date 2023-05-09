@@ -9,20 +9,28 @@ const router = Router();
 router
   .route("/gamestart")
   .get(async (req, res) => {
-    res.render("game_start", { title: "Quiz" });
+    res. render("game_start", { title: "Quiz" });
   })
   .post(async (req, res) => {
-    if (req.session.user) {
-      req.session.questions = await getQuestions4User(req.session.user["_id"], {
-        numberOfOptions: 4,
-        numberOfQuestions: 50,
-      });
-    } else {
-      req.session.questions = await getQuestions4Guest({
-        numberOfOptions: 4,
-        numberOfQuestions: 50,
-      });
+    try {
+      if (req.session.user) {
+        req.session.questions = await getQuestions4User(
+          req.session.user["_id"],
+          {
+            numberOfOptions: 4,
+            numberOfQuestions: 50,
+          }
+        );
+      } else {
+        req.session.questions = await getQuestions4Guest({
+          numberOfOptions: 4,
+          numberOfQuestions: 50,
+        });
+      }
+    } catch (error) {
+      return res.status(500).render("game_start", { title: "Quiz", error: error });
     }
+
     req.session.index = 0;
     req.session.score = 0;
     req.session.timer = 60;

@@ -68,12 +68,12 @@ router
   .route("/signup")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/users/user/profile");
+    if (userId) return res.redirect("/user/profile");
     return res.render("signup", { title: "Sign Up" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/users/user/profile");
+    if (userId) return res.redirect("/user/profile");
 
     let { username, password, confirmPassword } = req.body;
     try {
@@ -128,12 +128,12 @@ router
   .route("/login")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/users/user/profile");
+    if (userId) return res.redirect("/user/profile");
     return res.render("login", { title: "Login" });
   })
   .post(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (userId) return res.redirect("/users/user/profile");
+    if (userId) return res.redirect("/user/profile");
 
     let { username, password } = req.body;
     try {
@@ -164,18 +164,19 @@ router
         error: "Either username or password is incorrect!",
       });
     }
-    if (!(await bcrypt.compare(password, user.hashed_password))) {
+    const match = await bcrypt.compare(password, user.hashed_password);
+    if (!match) {
       return res.status(400).render("login", {
         title: "Login",
         error: "Either username or password is incorrect!",
       });
     }
 
-    req.session.user = { _id: user._id, username: user.username };
-    return res.redirect("/users/user/profile");
+    req.session.user = { _id: user._id, username: user.username, icon: user.icon, geocode: user.geocode };
+    return res.redirect("/user/profile");
   });
 // if(!req.session.questions){
-//   res.redirect('/users/gamestart')
+//   res.redirect('/user/gamestart')
 // }else{
 //     if(req.session.user){
 //         let questions = req.session.questions;
@@ -251,10 +252,10 @@ router
 // });
 
 router
-  .route("/user/profile")
+  .route("/profile")
   .get(async (req, res) => {
     const hasUserId = req.session.user && req.session.user._id;
-    if (!hasUserId) return res.redirect("/users/login");
+    if (!hasUserId) return res.redirect("/user/login");
 
     let user;
     try {
@@ -385,7 +386,7 @@ router
   .post(async (req, res) => {
     // reserved for AJAX
     const hasUserId = req.session.user && req.session.user._id;
-    if (!hasUserId) return res.redirect("/users/login");
+    if (!hasUserId) return res.redirect("/user/login");
 
     let user;
     try {
@@ -417,23 +418,21 @@ router
           throw "Username is the same as before!";
         fields2Update["username"] = newUserName;
       } catch (error) {
-        return res
-          .status(400)
-          .render("user_profile", {
-            title: "User Profile",
-            username: user.username,
-            icon: user.icon,
-            country: user.geocode.country,
-            countryCode: user.geocode.countryCode,
-            city: user.geocode.city,
-            zipCode: user.geocode.zipcode,
-            lifetime_score: user.lifetime_score,
-            high_score: user.high_score,
-            num_submissions: user.submission.length,
-            submission: user.submission,
-            last_questions: user.last_questions,
-            errors: error,
-          });
+        return res.status(400).render("user_profile", {
+          title: "User Profile",
+          username: user.username,
+          icon: user.icon,
+          country: user.geocode.country,
+          countryCode: user.geocode.countryCode,
+          city: user.geocode.city,
+          zipCode: user.geocode.zipcode,
+          lifetime_score: user.lifetime_score,
+          high_score: user.high_score,
+          num_submissions: user.submission.length,
+          submission: user.submission,
+          last_questions: user.last_questions,
+          errors: error,
+        });
         //errors.push(error);
       }
     }
@@ -447,23 +446,21 @@ router
           throw "Password is the same as before!";
         fields2Update["hashed_password"] = newPassword;
       } catch (error) {
-        return res
-          .status(400)
-          .render("user_profile", {
-            title: "User Profile",
-            username: user.username,
-            icon: user.icon,
-            country: user.geocode.country,
-            countryCode: user.geocode.countryCode,
-            city: user.geocode.city,
-            zipCode: user.geocode.zipcode,
-            lifetime_score: user.lifetime_score,
-            high_score: user.high_score,
-            num_submissions: user.submission.length,
-            submission: user.submission,
-            last_questions: user.last_questions,
-            errors: error,
-          });
+        return res.status(400).render("user_profile", {
+          title: "User Profile",
+          username: user.username,
+          icon: user.icon,
+          country: user.geocode.country,
+          countryCode: user.geocode.countryCode,
+          city: user.geocode.city,
+          zipCode: user.geocode.zipcode,
+          lifetime_score: user.lifetime_score,
+          high_score: user.high_score,
+          num_submissions: user.submission.length,
+          submission: user.submission,
+          last_questions: user.last_questions,
+          errors: error,
+        });
         //errors.push(error);
       }
     }
@@ -474,23 +471,21 @@ router
 
         fields2Update["icon"] = newIcon;
       } catch (error) {
-        return res
-          .status(400)
-          .render("user_profile", {
-            title: "User Profile",
-            username: user.username,
-            icon: user.icon,
-            country: user.geocode.country,
-            countryCode: user.geocode.countryCode,
-            city: user.geocode.city,
-            zipCode: user.geocode.zipcode,
-            lifetime_score: user.lifetime_score,
-            high_score: user.high_score,
-            num_submissions: user.submission.length,
-            submission: user.submission,
-            last_questions: user.last_questions,
-            errors: error,
-          });
+        return res.status(400).render("user_profile", {
+          title: "User Profile",
+          username: user.username,
+          icon: user.icon,
+          country: user.geocode.country,
+          countryCode: user.geocode.countryCode,
+          city: user.geocode.city,
+          zipCode: user.geocode.zipcode,
+          lifetime_score: user.lifetime_score,
+          high_score: user.high_score,
+          num_submissions: user.submission.length,
+          submission: user.submission,
+          last_questions: user.last_questions,
+          errors: error,
+        });
         //errors.push(error);
       }
     }
@@ -508,23 +503,21 @@ router
           throw "country code, city and zip code are the same as before!";
         }
       } catch (error) {
-        return res
-          .status(400)
-          .render("user_profile", {
-            title: "User Profile",
-            username: user.username,
-            icon: user.icon,
-            country: user.geocode.country,
-            countryCode: user.geocode.countryCode,
-            city: user.geocode.city,
-            zipCode: user.geocode.zipcode,
-            lifetime_score: user.lifetime_score,
-            high_score: user.high_score,
-            num_submissions: user.submission.length,
-            submission: user.submission,
-            last_questions: user.last_questions,
-            errors: error,
-          });
+        return res.status(400).render("user_profile", {
+          title: "User Profile",
+          username: user.username,
+          icon: user.icon,
+          country: user.geocode.country,
+          countryCode: user.geocode.countryCode,
+          city: user.geocode.city,
+          zipCode: user.geocode.zipcode,
+          lifetime_score: user.lifetime_score,
+          high_score: user.high_score,
+          num_submissions: user.submission.length,
+          submission: user.submission,
+          last_questions: user.last_questions,
+          errors: error,
+        });
         //errors.push(error);
       }
     }
@@ -633,14 +626,14 @@ router
         .render("error", { error: `Internal Server Error: ${error}` });
     }
 
-    return res.redirect("/users/user/profile");
+    return res.redirect("/user/profile");
   });
 
 router
-  .route("/user/post")
+  .route("/post")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/users/login");
+    if (!userId) return res.redirect("/user/login");
 
     let user;
     try {
@@ -696,12 +689,10 @@ router
         "Bird Difficulty"
       );
     } catch (error) {
-      return res
-        .status(400)
-        .render("bird_submission", {
-          title: "Bird Image Submission Form",
-          errors: [error],
-        });
+      return res.status(400).render("bird_submission", {
+        title: "Bird Image Submission Form",
+        errors: [error],
+      });
     }
 
     let geocodes;
@@ -730,21 +721,17 @@ router
       //return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
       //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
-      return res
-        .status(400)
-        .render("bird_submission", {
-          title: "Bird Image Submission Form",
-          errors: ["Location data is invalid!"],
-        });
+      return res.status(400).render("bird_submission", {
+        title: "Bird Image Submission Form",
+        errors: ["Location data is invalid!"],
+      });
     }
 
     if (!geocodes) {
-      return res
-        .status(400)
-        .render("bird_submission", {
-          title: "Bird Image Submission Form",
-          errors: ["No location found based on given country and city"],
-        });
+      return res.status(400).render("bird_submission", {
+        title: "Bird Image Submission Form",
+        errors: ["No location found based on given country and city"],
+      });
     }
     if (geocodes.length > 1) {
       return res.status(400).render("bird_submission", {
@@ -765,12 +752,10 @@ router
         difficulty: bird_difficulty,
       });
     } catch (error) {
-      return res
-        .status(500)
-        .render("error", {
-          title: "Error",
-          error: `Internal Server Error: ${error}`,
-        });
+      return res.status(500).render("error", {
+        title: "Error",
+        error: `Internal Server Error: ${error}`,
+      });
       //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
     }
@@ -786,7 +771,7 @@ router
     //   //return res.status(500).send("Internal Server Error:", error);
     // }
 
-    return res.redirect("/users/user/profile");
+    return res.redirect("/user/profile");
 
     // try {
     //   geocodes = checkGeoCode(geocode, "Bird Geocode");
