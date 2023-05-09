@@ -41,9 +41,7 @@ router
     try {
       user = await getUserById(userId);
     } catch (error) {
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     return res.render("user", {
@@ -89,9 +87,7 @@ router
     try {
       password = await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     let user;
@@ -105,12 +101,10 @@ router
         });
       }
     } catch (error) {
-      // if(!error.includes("not found")) {
-      //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
-      // }
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+        // if(!error.includes("not found")) {
+        //   return res.status(500).render('error',{error: `Internal Server Error: ${error}`})
+        // }
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     try {
@@ -118,9 +112,7 @@ router
       req.session.user = { _id: newUser._id, username: newUser.username };
       return res.redirect("/login");
     } catch (error) {
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
   });
 
@@ -152,10 +144,9 @@ router
       //     error: "Could not find the username",
       //   })
       // }
-    } catch (error) {
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+    } 
+    catch (error) {
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     if (Object.keys(user).length === 0) {
@@ -263,9 +254,7 @@ router
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: error})
       //return res.status(500).send("Internal Server Error:", error);
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     return res.render("user_profile", {
@@ -394,9 +383,7 @@ router
     } catch (error) {
       //return res.status(500).render("user_profile",{title: "User Profile", errors: [error]})
       //return res.status(500).send("Internal Server Error:", error);
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     let {
@@ -621,58 +608,54 @@ router
         fields2Update
       );
     } catch (error) {
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
+      return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
 
     return res.redirect("/user/profile");
   });
-
-router
-  .route("/post")
-  .get(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/user/login");
-
-    let user;
-    try {
-      user = await getUserById(userId);
-    } catch (error) {
-      //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
-      return res
-        .status(500)
-        .render("error", { error: `Internal Server Error: ${error}` });
-      //res.status(500).send("Internal Server Error");
-    }
-
-    return res.render("bird_submission", {
-      title: "Bird Image Submission Form",
-      user: user,
-    });
-  })
-  .post(async (req, res) => {
-    const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/login");
-
-    let {
-      bird_names,
-      bird_img,
-      bird_countryCode,
-      bird_city,
-      bird_zipCode,
-      bird_difficulty,
-    } = req.body;
-
-    try {
-      bird_names = checkStr(bird_names, "Bird Names");
-      bird_names = bird_names.split(",");
-      bird_names = checkStrArr(bird_names, "Bird Names");
-      bird_img = checkImgUrl(bird_img, "Bird Image");
-
-      if (hasBirdWithImageUrl(bird_img)) {
-        throw "A bird with this image url already exists in the database!";
+    
+  router
+    .route("/user/post")
+    .get(async (req, res) => {
+      const userId = req.session.user && req.session.user._id;
+      if (!userId) return res.redirect("/users/login");
+  
+      let user;
+      try {
+        user = await getUserById(userId);
+      } catch (error) {
+        //return res.status(500).render("bird_submission",{title: "Bird Image Submission Form", errors: [error]})
+        return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
+        //res.status(500).send("Internal Server Error");
       }
+  
+      return res.render("bird_submission", {
+        title: "Bird Image Submission Form",
+        user: user,
+      });
+    })
+    .post(async (req, res) => {
+      const userId = req.session.user && req.session.user._id;
+      if (!userId) return res.redirect("/login");
+  
+      let {
+        bird_names,
+        bird_img,
+        bird_countryCode,
+        bird_city,
+        bird_zipCode,
+        bird_difficulty,
+      } = req.body;
+      
+      try {
+        bird_names = checkStr(bird_names, "Bird Names");
+        bird_names = bird_names.split(",");
+        bird_names = checkStrArr(bird_names, "Bird Names");
+        bird_img = checkImgUrl(bird_img, "Bird Image");
+
+        if(await hasBirdWithImageUrl(bird_img)){
+          throw "A bird with this image url already exists in the database!"
+        }
 
       if (bird_countryCode === "invalid") {
         throw "You must select a country for the bird image.";
