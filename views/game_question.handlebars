@@ -24,16 +24,23 @@
     </div>
     <div id="btnContainer">
         <button id="next" name="next">Next</button>
-        <button type="submit" name="quit">Quit</button>
+        <button type="submit" name="quit" id="quit">Quit</button>
     </div>
 </form>
 <script>
+    const quit_button = document.getElementById("quit");
     var secs = {{ time }};
     var endDate = new Date(new Date().getTime() + secs * 1000);
     var timer = setInterval(function () {
 
         let now = new Date().getTime();
         let t = endDate - now;
+
+        quit_button.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            document.getElementById("timer").value = 0;
+            document.questionform.submit();
+        })
 
         if (t >= 0) {
 
@@ -53,4 +60,6 @@
 
     }, 1000);
 
+
 </script>
+<script src="">
