@@ -104,7 +104,7 @@ if(profileForm){
             try {
               checkUserName(username.value)
             } catch (e) {
-              error.innerHTML= "Username is invalid!";
+              error.innerHTML= e;
               error.hidden= false;
               event.preventDefault();
               return false;        
@@ -115,7 +115,7 @@ if(profileForm){
             try {
                 checkPassword(passwordInput.value)
             } catch (e) {
-                error.innerHTML= "Password is invalid!";
+                error.innerHTML= e;
                 error.hidden= false;
                 event.preventDefault();
                 return false;     
@@ -147,7 +147,7 @@ if(profileForm){
             try {
                 checkImgUrl(icon.value, "User Icon")
             } catch (e) {
-                error.innerHTML= "Icon is invalid!";
+                error.innerHTML= e;
                 error.hidden= false;
                 event.preventDefault();
                 return false;    
@@ -159,7 +159,7 @@ if(profileForm){
             checkZipCode(zipcode.value,"User Zipcode")
           }
           catch(e){
-            error.innerHTML= "Zipcode is invalid!";
+            error.innerHTML= e;
             error.hidden= false;
             event.preventDefault();
             return false; 

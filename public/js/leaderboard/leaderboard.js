@@ -48,7 +48,7 @@ $(document).on('submit', '#location-search-form',function(event) {
             });
         }
         else {
-            errorDiv.html("The country and/or city selected is invalid!")
+            errorDiv.html("Please select and enter a valid country and city.")
             errorDiv.show();
         }
 });
