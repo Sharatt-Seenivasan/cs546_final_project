@@ -113,7 +113,7 @@ router
     try {
       const newUser = await createUser(username, password);
       req.session.user = { _id: newUser._id, username: newUser.username };
-      return res.redirect('/login');
+      return res.redirect("/users/user/profile");
     } catch (error) {
       return res.status(500).render('error',{title: 'Error',error: `Internal Server Error: ${error}`})
     }
