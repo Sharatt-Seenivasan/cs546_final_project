@@ -488,8 +488,8 @@ router
         newCity = checkCity(newCity, `new city`);
         newZipCode = checkZipCode(newZipCode, `new zip code`);
         if (
-          newCountryCode === user.geocode.countryCode &&
-          newCity === user.geocode.city &&
+          newCountryCode === user.geocode.countryCode ||
+          newCity === user.geocode.city ||
           newZipCode === user.geocode.zipCode
         ) {
           throw "country code, city and zip code are the same as before!";
