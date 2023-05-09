@@ -143,7 +143,7 @@ router.
           }
           let n_score=Number(score);
           let currentHighScore=Number(user['high_score']);
-          let totalLScore;
+          let totalLScore = Number(user['lifetime_score']);
           if(n_score !== 0) {
             if(n_score>user['high_score']){
                 const high_inc=n_score-Number(user['high_score']);
@@ -165,7 +165,8 @@ router.
           delete req.session['timer'];
           delete req.session['point_inc'];
           delete req.session['point_dec'];
-          res.render('game_end',{title: 'Quiz Results',score, high_score:currentHighScore, lifetime_score:totalLScore});
+          
+          res.render('game_end',{title: 'Quiz Results',score, high_score: currentHighScore.toString(), lifetime_score: totalLScore.toString()});
       }
       else{
           let score = req.session.score;
