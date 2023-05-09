@@ -31,7 +31,8 @@ router.
                             numberOfQuestions : 50,
                         });
                     }catch{
-                        res.render('There arent enough birds in your location.You can Help us By Uploading Some!');
+                        let flag =true;
+                        return res.status(400).render('game_start',{title: 'Quiz',error: "There aren't enough birds in your location. You can help us By uploading some!", flag});
                     }
                     req.session.point_inc = 1;
                     req.session.point_dec = 2;
