@@ -509,9 +509,9 @@ router
         newZipCode = checkZipCode(newZipCode, `new zip code`);
 
         if (
-          newCountryCode === user.geocode.countryCode &&
-          newCity === user.geocode.city &&
-          newZipCode === user.geocode.zipcode
+          newCountryCode === user.geocode.countryCode ||
+          newCity === user.geocode.city ||
+          newZipCode === user.geocode.zipCode
         ) {
           throw "Country code, city and zip code are the same as before!";
         }
