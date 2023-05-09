@@ -105,7 +105,7 @@ if (profileForm) {
       !passwordInput.value &&
       !confirmPasswordInput.value &&
       !icon.value &&
-      !country.value &&
+      (country.value === "invalid") &&
       !city.value &&
       !zipcode.value
     ) {
