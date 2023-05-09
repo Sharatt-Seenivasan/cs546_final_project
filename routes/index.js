@@ -2,7 +2,7 @@ import leaderboardRoutes from "./leaderboard.js";
 import userRoutes from "./users.js";
 import gameRoutes from "./game.js";
 import path from "path";
-import { getUserByUserName } from "../data/users.js";
+import { getUserByUserName, getUserById } from "../data/users.js";
 
 const constructorMethod = (app) => {
   app.use("/user", userRoutes);
@@ -10,7 +10,7 @@ const constructorMethod = (app) => {
   app.use("/leaderboard", leaderboardRoutes);
   app.use("/", async (req, res) => {
     if (req.session.user) {
-      const user = await getUserByUserName(req.session.user.username)
+      const user = await getUserById(req.session.user._id)
       const icon = user.icon
       res.render("homepage", {
         title: "Homepage",

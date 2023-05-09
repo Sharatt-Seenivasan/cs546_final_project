@@ -633,6 +633,9 @@ router
         req.session.user._id,
         fields2Update
       );
+      if(fields2Update["username"]){
+        req.session.user.username = fields2Update["username"]
+      }
     } catch (error) {
       return res.status(500).render("error", {
         title: "Error",
