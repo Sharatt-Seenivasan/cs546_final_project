@@ -1,7 +1,7 @@
 <main class = "sign-up-page">
     <h1>Create an account!</h1>
     <p class="register_blurb">Enter a valid username and password to make an account.</p>
-    <form method="POST" action="/users/signup" id = "signup-form">
+    <form method="POST" action="/user/signup" id = "signup-form">
         <label for="username">Username:</label>
         <br>
         <input type="text" id="username" name="username">
@@ -18,6 +18,6 @@
     </form>
     <div id="error" class="error">{{error}}</div>
     <br>
-    <a class = "loginLink" href="/users/login">Already have an account? Click here to log-in!</a>
+    <a class = "loginLink" href="/user/login">Already have an account? Click here to log-in!</a>
 </main>
 <script src='/public/js/signup/signup.js'></script>

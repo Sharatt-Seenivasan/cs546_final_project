@@ -5,6 +5,8 @@ import {
   questionsFn as questionData,
 } from "../data/index.js";
 import { ObjectId } from "mongodb";
+import { updatePlayerInfoById } from "../data/users.js";
+import { getLocalBirdsLatLong } from "../data/birds.js";
 const generalUser = {
   username: "Zoe",
   hashed_password: "1234",
@@ -190,7 +192,7 @@ try {
   const getUserQuestions1 = await questionData.getQuestions4User(
     allUsers[0]["_id"]
   );
-  console.log("Expected", getUserQuestion1);
+  console.log("Expected", getUserQuestions1);
 } catch (error) {
   console.log("Unexpected : ", error);
 }
@@ -199,6 +201,30 @@ try {
   console.log("Expected", getGuestQuestions2);
 } catch (error) {
   console.log("Unexpected : ", error);
+}
+try{
+  console.log("reset questions")
+  console.log(await updatePlayerInfoById("6459610636aad6541428b7b7",{$resetLastSeenQuestions:[]}));
+}catch(error){
+  console.log(error)
+}
+try{
+  console.log("location questions");
+  console.log(await getLocalBirdsLatLong(40.7329808,-74.0711359));
+}catch(error){
+  console.log(error)
+}
+try{
+  console.log("location questions-2");
+  console.log(await getLocalBirdsLatLong(40.217052,-74.742935));
+}catch(error){
+  console.log(error)
+}
+try{
+  console.log("location questions-3");
+  console.log(await getLocalBirdsLatLong(39.000000,-75.500000));
+}catch(error){
+  console.log(error)
 }
 
 // ------------------ done ---------------------
