@@ -650,7 +650,7 @@ router
   .route("/post")
   .get(async (req, res) => {
     const userId = req.session.user && req.session.user._id;
-    if (!userId) return res.redirect("/users/login");
+    if (!userId) return res.redirect("/user/login");
 
     let user;
     try {
